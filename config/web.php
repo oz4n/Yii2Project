@@ -5,9 +5,20 @@ $db = require(__DIR__ . '/db.php');
 
 $config = [
 	'id' => 'basic',
+	'name' => 'Hello World!',
+	'defaultRoute' => 'dashboard',
 	'basePath' => dirname(__DIR__),
 	'extensions' => require(__DIR__ . '/../vendor/yiisoft/extensions.php'),
+	'modules' => [
+		'dashboard' => [
+			'class' => 'app\modules\Dashboard\DashboardModule',
+		],
+	],
 	'components' => [
+		'urlManager' => [
+			'enablePrettyUrl' => true,
+			'showScriptName' => false,
+		],
 		'cache' => [
 			'class' => 'yii\caching\FileCache',
 		],
