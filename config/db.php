@@ -1,9 +1,9 @@
 <?php
 
 return [
-	'class' => 'yii\db\Connection',
-	'dsn' => 'mysql:host=localhost;dbname=noizing',
-	'username' => 'root',
-	'password' => '',
-	'charset' => 'utf8',
+    'class' => 'yii\db\Connection',
+    'dsn' => 'mysql:host=localhost;dbname=noizing_zf2',
+    'username' => 'root',
+    'password' => 'a',
+    'charset' => 'utf8',
 ];
