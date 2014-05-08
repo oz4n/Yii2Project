@@ -4,17 +4,16 @@ namespace app\modules\member\controllers;
 
 use Yii;
 use app\modules\member\models\MemberModel;
-use app\modules\member\models\search\MemberSerch;
+use app\modules\member\searchs\MemberSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MemberController implements the CRUD actions for Member model.
+ * MemberController implements the CRUD actions for MemberModel model.
  */
 class MemberController extends Controller
 {
-
     public function behaviors()
     {
         return [
@@ -28,7 +27,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Lists all Member models.
+     * Lists all MemberModel models.
      * @return mixed
      */
     public function actionIndex()
@@ -36,14 +35,6 @@ class MemberController extends Controller
         $searchModel = new MemberSerch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-//        echo "<pre>";
-//        print_r(Yii::$app->request->get());
-//        exit();
-
-//        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
-//            $this->deleteAll(Yii::$app->request->post('selection'));
-//            return $this->redirect(['index']);
-//        }
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -51,7 +42,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Displays a single Member model.
+     * Displays a single MemberModel model.
      * @param integer $id
      * @return mixed
      */
@@ -63,14 +54,14 @@ class MemberController extends Controller
     }
 
     /**
-     * Creates a new Member model.
+     * Creates a new MemberModel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
         $model = new MemberModel;
-        $model->setAttribute('create_et', date("Y-m-d H:i:s"));
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -81,7 +72,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Updates an existing Member model.
+     * Updates an existing MemberModel model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -89,7 +80,7 @@ class MemberController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -99,19 +90,8 @@ class MemberController extends Controller
         }
     }
 
-    public function actionBulk()
-    {
-        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
-            $this->deleteAll(Yii::$app->request->post('selection'));
-            return $this->redirect(['index']);
-        } else {
-            return $this->redirect(['index']);
-        }
-
-    }
-
     /**
-     * Deletes an existing Member model.
+     * Deletes an existing MemberModel model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -124,26 +104,10 @@ class MemberController extends Controller
     }
 
     /**
-     * @param array $data
-     * @return \yii\web\Response
-     */
-    private function deleteAll($data)
-    {
-
-        if (null !== $data) {
-            foreach ($data as $id) {
-                $this->findModel($id)->delete();
-            }
-        } else {
-            return $this->redirect(['index']);
-        }
-    }
-
-    /**
-     * Finds the Member model based on its primary key value.
+     * Finds the MemberModel model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Member the loaded model
+     * @return MemberModel the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
@@ -154,5 +118,4 @@ class MemberController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
 }

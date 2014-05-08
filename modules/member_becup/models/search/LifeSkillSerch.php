@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\member\models\LifeSkillModel;
 use yii\helpers\ArrayHelper;
+
 /**
  * LifeSkillSerch represents the model behind the search form about `app\modules\member\models\LifeSkillModel`.
  */
@@ -19,8 +20,8 @@ class LifeSkillSerch extends LifeSkillModel
     public function rules()
     {
         return [
-            [['id', 'parent_id', 'term_id', 'position', 'lft', 'rgt', 'root', 'lvl'], 'integer'],
-            [['name', 'description', 'count', 'slug', 'status', 'created', 'updated'], 'safe'],
+            [['id', 'parent_id', 'term_id', 'position', 'lft', 'rgt', 'root', 'level'], 'integer'],
+            [['name', 'description', 'count', 'slug', 'status', 'create_et', 'update_et'], 'safe'],
         ];
     }
 
@@ -38,6 +39,11 @@ class LifeSkillSerch extends LifeSkillModel
             'query' => $query,
         ]);
 
+        $query->orderBy([
+            'root' => SORT_ASC,
+            'lft' => SORT_ASC
+        ]);
+
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
@@ -50,16 +56,16 @@ class LifeSkillSerch extends LifeSkillModel
             'lft' => $this->lft,
             'rgt' => $this->rgt,
             'root' => $this->root,
-            'lvl' => $this->lvl,
-            'created' => $this->created,
-            'updated' => $this->updated,
+            'level' => $this->level,
+            'create_et' => $this->create_et,
+            'update_et' => $this->update_et,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-                ->andFilterWhere(['like', 'description', $this->description])
-                ->andFilterWhere(['like', 'count', $this->count])
-                ->andFilterWhere(['like', 'slug', $this->slug])
-                ->andFilterWhere(['like', 'status', $this->status]);
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'count', $this->count])
+            ->andFilterWhere(['like', 'slug', $this->slug])
+            ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
     }
@@ -67,8 +73,10 @@ class LifeSkillSerch extends LifeSkillModel
     public static function loadParents()
     {
         $type = 'name';
-        if (!isset(self::$_items[$type]))
+        if (!isset(self::$_items[$type])) {
             self::loadParentItems($type);
+        }
+
         return ArrayHelper::merge(self::$_list, self::$_items[$type]);
     }
 
@@ -77,8 +85,27 @@ class LifeSkillSerch extends LifeSkillModel
         self::$_items[$type] = array();
         $models = LifeSkillModel::find();
         $models->where(['term_id' => 1]);
-        foreach ($models->all() as $model)
-            self::$_items[$type][$model->id] = ucwords($model->name);
+        $models->orderBy([
+            'root' => SORT_ASC,
+            'lft' => SORT_ASC
+        ]);
+        foreach ($models->all() as $model) {
+            if ($model->level == 1) {
+                self::$_items[$type][$model->id] = ucwords($model->name);
+            } else {
+                self::$_items[$type][$model->id] = ucwords(self::getLine($model->level) . $model->name);
+            }
+        }
+
+    }
+
+    private static function getLine($model)
+    {
+        $line = '';
+        for ($i = 0; $i < $model; $i++) {
+            $line .= "- ";
+        }
+        return $line;
     }
 
 }

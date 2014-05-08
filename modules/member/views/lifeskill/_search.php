@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var app\modules\member\models\search\LifeSkillSerch $model
+ * @var app\modules\member\searchs\LifeSkillSerch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
@@ -41,11 +41,11 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'root') ?>
 
-    <?php // echo $form->field($model, 'lvl') ?>
+    <?php // echo $form->field($model, 'level') ?>
 
-    <?php // echo $form->field($model, 'created') ?>
+    <?php // echo $form->field($model, 'create_et') ?>
 
-    <?php // echo $form->field($model, 'updated') ?>
+    <?php // echo $form->field($model, 'update_et') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>

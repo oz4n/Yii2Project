@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'lft',
             'rgt',
             'root',
-            'lvl',
+            'level',
             'create_et',
             'update_et',
         ],

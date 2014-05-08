@@ -5,12 +5,12 @@ use yii\widgets\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var app\modules\member\models\MemberSerch $model
+ * @var app\modules\member\searchs\MemberSerch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
 
-<div class="member-search">
+<div class="member-model-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'province_id') ?>
+    <?= $form->field($model, 'taxonomy_id') ?>
 
     <?= $form->field($model, 'school_id') ?>
 
@@ -48,8 +48,6 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'gender') ?>
 
     <?php // echo $form->field($model, 'marital_status') ?>
-
-    <?php // echo $form->field($model, 'pekerjaan_orang_tua') ?>
 
     <?php // echo $form->field($model, 'job') ?>
 

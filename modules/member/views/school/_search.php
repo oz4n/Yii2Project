@@ -5,12 +5,12 @@ use yii\widgets\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var app\modules\member\models\SchoolSerch $model
+ * @var app\modules\member\searchs\SchoolSerch $model
  * @var yii\widgets\ActiveForm $form
  */
 ?>
 
-<div class="school-search">
+<div class="school-model-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -19,13 +19,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
+    <?= $form->field($model, 'taxonomy_id') ?>
+
     <?= $form->field($model, 'name') ?>
 
     <?= $form->field($model, 'type') ?>
 
     <?= $form->field($model, 'address') ?>
 
-    <?= $form->field($model, 'email') ?>
+    <?php // echo $form->field($model, 'email') ?>
 
     <?php // echo $form->field($model, 'zip_code') ?>
 

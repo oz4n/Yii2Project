@@ -11,7 +11,6 @@ class memeber extends \yii\base\Module
         $this->setLayoutPath('@app/modules/dashboard/views/layouts');
         $this->layout = 'main';
         parent::init();
-
         // custom initialization code goes here
     }
 }

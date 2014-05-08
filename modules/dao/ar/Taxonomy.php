@@ -19,20 +19,21 @@ use Yii;
  * @property integer $lft
  * @property integer $rgt
  * @property integer $root
- * @property integer $lvl
+ * @property integer $level
  * @property string $create_et
  * @property string $update_et
  *
- * @property MemberHasTaxonomy $memberHasTaxonomy
  * @property Member[] $members
+ * @property School[] $schools
  * @property Taxfilerelations $taxfilerelations
  * @property File[] $files
+ * @property Taxmemberrelations $taxmemberrelations
  * @property Terminologi $term
  * @property Taxonomy $parent
  * @property Taxonomy[] $taxonomies
  * @property Taxpostrelations $taxpostrelations
  * @property Post[] $posts
- * @property UserLogHasTaxonomy $userLogHasTaxonomy
+ * @property Taxuserlogrelations $taxuserlogrelations
  * @property UserLog[] $userLogs
  */
 class Taxonomy extends \yii\db\ActiveRecord
@@ -45,19 +46,30 @@ class Taxonomy extends \yii\db\ActiveRecord
         return 'taxonomy';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
-            [['parent_id', 'term_id', 'position', 'lft', 'rgt', 'root', 'lvl'], 'integer'],
-            [['term_id', 'name', 'slug'], 'required'],
+            [['parent_id', 'term_id', 'position', 'lft', 'rgt', 'root', 'level'], 'integer'],
+            [['name'], 'required'],
             [['create_et', 'update_et'], 'safe'],
             [['name', 'description', 'slug'], 'string', 'max' => 255],
             [['count', 'status'], 'string', 'max' => 45]
         ];
     }
+
+    /**
+     * @inheritdoc
+     */
+//    public function rules()
+//    {
+//        return [
+//            [['parent_id', 'term_id', 'position', 'lft', 'rgt', 'root', 'level'], 'integer'],
+//            [['term_id', 'name', 'slug', 'create_et', 'update_et'], 'required'],
+//            [['create_et', 'update_et'], 'safe'],
+//            [['name', 'description', 'slug'], 'string', 'max' => 255],
+//            [['count', 'status'], 'string', 'max' => 45]
+//        ];
+//    }
 
     /**
      * @inheritdoc
@@ -77,7 +89,7 @@ class Taxonomy extends \yii\db\ActiveRecord
             'lft' => Yii::t('app', 'Lft'),
             'rgt' => Yii::t('app', 'Rgt'),
             'root' => Yii::t('app', 'Root'),
-            'lvl' => Yii::t('app', 'Lvl'),
+            'level' => Yii::t('app', 'Level'),
             'create_et' => Yii::t('app', 'Create Et'),
             'update_et' => Yii::t('app', 'Update Et'),
         ];
@@ -86,17 +98,17 @@ class Taxonomy extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMemberHasTaxonomy()
+    public function getMembers()
     {
-        return $this->hasOne(MemberHasTaxonomy::className(), ['taxonomy_id' => 'id']);
+        return $this->hasMany(Member::className(), ['id' => 'member_id'])->viaTable('taxmemberrelations', ['taxonomy_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMembers()
+    public function getSchools()
     {
-        return $this->hasMany(Member::className(), ['id' => 'member_id'])->viaTable('member_has_taxonomy', ['taxonomy_id' => 'id']);
+        return $this->hasMany(School::className(), ['taxonomy_id' => 'id']);
     }
 
     /**
@@ -113,6 +125,14 @@ class Taxonomy extends \yii\db\ActiveRecord
     public function getFiles()
     {
         return $this->hasMany(File::className(), ['id' => 'file_id'])->viaTable('taxfilerelations', ['tax_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaxmemberrelations()
+    {
+        return $this->hasOne(Taxmemberrelations::className(), ['taxonomy_id' => 'id']);
     }
 
     /**
@@ -158,9 +178,9 @@ class Taxonomy extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserLogHasTaxonomy()
+    public function getTaxuserlogrelations()
     {
-        return $this->hasOne(UserLogHasTaxonomy::className(), ['taxonomy_id' => 'id']);
+        return $this->hasOne(Taxuserlogrelations::className(), ['taxonomy_id' => 'id']);
     }
 
     /**
@@ -168,6 +188,6 @@ class Taxonomy extends \yii\db\ActiveRecord
      */
     public function getUserLogs()
     {
-        return $this->hasMany(UserLog::className(), ['id' => 'user_log_id'])->viaTable('user_log_has_taxonomy', ['taxonomy_id' => 'id']);
+        return $this->hasMany(UserLog::className(), ['id' => 'user_log_id'])->viaTable('taxuserlogrelations', ['taxonomy_id' => 'id']);
     }
 }

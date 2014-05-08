@@ -4,13 +4,13 @@ namespace app\modules\member\controllers;
 
 use Yii;
 use app\modules\member\models\SchoolModel;
-use app\modules\member\models\search\SchoolSerch;
+use app\modules\member\searchs\SchoolSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * SchoolController implements the CRUD actions for School model.
+ * SchoolController implements the CRUD actions for SchoolModel model.
  */
 class SchoolController extends Controller
 {
@@ -27,7 +27,7 @@ class SchoolController extends Controller
     }
 
     /**
-     * Lists all School models.
+     * Lists all SchoolModel models.
      * @return mixed
      */
     public function actionIndex()
@@ -42,7 +42,7 @@ class SchoolController extends Controller
     }
 
     /**
-     * Displays a single School model.
+     * Displays a single SchoolModel model.
      * @param integer $id
      * @return mixed
      */
@@ -54,7 +54,7 @@ class SchoolController extends Controller
     }
 
     /**
-     * Creates a new School model.
+     * Creates a new SchoolModel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -73,7 +73,7 @@ class SchoolController extends Controller
     }
 
     /**
-     * Updates an existing School model.
+     * Updates an existing SchoolModel model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -81,7 +81,7 @@ class SchoolController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -91,8 +91,19 @@ class SchoolController extends Controller
         }
     }
 
+    public function actionBulk()
+    {
+        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+            $this->deleteAll(Yii::$app->request->post('selection'));
+            return $this->redirect(['index']);
+        } else {
+            return $this->redirect(['index']);
+        }
+
+    }
+
     /**
-     * Deletes an existing School model.
+     * Deletes an existing SchoolModel model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -105,10 +116,25 @@ class SchoolController extends Controller
     }
 
     /**
-     * Finds the School model based on its primary key value.
+     * @param array $data
+     * @return \yii\web\Response
+     */
+    protected  function deleteAll($data)
+    {
+        if (null !== $data) {
+            foreach ($data as $id) {
+                $this->findModel($id)->delete();
+            }
+        } else {
+            return $this->redirect(['index']);
+        }
+    }
+
+    /**
+     * Finds the SchoolModel model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return School the loaded model
+     * @return SchoolModel the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)

@@ -1,26 +1,20 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Created by PhpStorm.
+ * User: root
+ * Date: 5/8/14
+ * Time: 5:57 PM
  */
 
 namespace app\modules\member\models;
 
-use app\modules\dao\ar\Member;
-use app\modules\dao\ar\Province;
-use app\modules\dao\ar\School;
 use Yii;
+use app\modules\dao\ar\Member;
+use app\modules\member\models\AreaModel;
+use app\modules\member\models\SchoolModel;
 
-/**
- * Description of MemberModel
- *
- * @author melengo
- */
 class MemberModel extends Member
 {
-
     public $language_skills;
     public $life_skill;
     public $brevet_award;
@@ -31,7 +25,7 @@ class MemberModel extends Member
         if (parent::attributeLabels()) {
             return [
                 'id' => Yii::t('app', 'ID'),
-                'province_id' => Yii::t('app', 'Asal Daerah'),
+                'taxonomy_id' => Yii::t('app', 'Asal Daerah'),
                 'school_id' => Yii::t('app', 'Asal Sekolah'),
                 'user_id' => Yii::t('app', 'User ID'),
                 'nra' => Yii::t('app', 'Nomor Registrasi Anggota'),
@@ -91,16 +85,15 @@ class MemberModel extends Member
         }
     }
 
-    public function getProvinceName()
+    public function getAreaName()
     {
-        $m = Province::findBySql("SELECT * FROM province WHERE id='" . $this->province_id . "'")->one();
+        $m = AreaModel::findBySql("SELECT * FROM taxonomy WHERE id='" . $this->taxonomy_id . "'")->one();
         return $m["name"];
     }
 
     public function getSchollName()
     {
-        $m = School::findBySql("SELECT * FROM school WHERE id='" . $this->school_id . "'")->one();
+        $m = SchoolModel::findBySql("SELECT * FROM school WHERE id='" . $this->school_id . "'")->one();
         return $m["name"];
     }
-
-}
+} 

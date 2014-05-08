@@ -1,24 +1,23 @@
 <?php
 
-namespace app\modules\member\models\search;
+namespace app\modules\member\searchs;
 
+use app\modules\member\models\AreaModel;
+use app\modules\member\models\LanguageSkillModel;
+use app\modules\member\models\LifeSkillModel;
+use app\modules\member\models\SchoolModel;
+use app\modules\member\models\YearModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\member\models\MemberModel;
-use app\modules\member\models\SchoolModel;
-use app\modules\member\models\ProvinceModel;
-use app\modules\member\models\LifeSkillModel;
-use app\modules\member\models\LanguageSkillModel;
-use app\modules\member\models\YearModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * MemberSerch represents the model behind the search form about `app\modules\dao\ar\Member`.
+ * MemberSerch represents the model behind the search form about `app\modules\member\models\MemberModel`.
  */
 class MemberSerch extends MemberModel
 {
-
     private static $_items = array();
     private static $_list = array(NULL => 'None');
     private static $_school_items = array();
@@ -28,12 +27,21 @@ class MemberSerch extends MemberModel
     private static $_lang_skills_items = array();
     private static $_lang_skills_list = array(NULL => 'Lainya');
     private static $_year_items = array();
-    private static $_year_list = array(NULL => 'None');
+    private static $_year_list = array(NULL => 'Tahun');
+
+    private $year_filtr1;
+    private $year_filtr2;
+    private $year_filtr3;
+    private $year_filtr4;
+    private $year_opsi;
+    private $year_opsi1;
+
+    public $keyword;
 
     public function rules()
     {
         return [
-            [['id', 'province_id', 'school_id', 'user_id', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
+            [['id', 'taxonomy_id', 'school_id', 'user_id', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
             [['nra', 'name', 'nickname', 'unit', 'front_photo', 'side_photo', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'job', 'blood_group', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'educational_status', 'zip_code', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'organizational_experience', 'year', 'illness', 'height_body', 'weight_body', 'dress_size', 'pants_size', 'shoe_size', 'hat_size', 'membership_status', 'status_organization', 'identity_card', 'identity_card_number', 'certificate_of_organization', 'names_recommended', 'note', 'create_et', 'update_et'], 'safe'],
         ];
     }
@@ -58,7 +66,7 @@ class MemberSerch extends MemberModel
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'province_id' => $this->province_id,
+            'taxonomy_id' => $this->taxonomy_id,
             'school_id' => $this->school_id,
             'user_id' => $this->user_id,
             'number_of_brothers' => $this->number_of_brothers,
@@ -68,54 +76,48 @@ class MemberSerch extends MemberModel
             'update_et' => $this->update_et,
         ]);
 
-        if (isset($params['ProvinceSerch']['keyword'])) {
-            $keyword = $params['ProvinceSerch']['keyword'];
-            $query->orFilterWhere(['like', 'type', $keyword])
-                ->orFilterWhere(['like', 'name', $keyword]);
-        }
-
         $query->andFilterWhere(['like', 'nra', $this->nra])
-                ->andFilterWhere(['like', 'name', $this->name])
-                ->andFilterWhere(['like', 'nickname', $this->nickname])
-                ->andFilterWhere(['like', 'unit', $this->unit])
-                ->andFilterWhere(['like', 'front_photo', $this->front_photo])
-                ->andFilterWhere(['like', 'side_photo', $this->side_photo])
-                ->andFilterWhere(['like', 'address', $this->address])
-                ->andFilterWhere(['like', 'birth', $this->birth])
-                ->andFilterWhere(['like', 'nationality', $this->nationality])
-                ->andFilterWhere(['like', 'religion', $this->religion])
-                ->andFilterWhere(['like', 'gender', $this->gender])
-                ->andFilterWhere(['like', 'marital_status', $this->marital_status])               
-                ->andFilterWhere(['like', 'job', $this->job])
-                ->andFilterWhere(['like', 'blood_group', $this->blood_group])
-                ->andFilterWhere(['like', 'father_name', $this->father_name])
-                ->andFilterWhere(['like', 'mother_name', $this->mother_name])
-                ->andFilterWhere(['like', 'father_work', $this->father_work])
-                ->andFilterWhere(['like', 'mother_work', $this->mother_work])
-                ->andFilterWhere(['like', 'income_father', $this->income_father])
-                ->andFilterWhere(['like', 'income_mothers', $this->income_mothers])
-                ->andFilterWhere(['like', 'educational_status', $this->educational_status])
-                ->andFilterWhere(['like', 'zip_code', $this->zip_code])
-                ->andFilterWhere(['like', 'phone_number', $this->phone_number])
-                ->andFilterWhere(['like', 'other_phone_number', $this->other_phone_number])
-                ->andFilterWhere(['like', 'relationship_phone_number', $this->relationship_phone_number])
-                ->andFilterWhere(['like', 'email', $this->email])
-                ->andFilterWhere(['like', 'organizational_experience', $this->organizational_experience])
-                ->andFilterWhere(['like', 'year', $this->year])
-                ->andFilterWhere(['like', 'illness', $this->illness])
-                ->andFilterWhere(['like', 'height_body', $this->height_body])
-                ->andFilterWhere(['like', 'weight_body', $this->weight_body])
-                ->andFilterWhere(['like', 'dress_size', $this->dress_size])
-                ->andFilterWhere(['like', 'pants_size', $this->pants_size])
-                ->andFilterWhere(['like', 'shoe_size', $this->shoe_size])
-                ->andFilterWhere(['like', 'hat_size', $this->hat_size])
-                ->andFilterWhere(['like', 'membership_status', $this->membership_status])
-                ->andFilterWhere(['like', 'status_organization', $this->status_organization])
-                ->andFilterWhere(['like', 'identity_card', $this->identity_card])
-                ->andFilterWhere(['like', 'identity_card_number', $this->identity_card_number])
-                ->andFilterWhere(['like', 'certificate_of_organization', $this->certificate_of_organization])
-                ->andFilterWhere(['like', 'names_recommended', $this->names_recommended])
-                ->andFilterWhere(['like', 'note', $this->note]);
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'nickname', $this->nickname])
+            ->andFilterWhere(['like', 'unit', $this->unit])
+            ->andFilterWhere(['like', 'front_photo', $this->front_photo])
+            ->andFilterWhere(['like', 'side_photo', $this->side_photo])
+            ->andFilterWhere(['like', 'address', $this->address])
+            ->andFilterWhere(['like', 'birth', $this->birth])
+            ->andFilterWhere(['like', 'nationality', $this->nationality])
+            ->andFilterWhere(['like', 'religion', $this->religion])
+            ->andFilterWhere(['like', 'gender', $this->gender])
+            ->andFilterWhere(['like', 'marital_status', $this->marital_status])
+            ->andFilterWhere(['like', 'job', $this->job])
+            ->andFilterWhere(['like', 'blood_group', $this->blood_group])
+            ->andFilterWhere(['like', 'father_name', $this->father_name])
+            ->andFilterWhere(['like', 'mother_name', $this->mother_name])
+            ->andFilterWhere(['like', 'father_work', $this->father_work])
+            ->andFilterWhere(['like', 'mother_work', $this->mother_work])
+            ->andFilterWhere(['like', 'income_father', $this->income_father])
+            ->andFilterWhere(['like', 'income_mothers', $this->income_mothers])
+            ->andFilterWhere(['like', 'educational_status', $this->educational_status])
+            ->andFilterWhere(['like', 'zip_code', $this->zip_code])
+            ->andFilterWhere(['like', 'phone_number', $this->phone_number])
+            ->andFilterWhere(['like', 'other_phone_number', $this->other_phone_number])
+            ->andFilterWhere(['like', 'relationship_phone_number', $this->relationship_phone_number])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'organizational_experience', $this->organizational_experience])
+            ->andFilterWhere(['like', 'year', $this->year])
+            ->andFilterWhere(['like', 'illness', $this->illness])
+            ->andFilterWhere(['like', 'height_body', $this->height_body])
+            ->andFilterWhere(['like', 'weight_body', $this->weight_body])
+            ->andFilterWhere(['like', 'dress_size', $this->dress_size])
+            ->andFilterWhere(['like', 'pants_size', $this->pants_size])
+            ->andFilterWhere(['like', 'shoe_size', $this->shoe_size])
+            ->andFilterWhere(['like', 'hat_size', $this->hat_size])
+            ->andFilterWhere(['like', 'membership_status', $this->membership_status])
+            ->andFilterWhere(['like', 'status_organization', $this->status_organization])
+            ->andFilterWhere(['like', 'identity_card', $this->identity_card])
+            ->andFilterWhere(['like', 'identity_card_number', $this->identity_card_number])
+            ->andFilterWhere(['like', 'certificate_of_organization', $this->certificate_of_organization])
+            ->andFilterWhere(['like', 'names_recommended', $this->names_recommended])
+            ->andFilterWhere(['like', 'note', $this->note]);
 
         return $dataProvider;
     }
@@ -138,20 +140,21 @@ class MemberSerch extends MemberModel
         }
     }
 
-    public static function loadProvinces()
+    public static function loadAreas()
     {
         $type = 'name';
         if (!isset(self::$_items[$type])) {
-            self::loadProvinceItems($type);
+            self::loadAreaItems($type);
         }
 
         return ArrayHelper::merge(self::$_list, self::$_items[$type]);
     }
 
-    private static function loadProvinceItems($type)
+    private static function loadAreaItems($type)
     {
         self::$_items[$type] = array();
-        $models = ProvinceModel::find();
+        $models = AreaModel::find();
+        $models->where(['term_id' => 6]);
         foreach ($models->all() as $model) {
             self::$_items[$type][$model->id] = ucwords($model->name);
         }
@@ -216,5 +219,4 @@ class MemberSerch extends MemberModel
             self::$_year_items[$type][$model->name] = ucwords($model->name);
         }
     }
-
 }

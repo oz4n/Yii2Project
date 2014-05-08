@@ -51,7 +51,7 @@ use Yii;
                         ],
                         [
                             'label' => 'Daerah',
-                            'url' => ['/member/province/index'],
+                            'url' => ['/member/area/index'],
                             'icon' => 'menu-icon fa fa-angle-double-right'
                         ],
                         [

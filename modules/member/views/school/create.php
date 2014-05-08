@@ -1,24 +1,51 @@
 <?php
 
 use yii\helpers\Html;
-
+use yii\helpers\Url;
 /**
  * @var yii\web\View $this
- * @var app\modules\dao\ar\School $model
+ * @var app\modules\member\models\SchoolModel $model
  */
 
-$this->title = Yii::t('app', 'Create {modelClass}', [
-  'modelClass' => 'School',
+$this->title = Yii::t('app', 'Tambah {modelClass}', [
+    'modelClass' => 'Sekolah',
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Schools'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="school-create">
+<ul class="breadcrumb breadcrumb-page">
+    <div class="breadcrumb-label text-light-gray">
+        <?php echo Yii::t('app', 'Anda di sini:'); ?>
+    </div>
+    <li>
+        <a href="<?php echo Url::toRoute('/dashboard/dashboard/index'); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+    </li>
+    <li>
+        <a href="<?php echo Url::toRoute('/member/school/index'); ?>"><?php echo Yii::t('app', Html::encode('Sekolah')); ?></a>
+    </li>
+    <li class="active">
+        <?= Yii::t('app','Tambah Sekolah baru'); ?>
+    </li>
+</ul>
+<div class="page-header">
+    <div class="row">
+        <div class="col-xs-12">
+            <h1 class="text-center text-left-sm">
+                <i class="fa fa-home page-header-icon"> </i>
+                &nbsp;
+                <?= Html::encode('Sekolah') ?>
+            </h1>
+        </div>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <?=
+        $this->render('_form', [
+            'model' => $model,
+        ])
+        ?>
+    </div>
+    <div class="col-sm-6">
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+    </div>
 </div>

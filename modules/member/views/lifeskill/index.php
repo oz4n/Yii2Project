@@ -6,39 +6,34 @@ use yii\grid\GridView;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var app\modules\member\models\search\LifeSkillSerch $searchModel
+ * @var app\modules\member\searchs\LifeSkillSerch $searchModel
  */
+
 $this->title = Yii::t('app', 'Life Skill Models');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="life-skill-model-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?=
-        Html::a(Yii::t('app', 'Create {modelClass}', [
-                    'modelClass' => 'Life Skill Model',
-                ]), ['create'], ['class' => 'btn btn-success'])
-        ?>
+        <?= Html::a(Yii::t('app', 'Create {modelClass}', [
+  'modelClass' => 'Life Skill Model',
+]), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?=
-    GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'parent_id',
+            'term_id',
             'name',
             'description',
-            [
-                'attribute' => 'parent_id',
-                'header' => 'Parent',
-                'value' => function ($data) {
-            return $data->getParentName();
-        }
-            ],
             // 'count',
             // 'slug',
             // 'status',
@@ -46,12 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'lft',
             // 'rgt',
             // 'root',
-            // 'lvl',
+            // 'level',
             // 'create_et',
             // 'update_et',
+
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]);
-    ?>
+    ]); ?>
 
 </div>

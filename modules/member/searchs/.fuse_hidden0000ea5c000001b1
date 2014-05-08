@@ -1,24 +1,23 @@
 <?php
 
-namespace app\modules\member\models\search;
+namespace app\modules\member\searchs;
 
+use app\modules\member\models\AreaModel;
+use app\modules\member\models\LanguageSkillModel;
+use app\modules\member\models\LifeSkillModel;
+use app\modules\member\models\SchoolModel;
+use app\modules\member\models\YearModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\member\models\MemberModel;
-use app\modules\member\models\SchoolModel;
-use app\modules\member\models\ProvinceModel;
-use app\modules\member\models\LifeSkillModel;
-use app\modules\member\models\LanguageSkillModel;
-use app\modules\member\models\YearModel;
 use yii\helpers\ArrayHelper;
 
 /**
- * MemberSerch represents the model behind the search form about `app\modules\dao\ar\Member`.
+ * MemberSerch represents the model behind the search form about `app\modules\member\models\MemberModel`.
  */
 class MemberSerch extends MemberModel
 {
-
     private static $_items = array();
     private static $_list = array(NULL => 'None');
     private static $_school_items = array();
@@ -30,10 +29,19 @@ class MemberSerch extends MemberModel
     private static $_year_items = array();
     private static $_year_list = array(NULL => 'Tahun');
 
+    private $year_filtr1;
+    private $year_filtr2;
+    private $year_filtr3;
+    private $year_filtr4;
+    private $year_opsi;
+    private $year_opsi1;
+
+    public $keyword;
+
     public function rules()
     {
         return [
-            [['id', 'province_id', 'school_id', 'user_id', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
+            [['id', 'taxonomy_id', 'school_id', 'user_id', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
             [['nra', 'name', 'nickname', 'unit', 'front_photo', 'side_photo', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'job', 'blood_group', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'educational_status', 'zip_code', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'organizational_experience', 'year', 'illness', 'height_body', 'weight_body', 'dress_size', 'pants_size', 'shoe_size', 'hat_size', 'membership_status', 'status_organization', 'identity_card', 'identity_card_number', 'certificate_of_organization', 'names_recommended', 'note', 'create_et', 'update_et'], 'safe'],
         ];
     }
@@ -58,7 +66,7 @@ class MemberSerch extends MemberModel
 
 //        $query->andFilterWhere([
 //            'id' => $this->id,
-//            'province_id' => $this->province_id,
+//            'taxonomy_id' => $this->taxonomy_id,
 //            'school_id' => $this->school_id,
 //            'user_id' => $this->user_id,
 //            'number_of_brothers' => $this->number_of_brothers,
@@ -68,34 +76,77 @@ class MemberSerch extends MemberModel
 //            'update_et' => $this->update_et,
 //        ]);
 
-        if ((isset($params['MemberSerch']['year_filtr1']) || isset($params['MemberSerch']['year_filtr2'])) || isset($params['MemberSerch']['year_opsi'])) {
-            $year_filtr1 = $params['MemberSerch']['year_filtr1'];
-            $year_filtr2 = $params['MemberSerch']['year_filtr2'];
-            $year_opsi = $params['MemberSerch']['year_opsi'];
+        if (isset($params['MemberSerch']['year_filtr1'])) {
+            $this->year_filtr1 = $params['MemberSerch']['year_filtr1'];
+        }
 
-            switch ($year_opsi) {
-                case "and":
-                    $query->orFilterWhere(['like', 'year', $year_filtr1]);
-                    $query->orFilterWhere(['like', 'year', $year_filtr2]);
-                    break;
-                case "s/d":
-                    if ((int)$year_filtr1 <= (int)$year_filtr2) {
-                        $con = (int)$year_filtr2 - (int)$year_filtr1;
-                        for ($i = 0; $i <= $con; $i++) {
-                            $query->orFilterWhere(['like', 'year', (int)$year_filtr1 + $i]);
-                        }
-                    } elseif ((int)$year_filtr2 <= (int)$year_filtr1) {
-                        $con = (int)$year_filtr1 - (int)$year_filtr2;
-                        for ($i = 0; $i <= $con; $i++) {
-                            $query->orFilterWhere(['like', 'year', (int)$year_filtr2 + $i]);
-                        }
-                    } elseif ((int)$year_filtr1 == (int)$year_filtr2) {
-                        $query->orFilterWhere(['like', 'year', $year_filtr1]);
+        if (isset($params['MemberSerch']['year_filtr2'])) {
+            $this->year_filtr2 = $params['MemberSerch']['year_filtr2'];
+        }
+
+        if (isset($params['MemberSerch']['year_opsi'])) {
+            $this->year_opsi = $params['MemberSerch']['year_opsi'];
+        }
+
+        switch ($this->year_opsi) {
+            case "and":
+                $query->orFilterWhere(['like', 'year', $this->year_filtr1]);
+                $query->orFilterWhere(['like', 'year', $this->year_filtr2]);
+                break;
+            case "s/d":
+                if ((int)$this->year_filtr1 <= (int)$this->year_filtr2) {
+                    $con = (int)$this->year_filtr2 - (int)$this->year_filtr1;
+                    for ($i = 0; $i <= $con; $i++) {
+                        $query->orFilterWhere(['like', 'year', (int)$this->year_filtr1 + $i]);
                     }
-                    break;
-                case null:
-                    break;
-            }
+                } elseif ((int)$this->year_filtr2 <= (int)$this->year_filtr1) {
+                    $con = (int)$this->year_filtr1 - (int)$this->year_filtr2;
+                    for ($i = 0; $i <= $con; $i++) {
+                        $query->orFilterWhere(['like', 'year', (int)$this->year_filtr2 + $i]);
+                    }
+                } elseif ((int)$this->year_filtr1 == (int)$this->year_filtr2) {
+                    $query->orFilterWhere(['like', 'year', $this->year_filtr1]);
+                }
+                break;
+            case null:
+                break;
+        }
+
+
+        if (isset($params['MemberSerch']['year_filtr3'])) {
+            $this->year_filtr3 = $params['MemberSerch']['year_filtr3'];
+        }
+
+        if (isset($params['MemberSerch']['year_filtr4'])) {
+            $this->year_filtr4 = $params['MemberSerch']['year_filtr4'];
+        }
+
+        if (isset($params['MemberSerch']['year_opsi1'])) {
+            $this->year_opsi1 = $params['MemberSerch']['year_opsi1'];
+        }
+
+        switch ($this->year_opsi1) {
+            case "and":
+                $query->orFilterWhere(['like', 'year', $this->year_filtr3]);
+                $query->orFilterWhere(['like', 'year', $this->year_filtr4]);
+                break;
+            case "s/d":
+                if ((int)$this->year_filtr3 <= (int)$this->year_filtr4) {
+                    $con = (int)$this->year_filtr4 - (int)$this->year_filtr3;
+                    for ($i = 0; $i <= $con; $i++) {
+                        $query->orFilterWhere(['like', 'year', (int)$this->year_filtr3 + $i]);
+                    }
+                } elseif ((int)$this->year_filtr4 <= (int)$this->year_filtr3) {
+                    $con = (int)$this->year_filtr3 - (int)$this->year_filtr4;
+                    for ($i = 0; $i <= $con; $i++) {
+                        $query->orFilterWhere(['like', 'year', (int)$this->year_filtr4 + $i]);
+                    }
+                } elseif ((int)$this->year_filtr3 == (int)$this->year_filtr4) {
+                    $query->orFilterWhere(['like', 'year', $this->year_filtr3]);
+                }
+                break;
+            case null:
+                break;
         }
 
         if (isset($params['MemberSerch']['keyword'])) {
@@ -208,20 +259,21 @@ class MemberSerch extends MemberModel
         }
     }
 
-    public static function loadProvinces()
+    public static function loadAreas()
     {
         $type = 'name';
         if (!isset(self::$_items[$type])) {
-            self::loadProvinceItems($type);
+            self::loadAreaItems($type);
         }
 
         return ArrayHelper::merge(self::$_list, self::$_items[$type]);
     }
 
-    private static function loadProvinceItems($type)
+    private static function loadAreaItems($type)
     {
         self::$_items[$type] = array();
-        $models = ProvinceModel::find();
+        $models = AreaModel::find();
+        $models->where(['term_id' => 6]);
         foreach ($models->all() as $model) {
             self::$_items[$type][$model->id] = ucwords($model->name);
         }
@@ -286,5 +338,4 @@ class MemberSerch extends MemberModel
             self::$_year_items[$type][$model->name] = ucwords($model->name);
         }
     }
-
 }

@@ -4,7 +4,7 @@ namespace app\modules\member\controllers;
 
 use Yii;
 use app\modules\member\models\LifeSkillModel;
-use app\modules\member\models\search\LifeSkillSerch;
+use app\modules\member\searchs\LifeSkillSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,7 +14,6 @@ use yii\filters\VerbFilter;
  */
 class LifeskillController extends Controller
 {
-
     public function behaviors()
     {
         return [
@@ -37,8 +36,8 @@ class LifeskillController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
@@ -50,7 +49,7 @@ class LifeskillController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -62,15 +61,12 @@ class LifeskillController extends Controller
     public function actionCreate()
     {
         $model = new LifeSkillModel;
-        $model->setAttribute('create_et', date("Y-m-d H:i:s"));
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        $model->setAttribute('term_id', 1);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -85,12 +81,11 @@ class LifeskillController extends Controller
     {
         $model = $this->findModel($id);
 
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -123,5 +118,4 @@ class LifeskillController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
 }
