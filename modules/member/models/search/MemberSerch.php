@@ -28,7 +28,7 @@ class MemberSerch extends MemberModel
     private static $_lang_skills_items = array();
     private static $_lang_skills_list = array(NULL => 'Lainya');
     private static $_year_items = array();
-    private static $_year_list = array(NULL => 'None');
+    private static $_year_list = array(NULL => 'Tahun');
 
     public function rules()
     {
@@ -67,6 +67,36 @@ class MemberSerch extends MemberModel
 //            'create_et' => $this->create_et,
 //            'update_et' => $this->update_et,
 //        ]);
+
+        if ((isset($params['MemberSerch']['year_filtr1']) || isset($params['MemberSerch']['year_filtr2'])) || isset($params['MemberSerch']['year_opsi'])) {
+            $year_filtr1 = $params['MemberSerch']['year_filtr1'];
+            $year_filtr2 = $params['MemberSerch']['year_filtr2'];
+            $year_opsi = $params['MemberSerch']['year_opsi'];
+
+            switch ($year_opsi) {
+                case "and":
+                    $query->orFilterWhere(['like', 'year', $year_filtr1]);
+                    $query->orFilterWhere(['like', 'year', $year_filtr2]);
+                    break;
+                case "s/d":
+                    if ((int)$year_filtr1 <= (int)$year_filtr2) {
+                        $con = (int)$year_filtr2 - (int)$year_filtr1;
+                        for ($i = 0; $i <= $con; $i++) {
+                            $query->orFilterWhere(['like', 'year', (int)$year_filtr1 + $i]);
+                        }
+                    } elseif ((int)$year_filtr2 <= (int)$year_filtr1) {
+                        $con = (int)$year_filtr1 - (int)$year_filtr2;
+                        for ($i = 0; $i <= $con; $i++) {
+                            $query->orFilterWhere(['like', 'year', (int)$year_filtr2 + $i]);
+                        }
+                    } elseif ((int)$year_filtr1 == (int)$year_filtr2) {
+                        $query->orFilterWhere(['like', 'year', $year_filtr1]);
+                    }
+                    break;
+                case null:
+                    break;
+            }
+        }
 
         if (isset($params['MemberSerch']['keyword'])) {
             $keyword = $params['MemberSerch']['keyword'];
@@ -115,47 +145,47 @@ class MemberSerch extends MemberModel
         }
 
         $query->andFilterWhere(['like', 'nra', $this->nra])
-                ->andFilterWhere(['like', 'name', $this->name])
-                ->andFilterWhere(['like', 'nickname', $this->nickname])
-                ->andFilterWhere(['like', 'unit', $this->unit])
-                ->andFilterWhere(['like', 'front_photo', $this->front_photo])
-                ->andFilterWhere(['like', 'side_photo', $this->side_photo])
-                ->andFilterWhere(['like', 'address', $this->address])
-                ->andFilterWhere(['like', 'birth', $this->birth])
-                ->andFilterWhere(['like', 'nationality', $this->nationality])
-                ->andFilterWhere(['like', 'religion', $this->religion])
-                ->andFilterWhere(['like', 'gender', $this->gender])
-                ->andFilterWhere(['like', 'marital_status', $this->marital_status])               
-                ->andFilterWhere(['like', 'job', $this->job])
-                ->andFilterWhere(['like', 'blood_group', $this->blood_group])
-                ->andFilterWhere(['like', 'father_name', $this->father_name])
-                ->andFilterWhere(['like', 'mother_name', $this->mother_name])
-                ->andFilterWhere(['like', 'father_work', $this->father_work])
-                ->andFilterWhere(['like', 'mother_work', $this->mother_work])
-                ->andFilterWhere(['like', 'income_father', $this->income_father])
-                ->andFilterWhere(['like', 'income_mothers', $this->income_mothers])
-                ->andFilterWhere(['like', 'educational_status', $this->educational_status])
-                ->andFilterWhere(['like', 'zip_code', $this->zip_code])
-                ->andFilterWhere(['like', 'phone_number', $this->phone_number])
-                ->andFilterWhere(['like', 'other_phone_number', $this->other_phone_number])
-                ->andFilterWhere(['like', 'relationship_phone_number', $this->relationship_phone_number])
-                ->andFilterWhere(['like', 'email', $this->email])
-                ->andFilterWhere(['like', 'organizational_experience', $this->organizational_experience])
-                ->andFilterWhere(['like', 'year', $this->year])
-                ->andFilterWhere(['like', 'illness', $this->illness])
-                ->andFilterWhere(['like', 'height_body', $this->height_body])
-                ->andFilterWhere(['like', 'weight_body', $this->weight_body])
-                ->andFilterWhere(['like', 'dress_size', $this->dress_size])
-                ->andFilterWhere(['like', 'pants_size', $this->pants_size])
-                ->andFilterWhere(['like', 'shoe_size', $this->shoe_size])
-                ->andFilterWhere(['like', 'hat_size', $this->hat_size])
-                ->andFilterWhere(['like', 'membership_status', $this->membership_status])
-                ->andFilterWhere(['like', 'status_organization', $this->status_organization])
-                ->andFilterWhere(['like', 'identity_card', $this->identity_card])
-                ->andFilterWhere(['like', 'identity_card_number', $this->identity_card_number])
-                ->andFilterWhere(['like', 'certificate_of_organization', $this->certificate_of_organization])
-                ->andFilterWhere(['like', 'names_recommended', $this->names_recommended])
-                ->andFilterWhere(['like', 'note', $this->note]);
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'nickname', $this->nickname])
+            ->andFilterWhere(['like', 'unit', $this->unit])
+            ->andFilterWhere(['like', 'front_photo', $this->front_photo])
+            ->andFilterWhere(['like', 'side_photo', $this->side_photo])
+            ->andFilterWhere(['like', 'address', $this->address])
+            ->andFilterWhere(['like', 'birth', $this->birth])
+            ->andFilterWhere(['like', 'nationality', $this->nationality])
+            ->andFilterWhere(['like', 'religion', $this->religion])
+            ->andFilterWhere(['like', 'gender', $this->gender])
+            ->andFilterWhere(['like', 'marital_status', $this->marital_status])
+            ->andFilterWhere(['like', 'job', $this->job])
+            ->andFilterWhere(['like', 'blood_group', $this->blood_group])
+            ->andFilterWhere(['like', 'father_name', $this->father_name])
+            ->andFilterWhere(['like', 'mother_name', $this->mother_name])
+            ->andFilterWhere(['like', 'father_work', $this->father_work])
+            ->andFilterWhere(['like', 'mother_work', $this->mother_work])
+            ->andFilterWhere(['like', 'income_father', $this->income_father])
+            ->andFilterWhere(['like', 'income_mothers', $this->income_mothers])
+            ->andFilterWhere(['like', 'educational_status', $this->educational_status])
+            ->andFilterWhere(['like', 'zip_code', $this->zip_code])
+            ->andFilterWhere(['like', 'phone_number', $this->phone_number])
+            ->andFilterWhere(['like', 'other_phone_number', $this->other_phone_number])
+            ->andFilterWhere(['like', 'relationship_phone_number', $this->relationship_phone_number])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'organizational_experience', $this->organizational_experience])
+            ->andFilterWhere(['like', 'year', $this->year])
+            ->andFilterWhere(['like', 'illness', $this->illness])
+            ->andFilterWhere(['like', 'height_body', $this->height_body])
+            ->andFilterWhere(['like', 'weight_body', $this->weight_body])
+            ->andFilterWhere(['like', 'dress_size', $this->dress_size])
+            ->andFilterWhere(['like', 'pants_size', $this->pants_size])
+            ->andFilterWhere(['like', 'shoe_size', $this->shoe_size])
+            ->andFilterWhere(['like', 'hat_size', $this->hat_size])
+            ->andFilterWhere(['like', 'membership_status', $this->membership_status])
+            ->andFilterWhere(['like', 'status_organization', $this->status_organization])
+            ->andFilterWhere(['like', 'identity_card', $this->identity_card])
+            ->andFilterWhere(['like', 'identity_card_number', $this->identity_card_number])
+            ->andFilterWhere(['like', 'certificate_of_organization', $this->certificate_of_organization])
+            ->andFilterWhere(['like', 'names_recommended', $this->names_recommended])
+            ->andFilterWhere(['like', 'note', $this->note]);
 
         return $dataProvider;
     }

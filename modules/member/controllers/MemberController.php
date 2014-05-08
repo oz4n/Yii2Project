@@ -36,9 +36,17 @@ class MemberController extends Controller
         $searchModel = new MemberSerch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
+//        echo "<pre>";
+//        print_r(Yii::$app->request->get());
+//        exit();
+
+//        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+//            $this->deleteAll(Yii::$app->request->post('selection'));
+//            return $this->redirect(['index']);
+//        }
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
@@ -50,7 +58,7 @@ class MemberController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -67,7 +75,7 @@ class MemberController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -86,9 +94,20 @@ class MemberController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
+    }
+
+    public function actionBulk()
+    {
+        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+            $this->deleteAll(Yii::$app->request->post('selection'));
+            return $this->redirect(['index']);
+        } else {
+            return $this->redirect(['index']);
+        }
+
     }
 
     /**
@@ -102,6 +121,22 @@ class MemberController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * @param array $data
+     * @return \yii\web\Response
+     */
+    private function deleteAll($data)
+    {
+
+        if (null !== $data) {
+            foreach ($data as $id) {
+                $this->findModel($id)->delete();
+            }
+        } else {
+            return $this->redirect(['index']);
+        }
     }
 
     /**

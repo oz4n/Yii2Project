@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use app\modules\member\models\search\MemberSerch;
 
 /**
  * @var yii\web\View $this
@@ -28,7 +29,7 @@ $this->title = Yii::t('app', 'Members');
     <div class="row">
         <div class="col-xs-8">
             <h1 class="text-center text-left-sm">
-                <i class="fa fa-sitemap page-header-icon"> </i>
+                <i class="fa fa-users page-header-icon"> </i>
                 &nbsp;
                 <?= Html::encode('Anggota') ?>
                 <?= Yii::t('app', 'atau'); ?>
@@ -62,12 +63,13 @@ $this->title = Yii::t('app', 'Members');
         </div>
     </div>
 </div>
-<?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
+<?php //echo $this->render('_search', ['model' => $searchModel]);  ?>
 <div class="row">
 <div class="col-sm-12">
 <?php
 $form = ActiveForm::begin([
-    'action' => '/member/member/bulk'
+    'action' => '/member/member/index',
+    'method' => 'get'
 ]);
 ?>
 <?=
@@ -78,16 +80,21 @@ GridView::widget([
     'tableOptions' => ['class' => 'table'],
     'layout' => Html::beginTag('div', ['class' => 'row'])
 
-        . Html::beginTag('div', ['class' => 'col-xs-6'])
+        . Html::beginTag('div', ['class' => 'col-xs-7'])
         . Html::beginTag('div', ['class' => 'form-inline'])
-        . Html::dropDownList('bulk_action', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
+        . Html::dropDownList('bulk_action1', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
+        . '&nbsp;&nbsp;'
+        . Html::dropDownList('MemberSerch[year_filtr1]', null, MemberSerch::loadYears(), ['class' => 'form-control'])
+        . '&nbsp;&nbsp;'
+        . Html::dropDownList('MemberSerch[year_opsi]', null, ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control'])
+        . '&nbsp;&nbsp;'
+        . Html::dropDownList('MemberSerch[year_filtr2]', null, MemberSerch::loadYears(), ['class' => 'form-control'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
-
         . Html::endTag('div')
         . Html::endTag('div')
 
-        . Html::beginTag('div', ['class' => 'col-xs-6'])
+        . Html::beginTag('div', ['class' => 'col-xs-5'])
 
         . Html::beginTag('div', ['class' => 'pull-right'])
         . '{pager}'
@@ -112,7 +119,7 @@ GridView::widget([
         . Html::beginTag('div', ['class' => 'row'])
         . Html::beginTag('div', ['class' => 'col-xs-6'])
         . Html::beginTag('div', ['class' => 'form-inline'])
-        . Html::dropDownList('bulk_action', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
+        . Html::dropDownList('bulk_action2', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
         . Html::endTag('div')
@@ -222,7 +229,11 @@ GridView::widget([
         'relationship_phone_number',
         'email:email',
         'organizational_experience',
-        'year',
+
+        [
+            'attribute' => 'year',
+            'filter' => MemberSerch::loadYears()
+        ],
         'illness',
         'height_body',
         'weight_body',

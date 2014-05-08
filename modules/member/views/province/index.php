@@ -87,7 +87,7 @@ $this->title = Yii::t('app', 'Tambah {modelClass} Baru', [
 
                 . Html::beginTag('div', ['class' => 'col-xs-6'])
                 . Html::beginTag('div', ['class' => 'form-inline'])
-                . Html::dropDownList('bulk_action', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
+                . Html::dropDownList('bulk_action1', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
                 . '&nbsp;&nbsp;'
                 . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
 
@@ -117,7 +117,7 @@ $this->title = Yii::t('app', 'Tambah {modelClass} Baru', [
                 . Html::beginTag('div', ['class' => 'row'])
                 . Html::beginTag('div', ['class' => 'col-xs-6'])
                 . Html::beginTag('div', ['class' => 'form-inline'])
-                . Html::dropDownList('bulk_action', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
+                . Html::dropDownList('bulk_action2', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
                 . '&nbsp;&nbsp;'
                 . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
                 . Html::endTag('div')

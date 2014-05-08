@@ -101,7 +101,7 @@ class ProvinceController extends Controller
 
     public function actionBulk()
     {
-        if (Yii::$app->request->post() && Yii::$app->request->post('bulk_action') == 'delete') {
+        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
             $this->deleteAll(Yii::$app->request->post('selection'));
             return $this->redirect(['index']);
         } else {
