@@ -229,14 +229,14 @@ use Yii;
                         <li class="dropdown">
                             <a href="pages-blank.html#" class="dropdown-toggle user-menu" data-toggle="dropdown">
                                 <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/1.jpg" alt="">
-                                <span>ozan rock</span>
+                                <span><?= Yii::$app->user->identity->username ?></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="pages-blank.html#">Profile <span class="label label-warning pull-right">new</span></a></li>
                                 <li><a href="pages-blank.html#">Account <span class="badge badge-primary pull-right">new</span></a></li>
                                 <li><a href="pages-blank.html#"><i class="dropdown-icon fa fa-cog"></i>&nbsp;&nbsp;Settings</a></li>
                                 <li class="divider"></li>
-                                <li><a href="pages-signin.html"><i class="dropdown-icon fa fa-power-off"></i>&nbsp;&nbsp;Log Out</a></li>
+                                <li><a data-confirm="Akan Keluar" data-method="post" href="<?= \yii\helpers\Url::toRoute('/user/security/logout'); ?>"><i class="dropdown-icon fa fa-power-off"></i>&nbsp;&nbsp;Log Out</a></li>
                             </ul>
                         </li>
                     </ul> <!-- / .navbar-nav -->

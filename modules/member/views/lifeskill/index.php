@@ -73,14 +73,14 @@ $this->registerJs(
     <div class="col-sm-12">
         <?php
         $form = ActiveForm::begin([
-            'action' => '/member/lifeskill/bulk'
+            'action' => ['/member/lifeskill/bulk']
         ]);
         ?>
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            'filterUrl' => '/member/lifeskill/index',
+            'filterUrl' => ['/member/lifeskill/index'],
             'pager' => ['maxButtonCount' => 3],
             'tableOptions' => ['class' => 'table'],
             'layout' =>

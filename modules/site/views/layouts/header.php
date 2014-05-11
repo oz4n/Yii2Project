@@ -79,9 +79,9 @@ use app\modules\site\helpers\Navigation;
                         ['label' => 'Kontak Kami', 'url' => ['/site/site/contact']],
                         
                     Yii::$app->user->isGuest ?
-                        ['label' => 'Login', 'url' => ['/site/site/login']] :
+                        ['label' => 'Login', 'url' => ['/user/security/login']] :
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                            'url' => ['/site/site/logout'],
+                            'url' => ['/user/security/logout'],
                             'linkOptions' => ['data-method' => 'post']],
                     ],
                 ]);

@@ -48,14 +48,16 @@ $this->registerJs(
             </div>
             <div class="col-xs-4">
                 <div class="pull-right">
-                    <?php $form = ActiveForm::begin([
-                        'action' => "/member/member/index",
+                    <?php
+                    $form = ActiveForm::begin([
+                        'action' => ['/member/member/index'],
                         'method' => 'GET',
                         'options' => ['role' => 'form', 'id' => 'search'],
                         'fieldConfig' => [
                             'template' => "{input}\n{hint}\n{error}"
                         ]
-                    ]); ?>
+                    ]);
+                    ?>
 
                     <div class="input-group input-group-sm">
                         <?= Html::activeTextInput($searchModel, 'keyword', ['class' => 'form-control', 'placeholder' => 'Cari', 'maxlength' => 255]) ?>
@@ -74,7 +76,7 @@ $this->registerJs(
     <div class="col-sm-12">
     <?php
     $form = ActiveForm::begin([
-        'action' => '/member/member/index',
+        'action' => ['/member/member/index'],
         'method' => 'get'
     ]);
     ?>
@@ -82,7 +84,7 @@ $this->registerJs(
     GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'filterUrl' => '/member/member/index',
+        'filterUrl' => ['/member/member/index'],
         'pager' => ['maxButtonCount' => 3],
         'tableOptions' => ['class' => 'table'],
         'layout' => Html::beginTag('div', ['class' => 'row'])
