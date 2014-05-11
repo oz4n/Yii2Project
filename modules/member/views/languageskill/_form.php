@@ -11,7 +11,7 @@ use app\modules\member\searchs\LanguageSkillSerch;
  */
 
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#langskill').addClass('active').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#langskill').addClass('active').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
 

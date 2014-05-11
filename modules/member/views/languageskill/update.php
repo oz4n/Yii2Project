@@ -33,7 +33,7 @@ $this->title = Yii::t('app', 'Perbaharui {modelClass} ', [
                 <i class="fa  fa-flag page-header-icon"> </i>
                 &nbsp;
                 <?= Html::encode($this->title) ?>
-                <?= Yii::t('app', 'atau'); ?>
+                <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Keterampilan Bahasa',

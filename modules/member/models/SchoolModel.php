@@ -16,7 +16,7 @@ class SchoolModel extends School
 {
     public function getAreaName()
     {
-        $m = Taxonomy::findBySql("SELECT * FROM taxonomy WHERE id='" . $this->taxonomy_id . "'")->one();
-        return $m["name"];
+        $query = Taxonomy::findBySql("SELECT * FROM taxonomy WHERE id='" . $this->taxonomy_id . "'")->one();
+        return $query["name"];
     }
 } 

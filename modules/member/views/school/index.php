@@ -15,7 +15,7 @@ use yii\web\View;
 
 $this->title = Yii::t('app', 'Sekolah');
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#school').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#school').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">

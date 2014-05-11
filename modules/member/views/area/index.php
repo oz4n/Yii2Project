@@ -17,7 +17,7 @@ $this->title = Yii::t('app', 'Tambah {modelClass} Baru', [
 ]);
 
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#area').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#area').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
 
@@ -41,7 +41,7 @@ $this->registerJs(
                 <i class="fa  fa-map-marker page-header-icon"> </i>
                 &nbsp;
                 <?= Html::encode('Daerah') ?>
-                <?= Yii::t('app', 'atau'); ?>
+                <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Daerah',

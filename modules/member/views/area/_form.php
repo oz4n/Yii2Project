@@ -11,7 +11,7 @@ use app\modules\member\searchs\AreaSerch;
  * @var yii\widgets\ActiveForm $form
  */
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#area').addClass('active').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#area').addClass('active').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
 

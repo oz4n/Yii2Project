@@ -6,12 +6,12 @@ use yii\helpers\Url;
 use yii\web\View;
 /**
  * @var yii\web\View $this
- * @var app\modules\member\models\SchoolModel $model
+ * @var \app\modules\dao\ar\School $model
  */
 
 $this->title = $model->name;
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#school').addClass('active').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#school').addClass('active').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">

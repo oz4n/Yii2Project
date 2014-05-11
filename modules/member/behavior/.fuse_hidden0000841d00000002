@@ -1,0 +1,120 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: root
+ * Date: 5/10/14
+ * Time: 5:14 PM
+ */
+
+namespace app\modules\member\behavior;
+
+
+use yii\base\Behavior;
+use yii\base\Event;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
+use yii\db\Expression;
+use yii\db\Exception;
+
+class SaveRelationsBehavior extends Behavior
+{
+    public $relations = array();
+    public $transactional = true;
+    public $hasError = false;
+    public $deleteRelatedRecords = true;
+    private $transaction;
+
+    public function setRelationRecords($relation, $data = null, $merge = false)
+    {
+        // TODO - Make fewer SQL requests to validate and load related models data
+        $this->addSaveRelation($relation);
+        $model = $this->owner;
+        $activeRelation = $model->getActiveRelation($relation);
+        if ($activeRelation instanceOf CHasManyRelation || $activeRelation instanceOf CManyManyRelation) {
+            if (!$merge) $model->{$relation} = array();
+            $relationClassName = $activeRelation->className;
+            $relationForeignKey = $activeRelation->foreignKey;
+            $criteria = array();
+            if ($activeRelation instanceOf CManyManyRelation) {
+                $schema = $model->getCommandBuilder()->getSchema();
+                preg_match('/^\s*(.*?)\((.*)\)\s*$/', $relationForeignKey, $matches);
+                $joinTable = $schema->getTable($matches[1]);
+                $fks = preg_split('/[\s,]+/', $matches[2], -1, PREG_SPLIT_NO_EMPTY);
+                $relModel = new $relationClassName;
+                $pks = array();
+                $fkDefined = true;
+                foreach ($fks as $i => $fk) {
+                    if (isset($joinTable->foreignKeys[$fk])) {
+                        list($tableName, $pk) = $joinTable->foreignKeys[$fk];
+                        if ($schema->compareTableNames($relModel->tableSchema->rawName, $tableName)) {
+                            $pks[] = $pk;
+                        }
+                    } else {
+                        $fkDefined = false;
+                        break;
+                    }
+                }
+                if (!$fkDefined) {
+                    $pks = array();
+                    foreach ($fks as $i => $fk) {
+                        if ($i < count($model->tableSchema->primaryKey)) {
+                            $pks[] = is_array($model->tableSchema->primaryKey) ? $model->tableSchema->primaryKey[$i] : $model->tableSchema->primaryKey;
+                        }
+                    }
+                }
+                if (!is_null($data)) {
+                    foreach ($data as $key => $value) {
+                        $relobj = null;
+                        $relModel = new $relationClassName;
+                        if (is_array($value)) {
+                            foreach ($pks as $pk) {
+                                $criteria[$pk] = $value[$pk];
+                            }
+                        } else {
+                            $criteria[$pks[0]] = $value;
+                        }
+                        $relobj = $relModel->findByAttributes($criteria);
+                        if (!($relobj instanceof $relationClassName)) $relobj = new $relationClassName;
+                        $relobj->attributes = $value;
+                        $model->addRelatedRecord($relation, $relobj, $key);
+                    }
+                }
+            } else {
+                $fks = preg_split('/[\s,]+/', $relationForeignKey, -1, PREG_SPLIT_NO_EMPTY);
+                if (!is_null($data)) {
+                    foreach ($data as $key => $value) {
+                        $relobj = null;
+                        if (!$model->isNewRecord) {
+                            $criteria = array();
+                            $relModel = new $relationClassName;
+                            $relationPrimaryKeys = $relModel->tableSchema->primaryKey;
+                            if (is_array($value)) {
+                                if (is_array($relationPrimaryKeys)) {
+                                    foreach ($relationPrimaryKeys as $relationPrimaryKey) {
+                                        if (!in_array($relationPrimaryKey, $fks)) {
+                                            if (isset($value[$relationPrimaryKey])) $criteria[$relationPrimaryKey] = $value[$relationPrimaryKey];
+                                        } else {
+                                            $criteria[$relationPrimaryKey] = $model->primaryKey;
+                                        }
+                                    }
+                                } else {
+                                    if (!in_array($relationPrimaryKeys, $fks)) {
+                                        if (isset($value[$relationPrimaryKeys])) $criteria[$relationPrimaryKeys] = $value[$relationPrimaryKeys];
+                                    } else {
+                                        $criteria[$relationPrimaryKeys] = $model->primaryKey;
+                                    }
+                                }
+                            } else {
+                                $criteria = array($relationPrimaryKeys => $value);
+                            }
+                            if (count($criteria)) $relobj = $relModel->findByAttributes($criteria);
+                        }
+                        if (!($relobj instanceof $relationClassName)) $relobj = new $relationClassName;
+                        foreach ($value as $prop => $val) $relobj->{$prop} = $val;
+                        $model->addRelatedRecord($relation, $relobj, $key);
+                    }
+                }
+            }
+        }
+    }
+} 

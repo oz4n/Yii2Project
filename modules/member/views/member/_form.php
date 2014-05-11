@@ -13,7 +13,7 @@ use app\modules\member\searchs\MemberSerch;
 
 
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#member').addClass('active').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#member').addClass('active').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
 

@@ -11,7 +11,7 @@ $this->registerJsFile('PixelAdmin/js/jquery.2.0.3.min.js', [], ['position' => Vi
 $this->title = $model->name;
 
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#member').addClass('active').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#member').addClass('active').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">

@@ -49,8 +49,8 @@ use Yii;
                             ],
                         ],
                         [
-                            'label' => 'Penghargaan',
-                            'url' => ['#'],
+                            'label' => 'Brevet Penghargaan',
+                            'url' => ['/member/brevetaward/index'],
                             'icon' => 'menu-icon fa fa-angle-double-right',
                             'options' => [
                                 'id' => 'appreciation'

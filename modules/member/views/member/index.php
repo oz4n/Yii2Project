@@ -17,7 +17,7 @@ use app\modules\member\searchs\MemberSerch;
 $this->title = Yii::t('app', 'Anggota');
 
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#member').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#member').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
     <ul class="breadcrumb breadcrumb-page">
@@ -38,7 +38,7 @@ $this->registerJs(
                     <i class="fa fa-users page-header-icon"> </i>
                     &nbsp;
                     <?= Html::encode('Anggota') ?>
-                    <?= Yii::t('app', 'atau'); ?>
+                    <?= Yii::t('app', '/'); ?>
                     <?=
                     Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                         'modelClass' => 'Anggota',

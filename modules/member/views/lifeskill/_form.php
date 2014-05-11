@@ -10,7 +10,7 @@ use app\modules\member\searchs\LifeSkillSerch;
  * @var yii\widgets\ActiveForm $form
  */
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#lifeskill').addClass('active').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#lifeskill').addClass('active').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
 

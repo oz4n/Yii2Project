@@ -11,7 +11,7 @@ use yii\web\View;
  */
 
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#school').addClass('active').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#school').addClass('active').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
 

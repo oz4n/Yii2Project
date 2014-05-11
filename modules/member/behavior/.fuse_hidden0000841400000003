@@ -1,0 +1,22 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: root
+ * Date: 5/10/14
+ * Time: 5:14 PM
+ */
+
+namespace app\modules\member\behavior;
+
+
+use yii\base\Behavior;
+use yii\base\Event;
+use yii\db\ActiveRecord;
+use yii\db\ActiveQuery;
+use yii\db\Expression;
+use yii\db\Exception;
+
+class SaveRelationsBehavior extends Behavior
+{
+
+} 

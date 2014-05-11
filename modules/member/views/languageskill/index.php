@@ -16,7 +16,7 @@ use app\modules\member\searchs\LanguageSkillSerch;
 $this->title = Yii::t('app', 'Keterampilan Bahasa');
 
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#langskill').parent().parent().addClass('open');"
+    "$('ul.navigation > li.mm-dropdown > ul > li#langskill').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
 
@@ -40,7 +40,7 @@ $this->registerJs(
                 <i class="fa  fa-flag page-header-icon"> </i>
                 &nbsp;
                 <?= Html::encode('Keterampilan Bahasa') ?>
-                <?= Yii::t('app', 'atau'); ?>
+                <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Keterampilan Bahasa',

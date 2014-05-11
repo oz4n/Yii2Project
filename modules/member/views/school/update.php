@@ -4,12 +4,12 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 /**
  * @var yii\web\View $this
- * @var app\modules\member\models\SchoolModel $model
+ * @var \app\modules\dao\ar\School $model
  */
 
-$this->title = Yii::t('app', 'Update {modelClass}: ', [
-  'modelClass' => 'School Model',
-]) . ' ' . $model->name;
+$this->title = Yii::t('app', 'Perbaharui {modelClass} ', [
+  'modelClass' => 'Sekolah',
+]);
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
