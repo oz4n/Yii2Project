@@ -6,7 +6,7 @@ use yii\grid\GridView;
 use yii\helpers\Url;
 use app\modules\member\searchs\AreaSerch;
 use yii\widgets\ActiveForm;
-
+use yii\web\View;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -15,7 +15,12 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('app', 'Tambah {modelClass} Baru', [
     'modelClass' => 'Daerah',
 ]);
+
+$this->registerJs(
+    "$('ul.navigation > li.mm-dropdown > ul > li#area').parent().parent().addClass('open');"
+    , View::POS_READY);
 ?>
+
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
@@ -33,7 +38,7 @@ $this->title = Yii::t('app', 'Tambah {modelClass} Baru', [
     <div class="row">
         <div class="col-xs-8">
             <h1 class="text-center text-left-sm">
-                <i class="fa fa-sitemap page-header-icon"> </i>
+                <i class="fa  fa-map-marker page-header-icon"> </i>
                 &nbsp;
                 <?= Html::encode('Daerah') ?>
                 <?= Yii::t('app', 'atau'); ?>
@@ -56,7 +61,7 @@ $this->title = Yii::t('app', 'Tambah {modelClass} Baru', [
                 ]); ?>
 
                 <div class="input-group input-group-sm">
-                    <?= Html::activeTextInput($searchModel, 'keyword', ['class' => 'form-control', 'placeholder' => 'Cari daerah', 'maxlength' => 255]) ?>
+                    <?= Html::activeTextInput($searchModel, 'keyword', ['class' => 'form-control', 'placeholder' => 'Cari', 'maxlength' => 255]) ?>
                     <span class="input-group-btn">
                             <?= Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'btn btn-primary']) ?>
                     </span>
@@ -79,6 +84,7 @@ $this->title = Yii::t('app', 'Tambah {modelClass} Baru', [
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'filterUrl' => '/member/area/index',
+            'pager' => ['maxButtonCount' => 3],
             'tableOptions' => ['class' => 'table'],
             'layout' =>
                 Html::beginTag('div', ['class' => 'row'])
@@ -140,7 +146,8 @@ $this->title = Yii::t('app', 'Tambah {modelClass} Baru', [
                 [
                     'attribute' => 'name',
                     'format' => 'RAW',
-                    'filter' => AreaSerch::loadFilterNames(),
+                    'label' => 'Nama Daerah',
+                    'filter' => AreaSerch::getFilterNames(),
                     'value' => function ($data) {
                             $line = '';
                             if ($data->level == 1) {
@@ -155,7 +162,8 @@ $this->title = Yii::t('app', 'Tambah {modelClass} Baru', [
                 ],
                 [
                     'attribute' => 'parent_id',
-                    'filter' => AreaSerch::loadFilterParens(),
+                    'label' => 'Induk',
+                    'filter' => AreaSerch::getFilterParens(),
                     'value' => function ($data) {
                             return $data->getParentName();
                         }

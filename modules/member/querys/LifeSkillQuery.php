@@ -10,8 +10,16 @@ namespace app\modules\member\querys;
 
 
 use yii\db\ActiveQuery;
+use creocoder\behaviors\NestedSetQuery;
 
-class LifeSkillQuery extends ActiveQuery
+class LifeSkillQuery  extends ActiveQuery
 {
-
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => NestedSetQuery::className(),
+            ],
+        ];
+    }
 } 

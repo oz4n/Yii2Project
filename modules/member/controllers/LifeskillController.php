@@ -3,11 +3,11 @@
 namespace app\modules\member\controllers;
 
 use Yii;
-use app\modules\member\models\LifeSkillModel;
-use app\modules\member\searchs\LifeSkillSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\modules\member\models\LifeSkillModel;
+use app\modules\member\searchs\LifeSkillSerch;
 
 /**
  * LifeskillController implements the CRUD actions for LifeSkillModel model.
@@ -62,6 +62,9 @@ class LifeskillController extends Controller
     {
         $model = new LifeSkillModel;
 
+        $model->setAttribute('term_id', MEMBER_SKILL);
+        $model->setAttribute('create_et', date("Y-m-d H:i:s"));
+        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -80,7 +83,7 @@ class LifeskillController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -88,6 +91,17 @@ class LifeskillController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionBulk()
+    {
+        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+            $this->deleteAll(Yii::$app->request->post('selection'));
+            return $this->redirect(['index']);
+        } else {
+            return $this->redirect(['index']);
+        }
+
     }
 
     /**
@@ -102,6 +116,23 @@ class LifeskillController extends Controller
 
         return $this->redirect(['index']);
     }
+
+
+    /**
+     * @param array $data
+     * @return \yii\web\Response
+     */
+    private function deleteAll($data)
+    {
+        if (null !== $data) {
+            foreach ($data as $id) {
+                $this->findModel($id)->delete();
+            }
+        } else {
+            return $this->redirect(['index']);
+        }
+    }
+
 
     /**
      * Finds the LifeSkillModel model based on its primary key value.

@@ -3,15 +3,16 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
-
+use yii\web\View;
 /**
  * @var yii\web\View $this
  * @var app\modules\member\models\SchoolModel $model
  */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'School Models'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->registerJs(
+    "$('ul.navigation > li.mm-dropdown > ul > li#school').addClass('active').parent().parent().addClass('open');"
+    , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">

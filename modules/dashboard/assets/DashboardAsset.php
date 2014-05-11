@@ -29,6 +29,10 @@ class DashboardAsset extends AssetBundle
         'PixelAdmin/css/pages.css',
         'PixelAdmin/css/rtl.css',
         'PixelAdmin/css/themes.css',
+        'PixelAdmin/css/profil.css',
+        'PixelAdmin/css/label.css',
+        'PixelAdmin/css/space.css',
+        'PixelAdmin/css/widget-box.css',
     ];
     public $js = [
         /**

@@ -21,7 +21,7 @@ $config = [
             'class' => 'app\modules\word\word',
         ],
         'member' => [
-            'class' => 'app\modules\member\memeber',
+            'class' => 'app\modules\member\Member',
         ],
         'userlog' => [
             'class' => 'app\modules\userlog\userlog',

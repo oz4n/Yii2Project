@@ -9,8 +9,8 @@
 namespace app\modules\member\querys;
 
 
-use creocoder\behaviors\NestedSetQuery;
 use yii\db\ActiveQuery;
+use creocoder\behaviors\NestedSetQuery;
 
 class AreaQuery extends ActiveQuery
 {

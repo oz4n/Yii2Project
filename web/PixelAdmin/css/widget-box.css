@@ -1,0 +1,77 @@
+.widget-box.light-border>[class*="header-color-"]+.widget-body
+{
+    border-color:#d6d6d6!important
+}
+.widget-box.no-border
+{
+    border-bottom:0
+}
+.widget-box.no-border>.widget-body
+{
+    border:0
+}
+.widget-box.transparent
+{
+    border:0;
+    box-shadow:none
+}
+.widget-box.transparent>.widget-header
+{
+    background:0;
+    filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    border:0;
+    border-bottom:1px solid #dce8f1;
+    color:#4383b4;
+    padding-left:3px
+}
+.widget-box.transparent>.widget-header-large
+{
+    padding-left:5px
+}
+.widget-box.transparent>.widget-header-small
+{
+    padding-left:1px
+}
+.widget-box.transparent .widget-body
+{
+    border:0;
+    background-color:transparent
+}
+.widget-box.transparent .widget-main.no-padding-left
+{
+    padding-left:0
+}
+.widget-box.transparent .widget-main.no-padding-right
+{
+    padding-right:0
+}
+.widget-box.transparent .widget-main.no-padding-top
+{
+    padding-top:0
+}
+.widget-box.transparent .widget-main.no-padding-bottom
+{
+    padding-bottom:0
+}
+.widget-body .table
+{
+    border-top:1px solid #e5e5e5
+}
+.widget-body .table thead:first-child tr
+{
+    background:#FFF
+}
+[class*="header-color-"]+.widget-body .table thead:first-child tr
+{
+    background:#f2f2f2;
+    background-image:-webkit-gradient(linear,left 0,left 100%,from(#f8f8f8),to(#ececec));
+    background-image:-webkit-linear-gradient(top,#f8f8f8,0%,#ececec,100%);
+    background-image:-moz-linear-gradient(top,#f8f8f8 0,#ececec 100%);
+    background-image:linear-gradient(to bottom,#f8f8f8 0,#ececec 100%);
+    background-repeat:repeat-x;
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff8f8f8',endColorstr='#ffececec',GradientType=0)
+}
+.widget-body .table.table-bordered thead:first-child>tr
+{
+    border-top:0
+}

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
+use yii\web\View;
 
 /**
  * @var yii\web\View $this
@@ -10,7 +11,11 @@ use yii\helpers\Url;
  */
 
 $this->title = $model->name;
+$this->registerJs(
+    "$('ul.navigation > li.mm-dropdown > ul > li#area').addClass('active').parent().parent().addClass('open');"
+    , View::POS_READY);
 ?>
+
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
@@ -29,7 +34,7 @@ $this->title = $model->name;
     <div class="row">
         <div class="col-xs-12">
             <h1 class="text-center text-left-sm">
-                <i class="fa fa-sitemap page-header-icon"> </i>
+                <i class="fa  fa-map-marker page-header-icon"> </i>
                 &nbsp;
                 <?= Html::encode('Lihat Detail') ?>
                 <?= Yii::t('app', 'atau'); ?>
@@ -49,7 +54,7 @@ $this->title = $model->name;
                 <?=
                 DetailView::widget([
                     'model' => $model,
-                    'options' => ['class'=>'table'],
+                    'options' => ['class' => 'table'],
                     'attributes' => [
                         'id',
                         'parent_id',

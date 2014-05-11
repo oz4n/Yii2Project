@@ -3,11 +3,12 @@
 namespace app\modules\member\controllers;
 
 use Yii;
-use app\modules\member\models\LanguageSkillModel;
-use app\modules\member\searchs\LanguageSkillSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\modules\member\models\LanguageSkillModel;
+use app\modules\member\searchs\LanguageSkillSerch;
+
 
 /**
  * LanguageskillController implements the CRUD actions for LanguageSkillModel model.
@@ -61,7 +62,9 @@ class LanguageskillController extends Controller
     public function actionCreate()
     {
         $model = new LanguageSkillModel;
-
+        $model->setAttribute('term_id', MEMBER_LANG_SKILL);
+        $model->setAttribute('create_et', date("Y-m-d H:i:s"));
+        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -80,7 +83,7 @@ class LanguageskillController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -88,6 +91,17 @@ class LanguageskillController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionBulk()
+    {
+        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+            $this->deleteAll(Yii::$app->request->post('selection'));
+            return $this->redirect(['index']);
+        } else {
+            return $this->redirect(['index']);
+        }
+
     }
 
     /**
@@ -101,6 +115,21 @@ class LanguageskillController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * @param array $data
+     * @return \yii\web\Response
+     */
+    private function deleteAll($data)
+    {
+        if (null !== $data) {
+            foreach ($data as $id) {
+                $this->findModel($id)->delete();
+            }
+        } else {
+            return $this->redirect(['index']);
+        }
     }
 
     /**

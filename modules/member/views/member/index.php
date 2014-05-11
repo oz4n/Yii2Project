@@ -4,14 +4,21 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
+use yii\web\View;
 use app\modules\member\searchs\MemberSerch;
+
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var app\modules\member\searchs\MemberSerch $searchModel
+ * @var \app\modules\dao\ar\Member $data
  */
 
 $this->title = Yii::t('app', 'Anggota');
+
+$this->registerJs(
+    "$('ul.navigation > li.mm-dropdown > ul > li#member').parent().parent().addClass('open');"
+    , View::POS_READY);
 ?>
     <ul class="breadcrumb breadcrumb-page">
         <div class="breadcrumb-label text-light-gray">
@@ -51,7 +58,7 @@ $this->title = Yii::t('app', 'Anggota');
                     ]); ?>
 
                     <div class="input-group input-group-sm">
-                        <?= Html::activeTextInput($searchModel, 'keyword', ['class' => 'form-control', 'placeholder' => 'Cari Anggota', 'maxlength' => 255]) ?>
+                        <?= Html::activeTextInput($searchModel, 'keyword', ['class' => 'form-control', 'placeholder' => 'Cari', 'maxlength' => 255]) ?>
                         <span class="input-group-btn">
                             <?= Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'btn btn-primary']) ?>
                     </span>
@@ -76,6 +83,7 @@ $this->title = Yii::t('app', 'Anggota');
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'filterUrl' => '/member/member/index',
+        'pager' => ['maxButtonCount' => 3],
         'tableOptions' => ['class' => 'table'],
         'layout' => Html::beginTag('div', ['class' => 'row'])
 
@@ -83,11 +91,11 @@ $this->title = Yii::t('app', 'Anggota');
             . Html::beginTag('div', ['class' => 'form-inline'])
             . Html::dropDownList('bulk_action1', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
             . '&nbsp;&nbsp;'
-            . Html::dropDownList('MemberSerch[year_filtr1]', null, MemberSerch::loadYears(), ['class' => 'form-control'])
+            . Html::dropDownList('MemberSerch[year_filtr1]', null, MemberSerch::getYears(), ['class' => 'form-control'])
             . '&nbsp;&nbsp;'
             . Html::dropDownList('MemberSerch[year_opsi]', null, ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control'])
             . '&nbsp;&nbsp;'
-            . Html::dropDownList('MemberSerch[year_filtr2]', null, MemberSerch::loadYears(), ['class' => 'form-control'])
+            . Html::dropDownList('MemberSerch[year_filtr2]', null, MemberSerch::getYears(), ['class' => 'form-control'])
             . '&nbsp;&nbsp;'
             . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
             . Html::endTag('div')
@@ -120,11 +128,11 @@ $this->title = Yii::t('app', 'Anggota');
             . Html::beginTag('div', ['class' => 'form-inline'])
             . Html::dropDownList('bulk_action2', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
             . '&nbsp;&nbsp;'
-            . Html::dropDownList('MemberSerch[year_filtr3]', null, MemberSerch::loadYears(), ['class' => 'form-control'])
+            . Html::dropDownList('MemberSerch[year_filtr3]', null, MemberSerch::getYears(), ['class' => 'form-control'])
             . '&nbsp;&nbsp;'
             . Html::dropDownList('MemberSerch[year_opsi1]', null, ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control'])
             . '&nbsp;&nbsp;'
-            . Html::dropDownList('MemberSerch[year_filtr4]', null, MemberSerch::loadYears(), ['class' => 'form-control'])
+            . Html::dropDownList('MemberSerch[year_filtr4]', null, MemberSerch::getYears(), ['class' => 'form-control'])
             . '&nbsp;&nbsp;'
             . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
             . Html::endTag('div')
@@ -237,7 +245,7 @@ $this->title = Yii::t('app', 'Anggota');
 
             [
                 'attribute' => 'year',
-                'filter' => MemberSerch::loadYears()
+                'filter' => MemberSerch::getYears()
             ],
             'illness',
             'height_body',
@@ -263,9 +271,79 @@ $this->title = Yii::t('app', 'Anggota');
             'identity_card_number',
             //                'certificate_of_organization:ntext',
             'names_recommended',
-            //        'note',
-            //                'create_et',
-            //                'update_et',
+            'note',
+            [
+                'attribute' => 'other_content',
+                'label' => 'Brevet Penghargaan',
+                'value' => function ($data) {
+                        $ar = [];
+                        for ($i = 0; $i < count($data->taxonomies); $i++) {
+                            if ($data->taxonomies[$i]->term_id === MEMBER_BREVET) {
+                                $ar[] = $data->taxonomies[$i]->name;
+                            }
+                        }
+                        return implode(', ', $ar);
+                    }
+            ],
+            [
+                'attribute' => 'other_content',
+                'label' => 'Keterampilan Bahasa',
+                'value' => function ($data) {
+                        $ar = [];
+                        for ($i = 0; $i < count($data->taxonomies); $i++) {
+                            if ($data->taxonomies[$i]->term_id === MEMBER_LANG_SKILL) {
+                                $ar[] = $data->taxonomies[$i]->name;
+                            }
+                        }
+                        return implode(', ', $ar);
+                    }
+            ],
+            [
+                'attribute' => 'other_content',
+                'label' => 'Keterampilan Personal',
+                'value' => function ($data) {
+                        $ar = [];
+                        for ($i = 0; $i < count($data->taxonomies); $i++) {
+                            if ($data->taxonomies[$i]->term_id === MEMBER_SKILL) {
+                                $ar[] = $data->taxonomies[$i]->name;
+                            }
+                        }
+                        return implode(', ', $ar);
+                    }
+            ],
+            [
+                'attribute' => 'create_et',
+                'label' => 'Terdaftar'
+            ],
+            [
+                'attribute' => 'update_et',
+                'label' => 'Di Ubah'
+            ],
+            [
+                'attribute' => 'save_status',
+                'format' => 'raw',
+                'value' => function ($data) {
+                        switch ($data->save_status) {
+                            case 'Publish':
+                                return Html::tag('span', Html::tag('i', null, ['class' => 'fa  fa-check-circle-o']) . '&nbsp&nbsp' . $data->save_status, ['class' => 'badge badge-success']);
+                                break;
+                            case 'Draft':
+                                return Html::tag('span', Html::tag('i', null, ['class' => 'fa fa-bookmark-o']) . '&nbsp&nbsp' . $data->save_status, ['class' => 'badge badge-info']);
+                                break;
+                            case 'Trash':
+                                return Html::tag('span', Html::tag('i', null, ['class' => 'fa fa-trash-o']) . '&nbsp&nbsp' . $data->save_status, ['class' => 'badge badge-danger']);
+                                break;
+                            case null;
+                                break;
+                        }
+                    },
+                'filter' => [
+                    'Publish' => 'Publish',
+                    'Draft' => 'Draft',
+                    'Trash' => 'Trash'
+                ]
+            ],
+
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '<div class="text-center">Aksi</div>',

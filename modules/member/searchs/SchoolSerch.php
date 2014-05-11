@@ -3,11 +3,14 @@
 namespace app\modules\member\searchs;
 
 
-use app\modules\member\models\AreaModel;
+
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use app\modules\member\models\SchoolModel;
+use app\modules\member\models\AreaModel;
+
 
 /**
  * SchoolSerch represents the model behind the search form about `app\modules\member\models\SchoolModel`.
@@ -15,7 +18,8 @@ use app\modules\member\models\SchoolModel;
 class SchoolSerch extends SchoolModel
 {
     private static $_area_filter_items = [];
-    private static $_area_name_items = [];
+    private static $_items = [];
+    private static $_list = [];
 
     public $keyword;
 
@@ -44,6 +48,8 @@ class SchoolSerch extends SchoolModel
                 ->orFilterWhere(['like', 'address', $this->keyword])
                 ->orFilterWhere(['like', 'email', $this->keyword])
                 ->orFilterWhere(['like', 'zip_code', $this->keyword])
+                ->orFilterWhere(['like', 'create_et', $this->keyword])
+                ->orFilterWhere(['like', 'update_et', $this->keyword])
                 ->orFilterWhere(['like', 'phone_number', $this->keyword]);
         }
 
@@ -58,12 +64,6 @@ class SchoolSerch extends SchoolModel
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'taxonomy_id' => $this->taxonomy_id,
-            'create_et' => $this->create_et,
-            'update_et' => $this->update_et,
-        ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'type', $this->type])
@@ -77,41 +77,45 @@ class SchoolSerch extends SchoolModel
 
     public static function loadFilterAreas()
     {
-        $type = 'name';
-        if (!isset(self::$_area_filter_items[$type])) {
-            self::loadFilterAreaItems($type);
-        }
 
-        return self::$_area_filter_items[$type];
-    }
-
-    private static function loadFilterAreaItems($type)
-    {
-        self::$_area_filter_items[$type] = [];
         $models = AreaModel::find();
-        $models->where(['term_id' => 6]);
-        foreach ($models->all() as $model) {
-            self::$_area_filter_items[$type][$model->id] = $model->name;
-        }
+        $models->where(['term_id' => MEMBER_AREA]);
+        return ArrayHelper::map($models->asArray()->all(), 'id', 'name');
     }
 
 
-    public static function loadNameAreas()
+    public static function getAreas()
     {
-        $type = 'name';
-        if (!isset(self::$_area_name_items[$type])) {
-            self::loadNameAreaItems($type);
-        }
-        return self::$_area_name_items[$type];
+        self::getAreaItems();
+        return ArrayHelper::merge(self::$_list, self::$_items);
     }
 
-    private static function loadNameAreaItems($type)
+    protected static function getAreaItems()
     {
-        self::$_area_name_items[$type] = [];
+
         $models = AreaModel::find();
-        $models->where(['term_id' => 6]);
+        $models->where(['term_id' => MEMBER_AREA]);
+
+//        $models->orderBy([
+//            'root' => SORT_ASC,
+//            'lft' => SORT_ASC
+//        ]);
+        $models->where(['term_id' => MEMBER_AREA]);
         foreach ($models->all() as $model) {
-            self::$_area_name_items[$type][$model->id] = ucwords($model->name);
+            if ($model->level == 1) {
+                self::$_items[$model->id] = $model->name;
+            } else {
+                self::$_items[$model->id] = html_entity_decode(self::getLine($model->level)) . $model->name;
+            }
         }
+    }
+
+    protected static function getLine($model)
+    {
+        $line = '';
+        for ($i = 0; $i < $model; $i++) {
+            $line .= "&nbsp;";
+        }
+        return $line;
     }
 }

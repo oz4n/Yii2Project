@@ -22,8 +22,10 @@ use Yii;
  * @property string $nationality
  * @property string $religion
  * @property string $gender
+ * @property integer $age
  * @property string $marital_status
  * @property string $job
+ * @property string $income_member
  * @property string $blood_group
  * @property string $father_name
  * @property string $mother_name
@@ -52,16 +54,18 @@ use Yii;
  * @property string $membership_status
  * @property string $status_organization
  * @property string $identity_card
- * @property string $identity_card_number
  * @property string $certificate_of_organization
+ * @property string $identity_card_number
  * @property string $names_recommended
  * @property string $note
+ * @property string $other_content
+ * @property string $save_status
  * @property string $create_et
  * @property string $update_et
  *
+ * @property Taxonomy $taxonomy
  * @property School $school
  * @property User $user
- * @property Taxonomy $taxonomy
  * @property Taxmemberrelations $taxmemberrelations
  * @property Taxonomy[] $taxonomies
  */
@@ -81,13 +85,13 @@ class Member extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['taxonomy_id', 'school_id', 'user_id', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
-            [['nra', 'name', 'nickname', 'unit', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'educational_status', 'phone_number', 'other_phone_number', 'email', 'year', 'height_body', 'weight_body', 'identity_card_number', 'certificate_of_organization', 'names_recommended', 'note'], 'required'],
-            [['front_photo', 'side_photo', 'identity_card_number', 'certificate_of_organization'], 'string'],
+            [['taxonomy_id', 'school_id', 'user_id', 'age', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
+            [['nra', 'name', 'nickname', 'unit', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'year', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'identity_card_number', 'names_recommended', 'note', 'save_status'], 'required'],
+            [['front_photo', 'side_photo', 'identity_card', 'certificate_of_organization', 'other_content'], 'string'],
             [['create_et', 'update_et'], 'safe'],
             [['nra'], 'string', 'max' => 32],
-            [['name', 'nationality', 'job', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'email', 'organizational_experience', 'year', 'illness'], 'string', 'max' => 45],
-            [['nickname', 'birth', 'relationship_phone_number', 'membership_status', 'status_organization', 'identity_card'], 'string', 'max' => 25],
+            [['name', 'nationality', 'job', 'income_member', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'email', 'organizational_experience', 'year', 'illness', 'save_status'], 'string', 'max' => 45],
+            [['nickname', 'birth', 'relationship_phone_number', 'membership_status', 'status_organization', 'identity_card_number'], 'string', 'max' => 25],
             [['unit', 'blood_group', 'height_body', 'weight_body', 'dress_size', 'pants_size', 'shoe_size', 'hat_size'], 'string', 'max' => 5],
             [['address', 'names_recommended', 'note'], 'string', 'max' => 255],
             [['religion', 'gender', 'marital_status', 'educational_status', 'zip_code', 'phone_number', 'other_phone_number'], 'string', 'max' => 15]
@@ -115,8 +119,10 @@ class Member extends \yii\db\ActiveRecord
             'nationality' => Yii::t('app', 'Nationality'),
             'religion' => Yii::t('app', 'Religion'),
             'gender' => Yii::t('app', 'Gender'),
+            'age' => Yii::t('app', 'Age'),
             'marital_status' => Yii::t('app', 'Marital Status'),
             'job' => Yii::t('app', 'Job'),
+            'income_member' => Yii::t('app', 'Income Member'),
             'blood_group' => Yii::t('app', 'Blood Group'),
             'father_name' => Yii::t('app', 'Father Name'),
             'mother_name' => Yii::t('app', 'Mother Name'),
@@ -145,13 +151,23 @@ class Member extends \yii\db\ActiveRecord
             'membership_status' => Yii::t('app', 'Membership Status'),
             'status_organization' => Yii::t('app', 'Status Organization'),
             'identity_card' => Yii::t('app', 'Identity Card'),
-            'identity_card_number' => Yii::t('app', 'Identity Card Number'),
             'certificate_of_organization' => Yii::t('app', 'Certificate Of Organization'),
+            'identity_card_number' => Yii::t('app', 'Identity Card Number'),
             'names_recommended' => Yii::t('app', 'Names Recommended'),
             'note' => Yii::t('app', 'Note'),
+            'other_content' => Yii::t('app', 'Other Content'),
+            'save_status' => Yii::t('app', 'Save Status'),
             'create_et' => Yii::t('app', 'Create Et'),
             'update_et' => Yii::t('app', 'Update Et'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaxonomy()
+    {
+        return $this->hasOne(Taxonomy::className(), ['id' => 'taxonomy_id']);
     }
 
     /**
@@ -168,14 +184,6 @@ class Member extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTaxonomy()
-    {
-        return $this->hasOne(Taxonomy::className(), ['id' => 'taxonomy_id']);
     }
 
     /**

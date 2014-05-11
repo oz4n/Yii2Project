@@ -31,7 +31,7 @@ $this->title = Yii::t('app', 'Perbaharui {modelClass} ', [
     <div class="row">
         <div class="col-xs-12">
             <h1 class="text-center text-left-sm">
-                <i class="fa fa-sitemap page-header-icon"> </i>
+                <i class="fa  fa-map-marker page-header-icon"> </i>
                 &nbsp;
                 <?= Html::encode($this->title) ?>
                 <?= Yii::t('app', 'atau'); ?>

@@ -8,10 +8,12 @@
 
 namespace app\modules\member\models;
 
+
 use Yii;
 use app\modules\dao\ar\Member;
 use app\modules\member\models\AreaModel;
 use app\modules\member\models\SchoolModel;
+use app\modules\dao\ar\Taxmemberrelations;
 
 class MemberModel extends Member
 {
@@ -58,7 +60,7 @@ class MemberModel extends Member
                 'relationship_phone_number' => Yii::t('app', 'Status Hubungan Dengan Nomor Henpon'),
                 'email' => Yii::t('app', 'Email'),
                 'organizational_experience' => Yii::t('app', 'Pengalaman Organisasi'),
-                'year' => Yii::t('app', 'Angkatan Tahun'),
+                'year' => Yii::t('app', 'Tahun Angkatan'),
                 'illness' => Yii::t('app', 'Penyakit Yang diderita'),
                 'height_body' => Yii::t('app', 'Tinggi Badan'),
                 'weight_body' => Yii::t('app', 'Berat Badan'),
@@ -72,10 +74,11 @@ class MemberModel extends Member
                 'identity_card_number' => Yii::t('app', 'Nomor Kartu Tanda Penduduk (KTP)'),
                 'certificate_of_organization' => Yii::t('app', 'Sertifikat Organisasi'),
                 'names_recommended' => Yii::t('app', 'Nama Angkatan Yang merekomendasi'),
+                'save_status' => Yii::t('app', 'Status'),
                 'note' => Yii::t('app', 'Catatan'),
 
-                'language_skills' => Yii::t('app', 'Kemampuan Bahasa Asing'),
-                'life_skill' => Yii::t('app', 'Kemampuan Personal'),
+                'language_skills' => Yii::t('app', 'Keterampilan Bahasa Asing'),
+                'life_skill' => Yii::t('app', 'Keterampilan Personal'),
                 'brevet_award' => Yii::t('app', 'Brevet Penghargaan'),
 
 //                'language_skills' => Yii::t('app', 'Language Skills'),
@@ -95,5 +98,35 @@ class MemberModel extends Member
     {
         $m = SchoolModel::findBySql("SELECT * FROM school WHERE id='" . $this->school_id . "'")->one();
         return $m["name"];
+    }
+
+    public function getSkillNamaById($id)
+    {
+        $query = LifeSkillModel::findOne($id);
+        return $query->name;
+    }
+
+    public function getAllSkillById($data = [])
+    {
+        $_list = [];
+        foreach ($data as $id) {
+            $_list[] = $this->getSkillNamaById($id);
+        }
+        return $_list;
+    }
+
+    public function saveSkillRelation($data = [], $member_id)
+    {
+        foreach ($data as $id) {
+            Taxmemberrelations::deleteAll([
+                'taxonomy_id' => $id,
+                'member_id' => $member_id
+            ]);
+            $new = new Taxmemberrelations;
+            $new->member_id = $member_id;
+            $new->taxonomy_id = $id;
+            $new->save();
+        }
+        return true;
     }
 } 

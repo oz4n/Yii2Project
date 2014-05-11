@@ -2,11 +2,13 @@
 
 namespace app\modules\member\searchs;
 
+
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\member\models\AreaModel;
 use yii\helpers\ArrayHelper;
+use app\modules\member\models\AreaModel;
+
 
 /**
  * AreaSerch represents the model behind the search form about `app\modules\member\models\AreaModel`.
@@ -14,9 +16,7 @@ use yii\helpers\ArrayHelper;
 class AreaSerch extends AreaModel
 {
     private static $_parent_items = [];
-    private static $_parent_list = array(NULL => 'None');
-    private static $_name_filter_items = [];
-    private static $_parent_filter_items = [];
+    private static $_parent_list = ['' => 'None'];
 
     public $keyword;
 
@@ -24,7 +24,7 @@ class AreaSerch extends AreaModel
     {
         return [
             [['id', 'parent_id', 'term_id', 'position', 'lft', 'rgt', 'root', 'level'], 'integer'],
-            [['name', 'description', 'count', 'slug', 'status', 'create_et', 'update_et'], 'safe'],
+            [['name', 'description', 'count', 'slug', 'status', 'create_et', 'update_et', 'keyword'], 'safe'],
         ];
     }
 
@@ -37,13 +37,15 @@ class AreaSerch extends AreaModel
     public function search($params)
     {
         $query = AreaModel::find();
-        $query->orderBy([
-            'root' => SORT_ASC,
-            'lft' => SORT_ASC
-        ]);
+        $query->where(['term_id' => MEMBER_AREA]);
+//        $query->orderBy([
+//            'root' => SORT_ASC,
+//            'lft' => SORT_ASC
+//        ]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' =>[
+            'pagination' => [
                 'pageSize' => 10
             ]
         ]);
@@ -52,109 +54,61 @@ class AreaSerch extends AreaModel
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'parent_id' => $this->parent_id,
-            'term_id' => $this->term_id,
-            'position' => $this->position,
-            'lft' => $this->lft,
-            'rgt' => $this->rgt,
-            'root' => $this->root,
-            'level' => $this->level,
-            'create_et' => $this->create_et,
-            'update_et' => $this->update_et,
-        ]);
 
         if (isset($params['AreaSerch']['keyword'])) {
-            $keyword = $params['AreaSerch']['keyword'];
-            $query->orFilterWhere(['like', 'name', $keyword])
-                ->orFilterWhere(['like', 'description', $keyword]);
+            $this->keyword = $params['AreaSerch']['keyword'];
+            $query->andFilterWhere(['like', 'name', $this->keyword]);
         }
-
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'count', $this->count])
-            ->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'status', $this->status]);
-
+            ->andFilterWhere(['like', 'parent_id', $this->parent_id]);
         return $dataProvider;
+
     }
 
-    public static function loadParents()
+    public static function getParents()
     {
-        $type = 'name';
-        if (!isset(self::$_parent_items[$type])) {
-            self::loadParentItems($type);
-        }
-        return ArrayHelper::merge(self::$_parent_list, self::$_parent_items[$type]);
+        self::getParentItems();
+        return ArrayHelper::merge(self::$_parent_list, self::$_parent_items);
     }
 
-    private static function loadParentItems($type)
+    private static function getParentItems()
     {
-        self::$_parent_items[$type] = [];
         $models = self::find();
-
-//        foreach ($models->all() as $model) {
-//            self::$_parent_items[$type][$model->id] = ucwords($model->name);
-//        }
-
-        $models->orderBy([
-            'root' => SORT_ASC,
-            'lft' => SORT_ASC
-        ]);
+//        $models->orderBy([
+//            'root' => SORT_ASC,
+//            'lft' => SORT_ASC
+//        ]);
+        $models->where(['term_id' => MEMBER_AREA]);
         foreach ($models->all() as $model) {
             if ($model->level == 1) {
-                self::$_parent_items[$type][$model->id] = ucwords($model->name);
+                self::$_parent_items[$model->id] = $model->name;
             } else {
-                self::$_parent_items[$type][$model->id] = ucwords(self::getLine($model->level) . $model->name);
+                self::$_parent_items[$model->id] = html_entity_decode(self::getLine($model->level)) . $model->name;
             }
         }
     }
 
-    public static function loadFilterParens()
+    public static function getFilterParens()
     {
-        $type = 'name';
-        if (!isset(self::$_parent_filter_items[$type])) {
-            self::loadFilterParensItems($type);
-        }
-
-        return self::$_parent_filter_items[$type];
-    }
-
-    private static function loadFilterParensItems($type)
-    {
-        self::$_parent_filter_items[$type] = [];
         $models = self::find();
-        $models->where(['parent_id' => null]);
-        foreach ($models->all() as $model) {
-            self::$_parent_filter_items[$type][$model->id] = ucwords($model->name);
-        }
+        $models->where(['parent_id' => null, 'term_id' => MEMBER_AREA]);
+        return ArrayHelper::map($models->asArray()->all(), 'id', 'name');
     }
 
-    public static function loadFilterNames()
-    {
-        $type = 'name';
-        if (!isset(self::$_name_filter_items[$type])) {
-            self::loadFilterNameItems($type);
-        }
 
-        return self::$_name_filter_items[$type];
-    }
-
-    private static function loadFilterNameItems($type)
+    public static function getFilterNames()
     {
-        self::$_name_filter_items[$type] = [];
         $models = self::find();
-        foreach ($models->all() as $model) {
-            self::$_name_filter_items[$type][$model->name] = $model->name;
-        }
+        $models->where(['term_id' => MEMBER_AREA]);
+        return ArrayHelper::map($models->asArray()->all(), 'name', 'name');
     }
+
 
     private static function getLine($model)
     {
         $line = '';
         for ($i = 0; $i < $model; $i++) {
-            $line .= "- ";
+            $line .= "&nbsp;";
         }
         return $line;
     }

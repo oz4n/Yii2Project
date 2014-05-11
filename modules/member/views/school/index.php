@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use app\modules\member\searchs\SchoolSerch;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use yii\web\View;
 
 /**
  * @var yii\web\View $this
@@ -12,7 +13,10 @@ use yii\widgets\ActiveForm;
  * @var app\modules\member\searchs\SchoolSerch $searchModel
  */
 
-$this->title = Yii::t('app', 'School Models');
+$this->title = Yii::t('app', 'Sekolah');
+$this->registerJs(
+    "$('ul.navigation > li.mm-dropdown > ul > li#school').parent().parent().addClass('open');"
+    , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
@@ -52,7 +56,7 @@ $this->title = Yii::t('app', 'School Models');
                 ]); ?>
 
                 <div class="input-group input-group-sm">
-                    <?= Html::activeTextInput($searchModel, 'keyword', ['class' => 'form-control', 'placeholder' => 'Cari Sekolah', 'maxlength' => 255]) ?>
+                    <?= Html::activeTextInput($searchModel, 'keyword', ['class' => 'form-control', 'placeholder' => 'Cari', 'maxlength' => 255]) ?>
                     <span class="input-group-btn">
                             <?= Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'btn btn-primary']) ?>
                     </span>

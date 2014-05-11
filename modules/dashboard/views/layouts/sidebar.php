@@ -27,42 +27,66 @@ use Yii;
                 [
                     'label' => 'Beranda',
                     'url' => ['/dashboard/dashboard/index'],
-                    'icon' => 'menu-icon fa fa-dashboard'
+                    'icon' => 'menu-icon fa fa-dashboard',
+                    'options' => [
+                        'id' => 'dashboard'
+                    ]
                 ],
                 [
                     'label' => 'Database',
                     'url' => '#',
                     'icon' => 'menu-icon fa fa-archive',
+                    'options' => [
+                        'id' => 'database'
+                    ],
                     'items' => [
                         [
                             'label' => 'Anggota',
                             'url' => ['/member/member/index'],
-                            'icon' => 'menu-icon fa fa-angle-double-right'
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'member'
+                            ],
                         ],
                         [
                             'label' => 'Penghargaan',
                             'url' => ['#'],
-                            'icon' => 'menu-icon fa fa-angle-double-right'
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'appreciation'
+                            ]
+                        ],
+                        [
+                            'label' => 'Keterampilan Personal',
+                            'url' => ['/member/lifeskill/index'],
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'lifeskill'
+                            ]
+                        ],
+                        [
+                            'label' => 'Keterampilan Bahasa Asing',
+                            'url' => ['/member/languageskill/index'],
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'langskill'
+                            ]
                         ],
                         [
                             'label' => 'Sekolah',
                             'url' => ['/member/school/index'],
-                            'icon' => 'menu-icon fa fa-angle-double-right'
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'school'
+                            ]
                         ],
                         [
                             'label' => 'Daerah',
                             'url' => ['/member/area/index'],
-                            'icon' => 'menu-icon fa fa-angle-double-right'
-                        ],
-                        [
-                            'label' => 'Kemampuan Personal',
-                            'url' => ['/member/lifeskill/index'],
-                            'icon' => 'menu-icon fa fa-angle-double-right'
-                        ],
-                        [
-                            'label' => 'Kemapuan Bahasa Asing',
-                            'url' => ['/member/languageskill/index'],
-                            'icon' => 'menu-icon fa fa-angle-double-right'
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'area'
+                            ]
                         ]
                     ]
                 ],

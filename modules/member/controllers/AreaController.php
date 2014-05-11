@@ -61,22 +61,10 @@ class AreaController extends Controller
     public function actionCreate()
     {
         $model = new AreaModel;
-        $model->setAttribute('term_id', 6);
+        $model->setAttribute('term_id', MEMBER_AREA);
         $model->setAttribute('create_et', date("Y-m-d H:i:s"));
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post())) {
-            if (null == Yii::$app->request->post('AreaModel')['parent_id']) {
-                $model->saveNode();
-                $edit = $this->findModel($model->id);
-                $edit->root = $model->id;
-                $edit->saveNode();
-            } else {
-                $root = $this->findModel(Yii::$app->request->post('AreaModel')['parent_id']);
-                $model->appendTo($root);
-                $edit = $this->findModel($model->id);
-                $edit->root = Yii::$app->request->post('AreaModel')['parent_id'];
-                $edit->saveNode();
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -95,16 +83,7 @@ class AreaController extends Controller
     {
         $model = $this->findModel($id);
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post()) && $model->saveNode()) {
-            if (null == Yii::$app->request->post('AreaModel')['parent_id']) {
-                $edit = $this->findModel($model->id);
-                $edit->root = $model->id;
-                $edit->saveNode();
-            } else {
-                $edit = $this->findModel($model->id);
-                $edit->root = Yii::$app->request->post('AreaModel')['parent_id'];
-                $edit->saveNode();
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -132,7 +111,7 @@ class AreaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->deleteNode();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
@@ -145,7 +124,7 @@ class AreaController extends Controller
     {
         if (null !== $data) {
             foreach ($data as $id) {
-                $this->findModel($id)->deleteNode();
+                $this->findModel($id)->delete();
             }
         } else {
             return $this->redirect(['index']);

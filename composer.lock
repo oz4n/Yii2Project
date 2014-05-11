@@ -3,8 +3,89 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "83774bf63c96ab5bc97af95a69726f16",
+    "hash": "bce485644fdefeed9a08b30f7862df6a",
     "packages": [
+        {
+            "name": "2amigos/selectize.js",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/selectize.js.git",
+                "reference": "12953252e42bf7cf25df46024aa1c4fe3865de8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/selectize.js/zipball/12953252e42bf7cf25df46024aa1c4fe3865de8b",
+                "reference": "12953252e42bf7cf25df46024aa1c4fe3865de8b",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Brian Reavis",
+                    "homepage": "http://brianreavis.github.io/selectize.js/"
+                }
+            ],
+            "description": "Selectize is the hybrid of a textbox and <select> box. It's jQuery based and it has autocomplete and native-feeling keyboard navigation; useful for tagging, contact lists, etc.",
+            "homepage": "http://brianreavis.github.io/selectize.js/",
+            "keywords": [
+                "autocomplete",
+                "hybrid",
+                "jquery",
+                "plugin"
+            ],
+            "time": "2014-05-08 19:31:47"
+        },
+        {
+            "name": "2amigos/yii2-selectize-widget",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/yii2-selectize-widget.git",
+                "reference": "8d0a00e092b57628103b729836f59bde864d234a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/yii2-selectize-widget/zipball/8d0a00e092b57628103b729836f59bde864d234a",
+                "reference": "8d0a00e092b57628103b729836f59bde864d234a",
+                "shasum": ""
+            },
+            "require": {
+                "2amigos/selectize.js": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "dosamigos\\selectize\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Antonio Ramirez",
+                    "email": "ramirez.cobos@gmail.com",
+                    "homepage": "http://2amigos.us/"
+                },
+                {
+                    "name": "Alexander Kochetov",
+                    "email": "creocoder@gmail.com"
+                }
+            ],
+            "description": "Selectize.js widget for Yii2.",
+            "homepage": "https://github.com/2amigos/yii2-selectize-widget",
+            "keywords": [
+                "extension",
+                "selectize",
+                "widget",
+                "yii"
+            ],
+            "time": "2014-05-09 17:53:50"
+        },
         {
             "name": "cebe/markdown",
             "version": "0.9.x-dev",
@@ -213,12 +294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/robregonm/yii2-auth.git",
-                "reference": "0840c1adc6ea93f8cb97ef202f73a81997547f75"
+                "reference": "05f334ff473291700a7ef8b13be6ad247db90d40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/robregonm/yii2-auth/zipball/0840c1adc6ea93f8cb97ef202f73a81997547f75",
-                "reference": "0840c1adc6ea93f8cb97ef202f73a81997547f75",
+                "url": "https://api.github.com/repos/robregonm/yii2-auth/zipball/05f334ff473291700a7ef8b13be6ad247db90d40",
+                "reference": "05f334ff473291700a7ef8b13be6ad247db90d40",
                 "shasum": ""
             },
             "require": {
@@ -256,7 +337,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2014-05-06 17:03:38"
+            "time": "2014-05-08 10:45:38"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -264,12 +345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "8443b5ca82b360a62c0c8ba04598e476076bbe2d"
+                "reference": "46d55baab96f943061de6712b38011db354eed78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/8443b5ca82b360a62c0c8ba04598e476076bbe2d",
-                "reference": "8443b5ca82b360a62c0c8ba04598e476076bbe2d",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/46d55baab96f943061de6712b38011db354eed78",
+                "reference": "46d55baab96f943061de6712b38011db354eed78",
                 "shasum": ""
             },
             "require": {
@@ -310,7 +391,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-05-05 09:37:46"
+            "time": "2014-05-08 08:35:11"
         },
         {
             "name": "twbs/bootstrap",
@@ -318,12 +399,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "d36c150569c982a24935bfc90e77e7a59986497b"
+                "reference": "ed98b3dfc012166d01c72fc80caa0113e37b4d45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/d36c150569c982a24935bfc90e77e7a59986497b",
-                "reference": "d36c150569c982a24935bfc90e77e7a59986497b",
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/ed98b3dfc012166d01c72fc80caa0113e37b4d45",
+                "reference": "ed98b3dfc012166d01c72fc80caa0113e37b4d45",
                 "shasum": ""
             },
             "type": "library",
@@ -358,7 +439,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2014-05-06 18:34:46"
+            "time": "2014-05-10 06:23:53"
         },
         {
             "name": "twig/twig",
@@ -472,12 +553,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "99bc13a1910a68ea6dd5255d25a5e0f44670299e"
+                "reference": "195ddb68ee4741fde8e353ffd09d37a9011bb28c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/99bc13a1910a68ea6dd5255d25a5e0f44670299e",
-                "reference": "99bc13a1910a68ea6dd5255d25a5e0f44670299e",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/195ddb68ee4741fde8e353ffd09d37a9011bb28c",
+                "reference": "195ddb68ee4741fde8e353ffd09d37a9011bb28c",
                 "shasum": ""
             },
             "require": {
@@ -542,7 +623,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2014-05-07 19:13:40"
+            "time": "2014-05-09 14:28:11"
         },
         {
             "name": "yiisoft/yii2-authclient",
@@ -550,12 +631,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-authclient.git",
-                "reference": "fe4d0155d2fac543979333e1dc73c4c0481014a9"
+                "reference": "186b028df64ef4cfd5606367b124190b0ae96fc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-authclient/zipball/fe4d0155d2fac543979333e1dc73c4c0481014a9",
-                "reference": "fe4d0155d2fac543979333e1dc73c4c0481014a9",
+                "url": "https://api.github.com/repos/yiisoft/yii2-authclient/zipball/186b028df64ef4cfd5606367b124190b0ae96fc9",
+                "reference": "186b028df64ef4cfd5606367b124190b0ae96fc9",
                 "shasum": ""
             },
             "require": {
@@ -586,7 +667,7 @@
                 "oauth",
                 "yii2"
             ],
-            "time": "2014-04-26 01:39:46"
+            "time": "2014-05-09 12:35:14"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
