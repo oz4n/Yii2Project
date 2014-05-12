@@ -51,7 +51,7 @@ $this->registerJs(
         <div class="col-xs-4">
             <div class="pull-right">
                 <?php $form = ActiveForm::begin([
-                    'action' => "/member/languageskill/index",
+                    'action' => ["/member/languageskill/index"],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [
@@ -75,14 +75,14 @@ $this->registerJs(
     <div class="col-sm-12">
         <?php
         $form = ActiveForm::begin([
-            'action' => '/member/languageskill/bulk'
+            'action' => ['/member/languageskill/bulk']
         ]);
         ?>
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            'filterUrl' => '/member/languageskill/index',
+            'filterUrl' => ['/member/languageskill/index'],
             'pager' => ['maxButtonCount' => 3],
             'tableOptions' => ['class' => 'table'],
             'layout' =>

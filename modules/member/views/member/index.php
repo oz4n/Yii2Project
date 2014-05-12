@@ -17,7 +17,7 @@ use app\modules\member\searchs\MemberSerch;
 $this->title = Yii::t('app', 'Anggota');
 
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#member').parent().parent().addClass('active open');"
+    "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#ppi').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
     , View::POS_READY);
 ?>
     <ul class="breadcrumb breadcrumb-page">

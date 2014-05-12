@@ -7,18 +7,19 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
-use app\modules\member\models\MemberModel;
 use app\modules\member\models\AreaModel;
+use app\modules\member\models\BrevetAwardModel;
 use app\modules\member\models\LanguageSkillModel;
 use app\modules\member\models\LifeSkillModel;
+use app\modules\member\models\PpiModel;
 use app\modules\member\models\SchoolModel;
 use app\modules\member\models\YearModel;
-use app\modules\member\models\BrevetAwardModel;
+
 
 /**
- * MemberSerch represents the model behind the search form about `app\modules\member\models\MemberModel`.
+ * PpiSerch represents the model behind the search form about `app\modules\dao\ar\PpiModel`.
  */
-class MemberSerch extends MemberModel
+class PpiSerch extends PpiModel
 {
     private static $_items = array();
     private static $_list = array(NULL => 'None');
@@ -35,8 +36,8 @@ class MemberSerch extends MemberModel
     public function rules()
     {
         return [
-            [['id', 'taxonomy_id', 'school_id', 'user_id', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
-            [['nra', 'name', 'nickname', 'front_photo', 'side_photo', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'job', 'blood_group', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'educational_status', 'zip_code', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'organizational_experience', 'year', 'illness', 'height_body', 'weight_body', 'dress_size', 'pants_size', 'shoe_size', 'hat_size', 'membership_status', 'status_organization', 'identity_card', 'identity_card_number', 'certificate_of_organization', 'names_recommended','brevetaward', 'lifeskill', 'languageskill', 'tribal_members', 'save_status', 'note', 'create_et', 'update_et', 'other_content'], 'safe'],
+            [['id', 'taxonomy_id', 'school_id', 'user_id', 'age', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
+            [['nra', 'name', 'nickname', 'front_photo', 'side_photo', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'job', 'income_member', 'blood_group', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'educational_status', 'zip_code', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'organizational_experience', 'year', 'illness', 'height_body', 'weight_body', 'dress_size', 'pants_size', 'shoe_size', 'hat_size', 'brevetaward', 'lifeskill', 'languageskill', 'membership_status', 'status_organization', 'type_member', 'tribal_members', 'identity_card', 'certificate_of_organization', 'identity_card_number', 'names_recommended', 'note', 'other_content', 'save_status', 'create_et', 'update_et'], 'safe'],
         ];
     }
 
@@ -46,31 +47,39 @@ class MemberSerch extends MemberModel
         return Model::scenarios();
     }
 
-    public function search($params, $pageSize = 20)
+    public function search($params)
     {
-        $query = MemberModel::find();
-
+        $query = PpiModel::find();
+        $query->onCondition(['type_member' => MEMBER_TYPE_PPI]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [
-                'pageSize' => $pageSize
-            ]
         ]);
+
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
-        if (isset($params['MemberSerch']['year_filtr1'])) {
-            $this->year_filtr1 = $params['MemberSerch']['year_filtr1'];
+        if (isset($params['PpiSerch']['status_filtr1'])) {
+            $this->save_status = $params['PpiSerch']['status_filtr1'];
+            $query->orFilterWhere(['like', 'save_status', $this->save_status]);
         }
 
-        if (isset($params['MemberSerch']['year_filtr2'])) {
-            $this->year_filtr2 = $params['MemberSerch']['year_filtr2'];
+        if (isset($params['PpiSerch']['status_filtr2'])) {
+            $this->save_status = $params['PpiSerch']['status_filtr2'];
+            $query->orFilterWhere(['like', 'save_status', $this->save_status]);
         }
 
-        if (isset($params['MemberSerch']['year_opsi'])) {
-            $this->year_opsi = $params['MemberSerch']['year_opsi'];
+        if (isset($params['PpiSerch']['year_filtr1'])) {
+            $this->year_filtr1 = $params['PpiSerch']['year_filtr1'];
+        }
+
+        if (isset($params['PpiSerch']['year_filtr2'])) {
+            $this->year_filtr2 = $params['PpiSerch']['year_filtr2'];
+        }
+
+        if (isset($params['PpiSerch']['year_opsi'])) {
+            $this->year_opsi = $params['PpiSerch']['year_opsi'];
         }
 
         switch ($this->year_opsi) {
@@ -98,16 +107,16 @@ class MemberSerch extends MemberModel
         }
 
 
-        if (isset($params['MemberSerch']['year_filtr3'])) {
-            $this->year_filtr3 = $params['MemberSerch']['year_filtr3'];
+        if (isset($params['PpiSerch']['year_filtr3'])) {
+            $this->year_filtr3 = $params['PpiSerch']['year_filtr3'];
         }
 
-        if (isset($params['MemberSerch']['year_filtr4'])) {
-            $this->year_filtr4 = $params['MemberSerch']['year_filtr4'];
+        if (isset($params['PpiSerch']['year_filtr4'])) {
+            $this->year_filtr4 = $params['PpiSerch']['year_filtr4'];
         }
 
-        if (isset($params['MemberSerch']['year_opsi1'])) {
-            $this->year_opsi1 = $params['MemberSerch']['year_opsi1'];
+        if (isset($params['PpiSerch']['year_opsi1'])) {
+            $this->year_opsi1 = $params['PpiSerch']['year_opsi1'];
         }
 
         switch ($this->year_opsi1) {
@@ -134,8 +143,8 @@ class MemberSerch extends MemberModel
                 break;
         }
 
-        if (isset($params['MemberSerch']['keyword'])) {
-            $this->keyword = $params['MemberSerch']['keyword'];
+        if (isset($params['PpiSerch']['keyword'])) {
+            $this->keyword = $params['PpiSerch']['keyword'];
             $query->orFilterWhere(['like', 'nra', $this->keyword])
                 ->orFilterWhere(['like', 'name', $this->keyword])
                 ->orFilterWhere(['like', 'nickname', $this->keyword])
@@ -170,6 +179,9 @@ class MemberSerch extends MemberModel
                 ->orFilterWhere(['like', 'pants_size', $this->keyword])
                 ->orFilterWhere(['like', 'shoe_size', $this->keyword])
                 ->orFilterWhere(['like', 'hat_size', $this->keyword])
+                ->orFilterWhere(['like', 'brevetaward', $this->keyword])
+                ->orFilterWhere(['like', 'lifeskill', $this->keyword])
+                ->orFilterWhere(['like', 'languageskill', $this->keyword])
                 ->orFilterWhere(['like', 'membership_status', $this->keyword])
                 ->orFilterWhere(['like', 'status_organization', $this->keyword])
                 ->orFilterWhere(['like', 'identity_card', $this->keyword])
@@ -182,7 +194,6 @@ class MemberSerch extends MemberModel
                 ->orFilterWhere(['like', 'update_et', $this->keyword])
                 ->orFilterWhere(['like', 'note', $this->keyword]);
         }
-
         $query->andFilterWhere(['like', 'nra', $this->nra])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'nickname', $this->nickname])
@@ -195,6 +206,7 @@ class MemberSerch extends MemberModel
             ->andFilterWhere(['like', 'gender', $this->gender])
             ->andFilterWhere(['like', 'marital_status', $this->marital_status])
             ->andFilterWhere(['like', 'job', $this->job])
+            ->andFilterWhere(['like', 'income_member', $this->income_member])
             ->andFilterWhere(['like', 'blood_group', $this->blood_group])
             ->andFilterWhere(['like', 'father_name', $this->father_name])
             ->andFilterWhere(['like', 'mother_name', $this->mother_name])
@@ -217,18 +229,20 @@ class MemberSerch extends MemberModel
             ->andFilterWhere(['like', 'pants_size', $this->pants_size])
             ->andFilterWhere(['like', 'shoe_size', $this->shoe_size])
             ->andFilterWhere(['like', 'hat_size', $this->hat_size])
+            ->andFilterWhere(['like', 'brevetaward', $this->brevetaward])
+            ->andFilterWhere(['like', 'lifeskill', $this->lifeskill])
+            ->andFilterWhere(['like', 'languageskill', $this->languageskill])
             ->andFilterWhere(['like', 'membership_status', $this->membership_status])
             ->andFilterWhere(['like', 'status_organization', $this->status_organization])
+            ->andFilterWhere(['like', 'type_member', $this->type_member])
+            ->andFilterWhere(['like', 'tribal_members', $this->tribal_members])
             ->andFilterWhere(['like', 'identity_card', $this->identity_card])
-            ->andFilterWhere(['like', 'identity_card_number', $this->identity_card_number])
             ->andFilterWhere(['like', 'certificate_of_organization', $this->certificate_of_organization])
+            ->andFilterWhere(['like', 'identity_card_number', $this->identity_card_number])
             ->andFilterWhere(['like', 'names_recommended', $this->names_recommended])
+            ->andFilterWhere(['like', 'note', $this->note])
             ->andFilterWhere(['like', 'other_content', $this->other_content])
-            ->andFilterWhere(['like', 'save_status', $this->save_status])
-            ->andFilterWhere(['like', 'other_content', $this->language_skills])
-            ->andFilterWhere(['like', 'create_et', $this->create_et])
-            ->andFilterWhere(['like', 'update_et', $this->update_et])
-            ->andFilterWhere(['like', 'note', $this->note]);
+            ->andFilterWhere(['like', 'save_status', $this->save_status]);
 
         return $dataProvider;
     }
@@ -313,5 +327,4 @@ class MemberSerch extends MemberModel
         }
         return $line;
     }
-
 }

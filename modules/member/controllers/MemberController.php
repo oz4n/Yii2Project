@@ -17,6 +17,10 @@ use yii\filters\VerbFilter;
  */
 class MemberController extends Controller
 {
+    public $life_skills = [];
+    public $language_skills = [];
+    public $brevet_award = [];
+
     public function behaviors()
     {
         return [
@@ -71,7 +75,11 @@ class MemberController extends Controller
         $model = new MemberModel;
         $model->setAttribute('create_et', date("Y-m-d H:i:s"));
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) ) {
+            echo '<pre>';
+            print_r(Yii::$app->request->post());
+            exit();
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -91,24 +99,72 @@ class MemberController extends Controller
         $model = $this->findModel($id);
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post())) {
-            $data = ArrayHelper::merge(
-                Yii::$app->request->post('MemberModel')['life_skills'],
-                ArrayHelper::merge(
-                    Yii::$app->request->post('MemberModel')['language_skills'],
-                    Yii::$app->request->post('MemberModel')['brevet_award']
-                )
-            );
-            $model->setAttribute('other_content', implode(', ', $model->getAllSkillById($data)));
-            $model->save();
-//            $model->delete();
-
-
-//            $i = 35;
-//            $tx->find();
-//            $tx->setAttribute('taxonomy_id', 35);
-//            $tx->setAttribute('member_id', $model->id);
-//            $tx->delete();
-            $model->saveSkillRelation($data, $model->id);
+//            $life_skills = Yii::$app->request->post('MemberModel')['life_skills'];
+//            $language_skills = Yii::$app->request->post('MemberModel')['language_skills'];
+//            $brevet_award = Yii::$app->request->post('MemberModel')['brevet_award'];
+//            $data = '';
+//
+//            if (null != $life_skills) {
+//                $data = $life_skills;
+//                $model->setAttribute('other_content', implode(', ', $model->getAllSkillById($data)));
+//            }
+//
+//            if (null != $language_skills) {
+//                $data = $language_skills;
+//                $model->setAttribute('other_content', implode(', ', $model->getAllSkillById($data)));
+//            }
+//
+//            if (null != $brevet_award) {
+//                $data = $brevet_award;
+//                $model->setAttribute('other_content', implode(', ', $model->getAllSkillById($data)));
+//            }
+//
+//            if (null != $life_skills && null != $language_skills) {
+//                $data = ArrayHelper::merge(
+//                    $this->life_skills,
+//                    $language_skills
+//                );
+//                $model->setAttribute('other_content', implode(', ', $data));
+//            }
+//
+//            if (null != $life_skills && null != $brevet_award) {
+//                $data = ArrayHelper::merge(
+//                    $this->life_skills,
+//                    $brevet_award
+//                );
+//                $model->setAttribute('other_content', implode(', ', $data));
+//            }
+//
+//            if (null != $language_skills && null != $brevet_award) {
+//                $data = ArrayHelper::merge(
+//                    $this->language_skills,
+//                    $brevet_award
+//                );
+//                $model->setAttribute('other_content', implode(', ', $data));
+//            }
+//
+//            if ((null != $life_skills && null != $language_skills) && null != $brevet_award) {
+//                $data = ArrayHelper::merge(
+//                    $this->life_skills,
+//                    ArrayHelper::merge(
+//                        $this->language_skills,
+//                        $this->brevet_award
+//                    )
+//                );
+//                $model->setAttribute('other_content', implode(', ', $data));
+//            }
+//
+//            if ($data == null) {
+//                $model->save();
+//            } else {
+//                $model->setAttribute('other_content', implode(', ', $model->getAllSkillById($data)));
+//                $model->save();
+//                $model->saveSkillRelation($data);
+//            }
+            exit();
+//            $model->save();
+//            $model->saveSkillRelation($language_skills, $model->id);
+//            $model->saveSkillRelation($brevet_award, $model->id);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

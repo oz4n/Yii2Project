@@ -12,6 +12,10 @@ define('MEMBER_YEAR', 5);
 define('MEMBER_AREA', 6);
 define('MEMBER_BREVET', 7);
 
+define('MEMBER_TYPE_PPI', 'PPI');
+define('MEMBER_TYPE_PASKIBRA', 'Paskibra');
+define('MEMBER_TYPE_CAPAS', 'Capas');
+
 class Member extends Module
 {
     public $controllerNamespace = 'app\modules\member\controllers';

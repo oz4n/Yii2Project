@@ -49,7 +49,7 @@ $this->registerJs(
         <div class="col-xs-4">
             <div class="pull-right">
                 <?php $form = ActiveForm::begin([
-                    'action' => "/member/lifeskill/index",
+                    'action' => ["/member/lifeskill/index"],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [

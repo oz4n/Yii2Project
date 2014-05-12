@@ -49,7 +49,7 @@ $this->registerJs(
         <div class="col-xs-4">
             <div class="pull-right">
                 <?php $form = ActiveForm::begin([
-                    'action' => "/member/brevetaward/index",
+                    'action' => ["/member/brevetaward/index"],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [
@@ -73,14 +73,14 @@ $this->registerJs(
     <div class="col-sm-12">
         <?php
         $form = ActiveForm::begin([
-            'action' => '/member/brevetaward/bulk'
+            'action' => ['/member/brevetaward/bulk']
         ]);
         ?>
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            'filterUrl' => '/member/brevetaward/index',
+            'filterUrl' => ['/member/brevetaward/index'],
             'pager' => ['maxButtonCount' => 3],
             'tableOptions' => ['class' => 'table'],
             'layout' =>

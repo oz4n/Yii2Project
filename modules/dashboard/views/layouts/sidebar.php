@@ -42,11 +42,37 @@ use Yii;
                     'items' => [
                         [
                             'label' => 'Anggota',
-                            'url' => ['/member/member/index'],
+                            'url' => ['#'],
                             'icon' => 'menu-icon fa fa-angle-double-right',
                             'options' => [
                                 'id' => 'member'
                             ],
+                            'items' => [
+                                [
+                                    'label' => 'PPI',
+                                    'url' => ['/member/ppi/index'],
+                                    'icon' => 'menu-icon fa fa-angle-double-right',
+                                    'options' => [
+                                        'id' => 'ppi'
+                                    ]
+                                ],
+                                [
+                                    'label' => 'Paskibra',
+                                    'url' => ['/member/paskibra/index'],
+                                    'icon' => 'menu-icon fa fa-angle-double-right',
+                                    'options' => [
+                                        'id' => 'paskibra'
+                                    ]
+                                ],
+                                [
+                                    'label' => 'Capas',
+                                    'url' => ['/member/capas/index'],
+                                    'icon' => 'menu-icon fa fa-angle-double-right',
+                                    'options' => [
+                                        'id' => 'capas'
+                                    ]
+                                ],
+                            ]
                         ],
                         [
                             'label' => 'Brevet Penghargaan',

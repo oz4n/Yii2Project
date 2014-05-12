@@ -14,7 +14,6 @@ use Yii;
  * @property string $nra
  * @property string $name
  * @property string $nickname
- * @property string $unit
  * @property string $front_photo
  * @property string $side_photo
  * @property string $address
@@ -51,8 +50,13 @@ use Yii;
  * @property string $pants_size
  * @property string $shoe_size
  * @property string $hat_size
+ * @property string $brevetaward
+ * @property string $lifeskill
+ * @property string $languageskill
  * @property string $membership_status
  * @property string $status_organization
+ * @property string $type_member
+ * @property string $tribal_members
  * @property string $identity_card
  * @property string $certificate_of_organization
  * @property string $identity_card_number
@@ -63,8 +67,8 @@ use Yii;
  * @property string $create_et
  * @property string $update_et
  *
- * @property Taxonomy $taxonomy
  * @property School $school
+ * @property Taxonomy $taxonomy
  * @property User $user
  * @property Taxmemberrelations $taxmemberrelations
  * @property Taxonomy[] $taxonomies
@@ -86,15 +90,18 @@ class Member extends \yii\db\ActiveRecord
     {
         return [
             [['taxonomy_id', 'school_id', 'user_id', 'age', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
-            [['nra', 'name', 'nickname', 'unit', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'year', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'identity_card_number', 'names_recommended', 'note', 'save_status'], 'required'],
+//            [['nra', 'name', 'nickname', 'front_photo', 'side_photo', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'year', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'type_member', 'tribal_members', 'identity_card', 'identity_card_number', 'names_recommended', 'note', 'save_status'], 'required', 'message' => 'Tidak boleh kosong.'],
+            [['nra', 'name', 'nickname', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'year', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'type_member', 'tribal_members',  'identity_card_number', 'note', 'save_status'], 'required', 'message' => 'Tidak boleh kosong.'],
+
+            //[['front_photo'], 'file', 'types' => ['jpg', 'png'], 'skipOnEmpty' => false, 'maxFiles' => 1, 'maxSize' => 450 * 1024, 'message' => 'Tidak boleh kosong.'],
             [['front_photo', 'side_photo', 'identity_card', 'certificate_of_organization', 'other_content'], 'string'],
             [['create_et', 'update_et'], 'safe'],
             [['nra'], 'string', 'max' => 32],
-            [['name', 'nationality', 'job', 'income_member', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'email', 'organizational_experience', 'year', 'illness', 'save_status'], 'string', 'max' => 45],
-            [['nickname', 'birth', 'relationship_phone_number', 'membership_status', 'status_organization', 'identity_card_number'], 'string', 'max' => 25],
-            [['unit', 'blood_group', 'height_body', 'weight_body', 'dress_size', 'pants_size', 'shoe_size', 'hat_size'], 'string', 'max' => 5],
+            [['name', 'nationality', 'job', 'income_member', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'email', 'organizational_experience', 'year', 'illness', 'brevetaward', 'lifeskill', 'languageskill', 'tribal_members', 'save_status'], 'string', 'max' => 45],
+            [['nickname', 'birth', 'blood_group', 'relationship_phone_number', 'membership_status', 'status_organization', 'type_member', 'identity_card_number'], 'string', 'max' => 25],
             [['address', 'names_recommended', 'note'], 'string', 'max' => 255],
-            [['religion', 'gender', 'marital_status', 'educational_status', 'zip_code', 'phone_number', 'other_phone_number'], 'string', 'max' => 15]
+            [['religion', 'gender', 'marital_status', 'educational_status', 'zip_code', 'phone_number', 'other_phone_number'], 'string', 'max' => 15],
+            [['height_body', 'weight_body', 'dress_size', 'pants_size', 'shoe_size', 'hat_size'], 'string', 'max' => 5]
         ];
     }
 
@@ -111,7 +118,6 @@ class Member extends \yii\db\ActiveRecord
             'nra' => Yii::t('app', 'Nra'),
             'name' => Yii::t('app', 'Name'),
             'nickname' => Yii::t('app', 'Nickname'),
-            'unit' => Yii::t('app', 'Unit'),
             'front_photo' => Yii::t('app', 'Front Photo'),
             'side_photo' => Yii::t('app', 'Side Photo'),
             'address' => Yii::t('app', 'Address'),
@@ -148,8 +154,13 @@ class Member extends \yii\db\ActiveRecord
             'pants_size' => Yii::t('app', 'Pants Size'),
             'shoe_size' => Yii::t('app', 'Shoe Size'),
             'hat_size' => Yii::t('app', 'Hat Size'),
+            'brevetaward' => Yii::t('app', 'Brevetaward'),
+            'lifeskill' => Yii::t('app', 'Lifeskill'),
+            'languageskill' => Yii::t('app', 'Languageskill'),
             'membership_status' => Yii::t('app', 'Membership Status'),
             'status_organization' => Yii::t('app', 'Status Organization'),
+            'type_member' => Yii::t('app', 'Type Member'),
+            'tribal_members' => Yii::t('app', 'Tribal Members'),
             'identity_card' => Yii::t('app', 'Identity Card'),
             'certificate_of_organization' => Yii::t('app', 'Certificate Of Organization'),
             'identity_card_number' => Yii::t('app', 'Identity Card Number'),
@@ -165,17 +176,17 @@ class Member extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTaxonomy()
+    public function getSchool()
     {
-        return $this->hasOne(Taxonomy::className(), ['id' => 'taxonomy_id']);
+        return $this->hasOne(School::className(), ['id' => 'school_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSchool()
+    public function getTaxonomy()
     {
-        return $this->hasOne(School::className(), ['id' => 'school_id']);
+        return $this->hasOne(Taxonomy::className(), ['id' => 'taxonomy_id']);
     }
 
     /**

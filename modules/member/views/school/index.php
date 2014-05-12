@@ -47,7 +47,7 @@ $this->registerJs(
         <div class="col-xs-4">
             <div class="pull-right">
                 <?php $form = ActiveForm::begin([
-                    'action' => "/member/school/index",
+                    'action' => ["/member/school/index"],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [
@@ -71,7 +71,7 @@ $this->registerJs(
     <div class="col-sn-12">
         <?php
         $form = ActiveForm::begin([
-            'action' => '/member/school/bulk'
+            'action' => ['/member/school/bulk']
         ]);
         ?>
         <?=

@@ -2,24 +2,18 @@
 /**
  * Created by PhpStorm.
  * User: root
- * Date: 5/8/14
- * Time: 5:57 PM
+ * Date: 5/12/14
+ * Time: 2:56 PM
  */
 
 namespace app\modules\member\models;
-
 
 use Yii;
 use app\modules\dao\ar\Member;
 use app\modules\dao\ar\Taxmemberrelations;
 
-class MemberModel extends Member
+class PpiModel extends Member
 {
-    public $language_skills;
-    public $life_skill;
-    public $brevet_award;
-    public $keyword;
-
     public function attributeLabels()
     {
         if (parent::attributeLabels()) {
@@ -73,18 +67,10 @@ class MemberModel extends Member
                 'names_recommended' => Yii::t('app', 'Nama Angkatan Yang merekomendasi'),
                 'save_status' => Yii::t('app', 'Status'),
                 'note' => Yii::t('app', 'Catatan'),
-
-                'language_skills' => Yii::t('app', 'Keterampilan Bahasa Asing'),
-                'life_skill' => Yii::t('app', 'Keterampilan Personal'),
-                'brevet_award' => Yii::t('app', 'Brevet Penghargaan'),
-
+                'tribal_members' => Yii::t('app', 'Suku Bangsa'),
                 'brevetaward' => Yii::t('app', 'Brevet Penghargaan'),
                 'lifeskill' => Yii::t('app', 'Keterampilan Personal'),
                 'languageskill' => Yii::t('app', 'Keterampilan Bahasa Asing'),
-
-//                'language_skills' => Yii::t('app', 'Language Skills'),
-//                'life_skill' => Yii::t('app', 'Life Skill'),
-//                'brevet_award' => Yii::t('app', 'Brevet Award'),
             ];
         }
     }
@@ -118,19 +104,5 @@ class MemberModel extends Member
         }
     }
 
-    public function saveSkillRelation($data = [], $member_id)
-    {
 
-        foreach ($data as $id) {
-            Taxmemberrelations::deleteAll([
-                'taxonomy_id' => $id,
-                'member_id' => $member_id
-            ]);
-            $new = new Taxmemberrelations;
-            $new->member_id = $member_id;
-            $new->taxonomy_id = $id;
-            $new->save();
-        }
-        return true;
-    }
 } 
