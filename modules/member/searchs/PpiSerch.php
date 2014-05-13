@@ -61,13 +61,13 @@ class PpiSerch extends PpiModel
         }
 
         if (isset($params['PpiSerch']['status_filtr1'])) {
-            $this->save_status = $params['PpiSerch']['status_filtr1'];
-            $query->orFilterWhere(['like', 'save_status', $this->save_status]);
+            $ss1 = $params['PpiSerch']['status_filtr1'];
+            $query->orFilterWhere(['like', 'save_status', $ss1]);
         }
 
         if (isset($params['PpiSerch']['status_filtr2'])) {
-            $this->save_status = $params['PpiSerch']['status_filtr2'];
-            $query->orFilterWhere(['like', 'save_status', $this->save_status]);
+            $ss2 = $params['PpiSerch']['status_filtr2'];
+            $query->orFilterWhere(['like', 'save_status', $ss2]);
         }
 
         if (isset($params['PpiSerch']['year_filtr1'])) {
@@ -287,16 +287,28 @@ class PpiSerch extends PpiModel
         $models->where(['term_id' => MEMBER_BREVET]);
         $data = ArrayHelper::map($models->asArray()->all(), 'id', 'name');
 //        return $data;
-        return ArrayHelper::merge($data, ['' => $none]);
+        return ArrayHelper::merge(['' => $none], $data);
     }
 
     public static function getLifeSkills($none = 'None')
     {
         $models = LifeSkillModel::find();
         $models->where(['term_id' => MEMBER_SKILL]);
-        $data = ArrayHelper::map($models->asArray()->all(), 'id', 'name');
-//        return $data;
-        return ArrayHelper::merge($data, ['' => $none]);
+        $group = [];
+        foreach ($models->asArray()->all() as $v) {
+            if ($v['parent_id'] !== null) {
+                $group[] = ['id' => $v['id'], 'name' => $v['name'], 'group' => self::getSkillNameByid($v['parent_id'])];
+            } else {
+//                $group[] = ['id' => $v['id'], 'name' => $v['name'], 'group' => 'General'];
+            }
+        }
+        return ArrayHelper::map($group, 'id', 'name', 'group');
+    }
+
+    public static function getSkillNameByid($id)
+    {
+        $query = LanguageSkillModel::findBySql("SELECT * FROM taxonomy WHERE id='" . $id . "'")->one();
+        return $query['name'];
     }
 
 
@@ -304,9 +316,22 @@ class PpiSerch extends PpiModel
     {
         $models = LanguageSkillModel::find();
         $models->where(['term_id' => MEMBER_LANG_SKILL]);
-        $data = ArrayHelper::map($models->asArray()->all(), 'id', 'name');
-//        return $data;
-        return ArrayHelper::merge($data, ['' => $none]);
+        $group = [];
+
+        foreach ($models->asArray()->all() as $v) {
+            if ($v['parent_id'] !== null) {
+                $group[] = ['id' => $v['id'], 'name' => $v['name'], 'group' => self::getLangSkillNameById($v['parent_id'])];
+            } else {
+//                $group[] = ['id' => $v['id'], 'name' => $v['name'], 'group' => 'General'];
+            }
+        }
+        return ArrayHelper::map($group, 'id', 'name', 'group');
+    }
+
+    public static function getLangSkillNameByid($id)
+    {
+        $query = LanguageSkillModel::findBySql("SELECT * FROM taxonomy WHERE id='" . $id . "'")->one();
+        return $query['name'];
     }
 
 

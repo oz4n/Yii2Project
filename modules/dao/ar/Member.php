@@ -90,14 +90,11 @@ class Member extends \yii\db\ActiveRecord
     {
         return [
             [['taxonomy_id', 'school_id', 'user_id', 'age', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
-//            [['nra', 'name', 'nickname', 'front_photo', 'side_photo', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'year', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'type_member', 'tribal_members', 'identity_card', 'identity_card_number', 'names_recommended', 'note', 'save_status'], 'required', 'message' => 'Tidak boleh kosong.'],
-            [['nra', 'name', 'nickname', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'year', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'type_member', 'tribal_members',  'identity_card_number', 'note', 'save_status'], 'required', 'message' => 'Tidak boleh kosong.'],
-
-            //[['front_photo'], 'file', 'types' => ['jpg', 'png'], 'skipOnEmpty' => false, 'maxFiles' => 1, 'maxSize' => 450 * 1024, 'message' => 'Tidak boleh kosong.'],
+            [['nra', 'name', 'nickname', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'year', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'tribal_members', 'identity_card_number', 'note', 'save_status'], 'required', 'message' => 'Tidak boleh kosong.'],
             [['front_photo', 'side_photo', 'identity_card', 'certificate_of_organization', 'other_content'], 'string'],
             [['create_et', 'update_et'], 'safe'],
             [['nra'], 'string', 'max' => 32],
-            [['name', 'nationality', 'job', 'income_member', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'email', 'organizational_experience', 'year', 'illness', 'brevetaward', 'lifeskill', 'languageskill', 'tribal_members', 'save_status'], 'string', 'max' => 45],
+            [['name', 'nationality', 'job', 'income_member', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'email', 'organizational_experience', 'year', 'illness', 'tribal_members', 'save_status'], 'string', 'max' => 45],
             [['nickname', 'birth', 'blood_group', 'relationship_phone_number', 'membership_status', 'status_organization', 'type_member', 'identity_card_number'], 'string', 'max' => 25],
             [['address', 'names_recommended', 'note'], 'string', 'max' => 255],
             [['religion', 'gender', 'marital_status', 'educational_status', 'zip_code', 'phone_number', 'other_phone_number'], 'string', 'max' => 15],

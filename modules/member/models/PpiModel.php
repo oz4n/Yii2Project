@@ -8,12 +8,43 @@
 
 namespace app\modules\member\models;
 
+use app\modules\dao\ar\Taxonomy;
 use Yii;
 use app\modules\dao\ar\Member;
 use app\modules\dao\ar\Taxmemberrelations;
 
 class PpiModel extends Member
 {
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaxonomiesByLangSkill()
+    {
+        return $this->hasMany(Taxonomy::className(), ['id' => 'taxonomy_id'])
+            ->where(['term_id' => MEMBER_LANG_SKILL])
+            ->viaTable('taxmemberrelations', ['member_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaxonomiesBySkill()
+    {
+        return $this->hasMany(Taxonomy::className(), ['id' => 'taxonomy_id'])
+            ->where(['term_id' => MEMBER_SKILL])
+            ->viaTable('taxmemberrelations', ['member_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaxonomiesByBrevet()
+    {
+        return $this->hasMany(Taxonomy::className(), ['id' => 'taxonomy_id'])
+            ->where(['term_id' => MEMBER_BREVET])
+            ->viaTable('taxmemberrelations', ['member_id' => 'id']);
+    }
+
     public function attributeLabels()
     {
         if (parent::attributeLabels()) {
@@ -46,9 +77,9 @@ class PpiModel extends Member
                 'number_of_children' => Yii::t('app', 'Jumlah Anak Kandung'),
                 'educational_status' => Yii::t('app', 'Status Pendidikan'),
                 'zip_code' => Yii::t('app', 'Kode Post'),
-                'phone_number' => Yii::t('app', 'Nomor HP'),
-                'other_phone_number' => Yii::t('app', 'Nomor HP Lainya'),
-                'relationship_phone_number' => Yii::t('app', 'Status Hubungan Dengan Nomor HP Lainnya'),
+                'phone_number' => Yii::t('app', 'No HP'),
+                'other_phone_number' => Yii::t('app', 'No HP Lainya'),
+                'relationship_phone_number' => Yii::t('app', 'Status Dengan No HP'),
                 'email' => Yii::t('app', 'Email'),
                 'organizational_experience' => Yii::t('app', 'Pengalaman Organisasi'),
                 'year' => Yii::t('app', 'Tahun Angkatan'),
@@ -87,13 +118,36 @@ class PpiModel extends Member
         return $m["name"];
     }
 
-    public function getSkillNamaById($id)
+
+    public function saveTaxRelation($data = [], $member_id)
     {
-        $query = LifeSkillModel::findOne($id);
-        return $query->name;
+
+        foreach ($data as $id) {
+            Taxmemberrelations::deleteAll([
+                'taxonomy_id' => $id,
+                'member_id' => $member_id
+            ]);
+            $new = new Taxmemberrelations;
+            $new->member_id = $member_id;
+            $new->taxonomy_id = $id;
+            $new->save();
+        }
+        return true;
     }
 
-    public function getAllSkillById($data = [])
+    public function deleteAllTaxRelationByMemberId($data = [], $member_id)
+    {
+        foreach ($data as $id) {
+            Taxmemberrelations::deleteAll([
+                'taxonomy_id' => $id,
+                'member_id' => $member_id
+            ]);
+        }
+
+        return true;
+    }
+
+    public function getAllSkillNameById($data = [])
     {
         if (null != $data) {
             $_list = [];
@@ -104,5 +158,44 @@ class PpiModel extends Member
         }
     }
 
+    public function getSkillNamaById($id)
+    {
+        $query = LifeSkillModel::findOne($id);
+        return $query->name;
+    }
+
+    public function getAllLangSkillNameById($data = [])
+    {
+        if (null != $data) {
+            $_list = [];
+            foreach ($data as $id) {
+                $_list[] = $this->getLangSkillNamaById($id);
+            }
+            return $_list;
+        }
+    }
+
+    public function getLangSkillNamaById($id)
+    {
+        $query = LanguageSkillModel::findOne($id);
+        return $query->name;
+    }
+
+    public function getAllBrevetNameById($data = [])
+    {
+        if (null != $data) {
+            $_list = [];
+            foreach ($data as $id) {
+                $_list[] = $this->getBrevetNamaById($id);
+            }
+            return $_list;
+        }
+    }
+
+    public function getBrevetNamaById($id)
+    {
+        $query = BrevetAwardModel::findOne($id);
+        return $query->name;
+    }
 
 } 

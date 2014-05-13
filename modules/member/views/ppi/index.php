@@ -18,6 +18,11 @@ $this->title = Yii::t('app', 'Anggota');
 
 $this->registerJs(
     "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#ppi').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
+    . '$("td > select").select2({ allowClear: true, placeholder: "Filter item"});'
+    . '$("select.select-year").select2({ allowClear: true, placeholder: "Tahun"});'
+    . '$("select.opsi").select2({ allowClear: true, placeholder: "Tahun"});'
+    . '$("select.save-status").select2({ allowClear: true, placeholder: "Tahun"});'
+    . '$("select.action-bulk").select2({ allowClear: true, placeholder: "Tindakan Masal"});'
     , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">
@@ -91,15 +96,15 @@ GridView::widget([
 
         . Html::beginTag('div', ['class' => 'col-xs-8'])
         . Html::beginTag('div', ['class' => 'form-inline'])
-        . Html::dropDownList('bulk_action1', null, ['' => 'Tindakan massal', 'delete' => 'Hapus selamanya', 'trash' => 'Buang ke tongsampah'], ['class' => 'form-control'])
+        . Html::dropDownList('bulk_action1', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_filtr1]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control'])
+        . Html::dropDownList('PpiSerch[year_filtr1]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_opsi]', null, ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control'])
+        . Html::dropDownList('PpiSerch[year_opsi]', null, ['Opsi','and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_filtr2]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control'])
+        . Html::dropDownList('PpiSerch[year_filtr2]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[status_filtr1]', null, ['Status','Publish'=>'Publish','Draft'=>'Draft','Trash'=>'Trash'], ['class' => 'form-control'])
+        . Html::dropDownList('PpiSerch[status_filtr1]', null, ['Status','Publish'=>'Publish','Draft'=>'Draft','Trash'=>'Trash'], ['class' => 'form-control save-status'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
         . Html::endTag('div')
@@ -130,15 +135,15 @@ GridView::widget([
         . Html::beginTag('div', ['class' => 'row'])
         . Html::beginTag('div', ['class' => 'col-xs-8'])
         . Html::beginTag('div', ['class' => 'form-inline'])
-        . Html::dropDownList('bulk_action2', null, ['' => 'Tindakan massal', 'delete' => 'Hapus selamanya', 'trash' => 'Buang ke tongsampah'], ['class' => 'form-control'])
+        . Html::dropDownList('bulk_action2', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_filtr3]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control'])
+        . Html::dropDownList('PpiSerch[year_filtr3]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_opsi1]', null, ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control'])
+        . Html::dropDownList('PpiSerch[year_opsi1]', null, ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_filtr4]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control'])
+        . Html::dropDownList('PpiSerch[year_filtr4]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[status_filtr2]', null, ['Status','Publish'=>'Publish','Draft'=>'Draft','Trash'=>'Trash'], ['class' => 'form-control'])
+        . Html::dropDownList('PpiSerch[status_filtr2]', null, ['Status','Publish'=>'Publish','Draft'=>'Draft','Trash'=>'Trash'], ['class' => 'form-control save-status'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
         . Html::endTag('div')
@@ -182,6 +187,7 @@ GridView::widget([
         'nationality',
         [
             'attribute' => 'religion',
+            'filterOptions' => ['id'=>'select-religion'],
             'filter' => [
                 'Islam' => 'Islam',
                 'Katholik' => 'Katholik',
@@ -193,6 +199,7 @@ GridView::widget([
         ],
         [
             'attribute' => 'gender',
+            'filterOptions' => ['id'=>'select-gender'],
             'filter' => [
                 'Laki-Laki' => 'Laki-Laki',
                 'Perempuan' => 'Perempuan'
@@ -222,10 +229,10 @@ GridView::widget([
         [
             'attribute' => 'blood_group',
             'filter' => [
-                'O' => 'O',
-                'A' => 'A',
-                'B' => 'B',
-                'AB' => 'AB'
+                'Golongan Darah O' => 'O',
+                'Golongan Darah A' => 'A',
+                'Golongan Darah B' => 'B',
+                'Golongan Darah AB' => 'AB'
             ]
         ],
         'father_name',
