@@ -58,7 +58,7 @@ use Yii;
                                 ],
                                 [
                                     'label' => 'Paskibra',
-                                    'url' => ['/member/paskibra/index'],
+                                    'url' => ['/member/paskibra/index','action' => 'member-paskibra-list'],
                                     'icon' => 'menu-icon fa fa-angle-double-right',
                                     'options' => [
                                         'id' => 'paskibra'
