@@ -53,6 +53,9 @@ class PpiSerch extends PpiModel
         $query->onCondition(['type_member' => MEMBER_TYPE_PPI]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 30
+            ]
         ]);
 
 
@@ -299,7 +302,7 @@ class PpiSerch extends PpiModel
             if ($v['parent_id'] !== null) {
                 $group[] = ['id' => $v['id'], 'name' => $v['name'], 'group' => self::getSkillNameByid($v['parent_id'])];
             } else {
-//                $group[] = ['id' => $v['id'], 'name' => $v['name'], 'group' => 'General'];
+                $group[] = ['id' => $v['id'], 'name' => $v['name'], 'group' => 'General'];
             }
         }
         return ArrayHelper::map($group, 'id', 'name', 'group');

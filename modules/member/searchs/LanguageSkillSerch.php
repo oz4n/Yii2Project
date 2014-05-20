@@ -34,7 +34,7 @@ class LanguageSkillSerch extends LanguageSkillModel
     public function search($params)
     {
         $query = self::find();
-        $query->where(['term_id' => MEMBER_LANG_SKILL]);
+        $query->onCondition(['term_id' => MEMBER_LANG_SKILL]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -53,11 +53,12 @@ class LanguageSkillSerch extends LanguageSkillModel
 
         if (isset($params['LanguageSkillSerch']['keyword'])) {
             $this->keyword = $params['LanguageSkillSerch']['keyword'];
-            $query->andFilterWhere(['like', 'name', $this->keyword]);
+            $query->orFilterWhere(['like', 'name', $this->keyword]);
+            $query->orFilterWhere(['like', 'description', $this->keyword]);
         }
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'parent_id', $this->description]);
+            ->andFilterWhere(['like', 'parent_id', $this->parent_id]);
         return $dataProvider;
 
         return $dataProvider;

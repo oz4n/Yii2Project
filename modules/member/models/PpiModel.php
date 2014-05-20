@@ -15,6 +15,8 @@ use app\modules\dao\ar\Taxmemberrelations;
 
 class PpiModel extends Member
 {
+    public $otherlifeskill;
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -60,6 +62,7 @@ class PpiModel extends Member
                 'side_photo' => Yii::t('app', 'Photo Tampak Samping'),
                 'address' => Yii::t('app', 'Alamat Lengkap'),
                 'birth' => Yii::t('app', 'Tanggal Lahir'),
+                'age' => Yii::t('app', 'Umur'),
                 'nationality' => Yii::t('app', 'Kewarganegaraan'),
                 'religion' => Yii::t('app', 'Agama'),
                 'gender' => Yii::t('app', 'Jenis Kelamin'),
@@ -92,7 +95,7 @@ class PpiModel extends Member
                 'hat_size' => Yii::t('app', 'Ukuran Topi'),
                 'membership_status' => Yii::t('app', 'Status Keanggotaan'),
                 'status_organization' => Yii::t('app', 'Status Organisasi'),
-                'identity_card' => Yii::t('app', 'Identity Card'),
+                'identity_card' => Yii::t('app', 'KTP'),
                 'identity_card_number' => Yii::t('app', 'Nomor KTP'),
                 'certificate_of_organization' => Yii::t('app', 'Sertifikat Organisasi'),
                 'names_recommended' => Yii::t('app', 'Nama Angkatan Yang merekomendasi'),
@@ -101,6 +104,7 @@ class PpiModel extends Member
                 'tribal_members' => Yii::t('app', 'Suku Bangsa'),
                 'brevetaward' => Yii::t('app', 'Brevet Penghargaan'),
                 'lifeskill' => Yii::t('app', 'Keterampilan Personal'),
+                'otherlifeskill' => Yii::t('app', 'Keterampilan Personal Lainnya'),
                 'languageskill' => Yii::t('app', 'Keterampilan Bahasa Asing'),
             ];
         }

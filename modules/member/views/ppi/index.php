@@ -23,17 +23,18 @@ $this->registerJs(
     . '$("select.opsi").select2({ allowClear: true, placeholder: "Tahun"});'
     . '$("select.save-status").select2({ allowClear: true, placeholder: "Tahun"});'
     . '$("select.action-bulk").select2({ allowClear: true, placeholder: "Tindakan Masal"});'
+    . "init.push(function () { $('td#birth-input input').datepicker({language:'id',format: 'dd MM yyyy'});});"
     , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
-        <?php echo Yii::t('app', 'Anda di sini:'); ?>
+        <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute('/dashboard/dashboard/index'); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute('/member/ppi/index'); ?>"><?php echo Yii::t('app', Html::encode('Anggota PPI')); ?></a>
+        <a href="<?= Url::toRoute(['/member/ppi/index', 'action' => 'member-ppi-list']); ?>"><?= Yii::t('app', Html::encode('Anggota PPI')); ?></a>
     </li>
 </ul>
 <div class="page-header">
@@ -46,8 +47,8 @@ $this->registerJs(
                 <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass}', [
-                    'modelClass' => 'Anggota',
-                ]), ['create'])
+                    'modelClass' => 'Anggota PPI',
+                ]), Url::toRoute(['/member/ppi/create', 'action' => 'member-ppi-create']))
                 ?>
             </h1>
         </div>
@@ -55,7 +56,7 @@ $this->registerJs(
             <div class="pull-right">
                 <?php
                 $form = ActiveForm::begin([
-                    'action' => ['/member/ppi/index'],
+                    'action' => ['/member/ppi/index', 'action' => 'member-ppi-list'],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [
@@ -81,7 +82,7 @@ $this->registerJs(
 <div class="col-sm-12">
 <?php
 $form = ActiveForm::begin([
-    'action' => ['/member/ppi/index'],
+    'action' => ['/member/ppi/index', 'action' => 'member-ppi-list'],
     'method' => 'get'
 ]);
 ?>
@@ -89,22 +90,22 @@ $form = ActiveForm::begin([
 GridView::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
-    'filterUrl' => ['/member/ppi/index'],
+    'filterUrl' => ['/member/ppi/index', 'action' => 'member-ppi-list'],
     'pager' => ['maxButtonCount' => 3],
     'tableOptions' => ['class' => 'table'],
     'layout' => Html::beginTag('div', ['class' => 'row'])
 
         . Html::beginTag('div', ['class' => 'col-xs-8'])
         . Html::beginTag('div', ['class' => 'form-inline'])
-        . Html::dropDownList('bulk_action1', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
+        . Html::dropDownList('bulk_action1', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_filtr1]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+        . Html::dropDownList('PpiSerch[year_filtr1]', '', PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_opsi]', null, ['Opsi','and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
+        . Html::dropDownList('PpiSerch[year_opsi]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_filtr2]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+        . Html::dropDownList('PpiSerch[year_filtr2]', '', PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[status_filtr1]', null, ['Status','Publish'=>'Publish','Draft'=>'Draft','Trash'=>'Trash'], ['class' => 'form-control save-status'])
+        . Html::dropDownList('PpiSerch[status_filtr1]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash','Pending'=>'Pending'], ['class' => 'form-control save-status'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
         . Html::endTag('div')
@@ -135,15 +136,15 @@ GridView::widget([
         . Html::beginTag('div', ['class' => 'row'])
         . Html::beginTag('div', ['class' => 'col-xs-8'])
         . Html::beginTag('div', ['class' => 'form-inline'])
-        . Html::dropDownList('bulk_action2', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
+        . Html::dropDownList('bulk_action2', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_filtr3]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+        . Html::dropDownList('PpiSerch[year_filtr3]', '', PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_opsi1]', null, ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
+        . Html::dropDownList('PpiSerch[year_opsi1]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[year_filtr4]', null, PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+        . Html::dropDownList('PpiSerch[year_filtr4]', '', PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[status_filtr2]', null, ['Status','Publish'=>'Publish','Draft'=>'Draft','Trash'=>'Trash'], ['class' => 'form-control save-status'])
+        . Html::dropDownList('PpiSerch[status_filtr2]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft','Trash' => 'Trash','Pending'=>'Pending'], ['class' => 'form-control save-status'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
         . Html::endTag('div')
@@ -168,26 +169,24 @@ GridView::widget([
         'nra',
         'name',
         'nickname',
-        //                'front_photo:ntext',
-        //                'side_photo',
+        [
+            'attribute' => 'birth',
+            'filterOptions' => ['id' => 'birth-input']
+        ],
+        'identity_card_number',
+        'age',
         'address',
-        'birth',
         [
-            'attribute' => 'taxonomy_id',
-            'value' => function ($data) {
-                    return $data->getAreaName();
-                }
+            'attribute' => 'gender',
+            'filterOptions' => ['id' => 'select-gender'],
+            'filter' => [
+                'Laki-Laki' => 'Laki-Laki',
+                'Perempuan' => 'Perempuan'
+            ]
         ],
-        [
-            'attribute' => 'school_id',
-            'value' => function ($data) {
-                    return $data->getSchollName();
-                }
-        ],
-        'nationality',
         [
             'attribute' => 'religion',
-            'filterOptions' => ['id'=>'select-religion'],
+            'filterOptions' => ['id' => 'select-religion'],
             'filter' => [
                 'Islam' => 'Islam',
                 'Katholik' => 'Katholik',
@@ -197,14 +196,62 @@ GridView::widget([
                 'Konghucu' => 'Konghucu'
             ]
         ],
+        'nationality',
         [
-            'attribute' => 'gender',
-            'filterOptions' => ['id'=>'select-gender'],
+            'attribute' => 'taxonomy_id',
+            'value' => function ($data) {
+                    return $data->getAreaName();
+                }
+        ],
+        'tribal_members',
+        [
+            'attribute' => 'school_id',
+            'value' => function ($data) {
+                    return $data->getSchollName();
+                }
+        ],
+
+        'zip_code',
+        [
+            'attribute' => 'blood_group',
             'filter' => [
-                'Laki-Laki' => 'Laki-Laki',
-                'Perempuan' => 'Perempuan'
+                'Golongan Darah O' => 'Golongan Darah O',
+                'Golongan Darah A' => 'Golongan Darah A',
+                'Golongan Darah B' => 'Golongan Darah B',
+                'Golongan Darah AB' => 'Golongan Darah AB'
             ]
         ],
+
+        [
+            'attribute' => 'brevetaward',
+            'label' => 'Brevet Penghargaan',
+        ],
+        'organizational_experience',
+        'illness',
+        'height_body',
+        'weight_body',
+        [
+            'attribute' => 'dress_size',
+            'filter' => [
+                'S' => 'S',
+                'M' => 'M',
+                'L' => 'L',
+                'XS' => 'XS',
+                'XL' => 'XL',
+                'XXL' => 'XXL',
+                'XXXL' => 'XXXL'
+            ]
+        ],
+        'pants_size',
+        'shoe_size',
+        'hat_size',
+        'membership_status',
+        'status_organization',
+        [
+            'attribute' => 'year',
+            'filter' => PpiSerch::getYears()
+        ],
+        'educational_status',
         [
             'attribute' => 'marital_status',
             'filter' => [
@@ -226,15 +273,10 @@ GridView::widget([
                 'Ibu Rumah Tangga' => 'Ibu Rumah Tangga'
             ]
         ],
-        [
-            'attribute' => 'blood_group',
-            'filter' => [
-                'Golongan Darah O' => 'O',
-                'Golongan Darah A' => 'A',
-                'Golongan Darah B' => 'B',
-                'Golongan Darah AB' => 'AB'
-            ]
-        ],
+        'email',
+        'phone_number',
+        'other_phone_number',
+        'relationship_phone_number',
         'father_name',
         'mother_name',
         'father_work',
@@ -244,47 +286,13 @@ GridView::widget([
         'number_of_brothers',
         'number_of_sisters',
         'number_of_children',
-        'educational_status',
-        'zip_code',
-        'phone_number',
-        'other_phone_number',
-        'relationship_phone_number',
-        'email:email',
-        'organizational_experience',
+        /** pause */
 
-        [
-            'attribute' => 'year',
-            'filter' => PpiSerch::getYears()
-        ],
-        'illness',
-        'height_body',
-        'weight_body',
-        [
-            'attribute' => 'dress_size',
-            'filter' => [
-                'S' => 'S',
-                'M' => 'M',
-                'L' => 'L',
-                'XS' => 'XS',
-                'XL' => 'XL',
-                'XXL' => 'XXL',
-                'XXXL' => 'XXXL'
-            ]
-        ],
-        'pants_size',
-        'shoe_size',
-        'hat_size',
-        'membership_status',
-        'status_organization',
-        //                'identity_card',
-        'identity_card_number',
-        //                'certificate_of_organization:ntext',
-        'names_recommended',
+//        'identity_card',
+//        'certificate_of_organization:ntext',
+//        'names_recommended',
         'note',
-        [
-            'attribute' => 'brevetaward',
-            'label' => 'Brevet Penghargaan',
-        ],
+
         [
             'attribute' => 'languageskill',
             'label' => 'Keterampilan Bahasa',
@@ -307,13 +315,16 @@ GridView::widget([
             'value' => function ($data) {
                     switch ($data->save_status) {
                         case 'Publish':
-                            return Html::tag('span', Html::tag('i', null, ['class' => 'fa  fa-check-circle-o']) . '&nbsp&nbsp' . $data->save_status, ['class' => 'badge badge-success']);
+                            return Html::tag('span', Html::tag('i', null, ['class' => 'fa  fa-check-circle-o']) . '&nbsp&nbsp' . $data->save_status, ['style' => 'width:120px', 'class' => 'badge badge-success']);
                             break;
                         case 'Draft':
-                            return Html::tag('span', Html::tag('i', null, ['class' => 'fa fa-bookmark-o']) . '&nbsp&nbsp' . $data->save_status, ['class' => 'badge badge-info']);
+                            return Html::tag('span', Html::tag('i', null, ['class' => 'fa fa-bookmark-o']) . '&nbsp&nbsp' . $data->save_status, ['style' => 'width: 120px', 'class' => 'badge badge-info']);
                             break;
                         case 'Trash':
-                            return Html::tag('span', Html::tag('i', null, ['class' => 'fa fa-trash-o']) . '&nbsp&nbsp' . $data->save_status, ['class' => 'badge badge-danger']);
+                            return Html::tag('span', Html::tag('i', null, ['class' => 'fa fa-trash-o']) . '&nbsp&nbsp' . $data->save_status, ['style' => 'width: 120px', 'class' => 'badge badge-danger']);
+                            break;
+                        case 'Pending':
+                            return Html::tag('span', Html::tag('i', null, ['class' => 'fa   fa-dot-circle-o']) . '&nbsp&nbsp' . $data->save_status, ['style' => 'width: 120px', 'class' => 'badge badge-warning']);
                             break;
                         case null;
                             break;
@@ -322,7 +333,8 @@ GridView::widget([
             'filter' => [
                 'Publish' => 'Publish',
                 'Draft' => 'Draft',
-                'Trash' => 'Trash'
+                'Trash' => 'Trash',
+                'Pending'=>'Pending'
             ]
         ],
 
@@ -331,20 +343,20 @@ GridView::widget([
             'header' => '<div class="text-center">Aksi</div>',
             'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}&nbsp{trash}</div>',
             'buttons' => [
-                'view' => function ($url) {
-                        return Html::a('<i class="fa fa-eye"></i>', [$url], [
+                'view' => function ($url, $data) {
+                        return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/member/ppi/view', 'action' => 'member-ppi-view', 'id' => $data->id]), [
                             'class' => 'btn btn-success btn-xs',
                             'title' => Yii::t('yii', 'Lihat Detail'),
                         ]);
                     },
-                'update' => function ($url) {
-                        return Html::a('<i class="fa fa-pencil"></i>', [$url], [
+                'update' => function ($url, $data) {
+                        return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/member/ppi/update", 'action' => 'member-ppi-update', 'id' => $data->id]), [
                             'class' => 'btn btn-primary btn-xs',
                             'title' => Yii::t('yii', 'Memperbarui'),
                         ]);
                     },
-                'delete' => function ($url) {
-                        return Html::a('<i class="fa   fa-times"></i>', [$url], [
+                'delete' => function ($url, $data) {
+                        return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/member/ppi/delete", 'action' => 'member-ppi-delete', 'id' => $data->id]), [
                             'class' => 'btn btn-danger btn-xs',
                             'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
                             'data-method' => 'post',
@@ -352,8 +364,8 @@ GridView::widget([
                             'title' => Yii::t('yii', 'Hapus'),
                         ]);
                     },
-                'trash' => function ($url) {
-                        return Html::a('<i class="fa  fa-trash-o"></i>', [$url], [
+                'trash' => function ($url, $data) {
+                        return Html::a('<i class="fa  fa-trash-o"></i>', Url::toRoute(['/member/ppi/trash', 'action' => 'member-ppi-trash', 'id' => $data->id]), [
                             'class' => 'btn btn-warning btn-xs',
                             'data-confirm' => 'Apakah Anda yakin ingin membuang ke tong sampah?',
                             'data-method' => 'post',
@@ -366,6 +378,9 @@ GridView::widget([
     ],
 ]);
 ?>
-<?php ActiveForm::end(); ?>
+<?php 
+
+ActiveForm::end(); 
+?>
 </div>
 </div>

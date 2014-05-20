@@ -1,4 +1,5 @@
 <?php
+
 use Yii;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -8,26 +9,25 @@ use yii\web\View;
  * @var yii\web\View $this
  * @var app\modules\dao\ar\Member $model
  */
-
 $this->title = $model->name;
 $this->registerJsFile('PixelAdmin/js/jquery.2.0.3.min.js', [], ['position' => View::POS_HEAD]);
 $this->registerJs(
-    "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#ppi').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
-    , View::POS_READY);
+        "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#ppi').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
+        , View::POS_READY);
 ?>
 
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
-        <?php echo Yii::t('app', 'Anda di sini:'); ?>
+        <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute('/dashboard/dashboard/index'); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute('/member/ppi/index'); ?>"><?php echo Yii::t('app', Html::encode('Anggota')); ?></a>
+        <a href="<?= Url::toRoute(['/member/ppi/index', 'action' => 'member-ppi-list']); ?>"><?= Yii::t('app', Html::encode('Anggota')); ?></a>
     </li>
     <li class="active">
-        <?php echo Yii::t('app', 'Lihat Detail') . ' : ' . $this->title; ?>
+        <?= Yii::t('app', 'Lihat Detail') . ' : ' . $this->title; ?>
     </li>
 </ul>
 <div class="page-header">
@@ -40,8 +40,8 @@ $this->registerJs(
                 <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
-                    'modelClass' => 'Anggota',
-                ]), ['create'])
+                            'modelClass' => 'Anggota',
+                        ]), Url::toRoute(['/member/ppi/create', 'action' => 'member-ppi-create']))
                 ?>
             </h1>
         </div>
@@ -53,239 +53,181 @@ $this->registerJs(
 
 
 <div class="row">
-<div class="col-sx-12 col-sm-3 text-center">
+    <div class="col-sx-12 col-sm-3 text-center">
         <span class="profile-picture">
             <?=
-            Html::img(Yii::getAlias('@web') . '/resources/member/' . $model->front_photo, ['id' => 'avatar', 'class' => 'editable img-responsive', 'alt' => $model->name]);
+            Html::img(Yii::getAlias('@web') . '/resources/member/thumbnail/' . $model->front_photo, ['id' => 'avatar', 'class' => 'editable img-responsive', 'alt' => $model->name]);
             ?>
-		</span>
+        </span>
 
 
-    <div class="space-4"></div>
-    <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
-        <div class="inline position-relative">
-            <i class="fa fa-circle-o"></i>
-            <?= $model->name; ?>
-        </div>
-    </div>
-    <div class="space-8"></div>
-    <div class="profile-contact-info">
-        <div class="profile-contact-links align-left">
-            <?= Html::a('<i class="fa  fa-pencil"></i>&nbsp;&nbsp;' . Yii::t('app', 'Ubah'), ['update', 'id' => $model->id], ['class' => '']) ?>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <?=
-            Html::a('<i class="fa  fa-trash-o"></i>&nbsp;&nbsp;' . Yii::t('app', 'Hapus'), ['delete', 'id' => $model->id], [
-                'data' => [
-                    'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
-                    'data-method' => 'post',
-                    'data-pjax' => 0,
-                    'title' => Yii::t('yii', 'Hapus'),
-                ],
-            ])
-            ?>
-        </div>
-    </div>
-</div>
-<div class="col-sx-12 col-sm-9">
-    <div class="profile-user-info">
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'NRA') ?></div>
-            <div class="profile-info-value">
-                <span><?= $model->nra ?></span>
+        <div class="space-4"></div>
+        <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+            <div class="inline position-relative">
+                <i class="fa fa-circle-o"></i>
+                <?= $model->name; ?>
             </div>
         </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'Nama Lengkap') ?></div>
-            <div class="profile-info-value">
-                <span>
-                     <?= $model->name; ?>
-                </span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'Nama Panggilan') ?></div>
-            <div class="profile-info-value">
-                <span><?= $model->nickname ?></span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'Jenis Kelamin') ?></div>
-            <div class="profile-info-value">
-                <span><?= $model->gender ?></span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'Agama') ?></div>
-            <div class="profile-info-value">
-                <span><?= $model->religion ?></span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'Status Perkawinan') ?></div>
-            <div class="profile-info-value">
-                <span><?= $model->marital_status ?></span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'Kelahiran') ?></div>
-            <div class="profile-info-value">
-                <span><?= $model->birth ?></span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> Umur</div>
-            <div class="profile-info-value">
-                <span>Belum di load</span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'Kebangsaan') ?> </div>
-            <div class="profile-info-value">
-                <i class="fa fa-map-marker"></i>
-                &nbsp;
-                <span><?= $model->nationality ?></span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'Asal Daerah') ?></div>
-            <div class="profile-info-value">
-                <span><?= $model->getAreaName() ?></span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'Asal Sekolah') ?></div>
-            <div class="profile-info-value">
-                <span><?= $model->getSchollName() ?></span>
-            </div>
-        </div>
-
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> <?= Yii::t('app', 'Terdaftar') ?></div>
-            <div class="profile-info-value">
-                <i class="fa fa-calendar"></i>
-                &nbsp;
-                <span><?= $model->create_et ?></span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name">Login terakhir</div>
-            <div class="profile-info-value">
-                <span>3 hours ago</span>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name"> Website</div>
-
-            <div class="profile-info-value">
-                <a href="profile.html#" target="_blank">www.alexdoe.com</a>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name">
-                <i class="fa fa-facebook"></i>
-            </div>
-
-            <div class="profile-info-value">
-                <a href="profile.html#">Find me on Facebook</a>
-            </div>
-        </div>
-
-        <div class="profile-info-row">
-            <div class="profile-info-name">
-                <i class="fa fa-twitter"></i>
-            </div>
-
-            <div class="profile-info-value">
-                <a href="profile.html#">Follow me on Twitter</a>
+        <div class="space-8"></div>
+        <div class="profile-contact-info">
+            <div class="profile-contact-links align-left">
+                <?= Html::a('<i class="fa  fa-pencil"></i>&nbsp;&nbsp;' . Yii::t('app', 'Ubah'), Url::toRoute(['/member/ppi/update', 'action' => 'member-ppi-update', 'id' => $model->id]), ['class' => '']) ?>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <?=
+                Html::a('<i class="fa  fa-trash-o"></i>&nbsp;&nbsp;' . Yii::t('app', 'Hapus'), ['delete', 'id' => $model->id], [
+                    'data' => [
+                        'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
+                        'data-method' => 'post',
+                        'data-pjax' => 0,
+                        'title' => Yii::t('yii', 'Hapus'),
+                    ],
+                ])
+                ?>
             </div>
         </div>
     </div>
-    <?php
-    /**DetailView::widget([
-     * 'model' => $model,
-     * 'attributes' => [
-     * 'id',
-     * 'taxonomy_id',
-     * 'school_id',
-     * 'user_id',
-     * 'nra',
-     * 'name',
-     * 'nickname',
-     * 'front_photo:ntext',
-     * 'side_photo:ntext',
-     * 'address',
-     * 'birth',
-     * 'nationality',
-     * 'religion',
-     * 'gender',
-     * 'age',
-     * 'marital_status',
-     * 'job',
-     * 'income_member',
-     * 'blood_group',
-     * 'father_name',
-     * 'mother_name',
-     * 'father_work',
-     * 'mother_work',
-     * 'income_father',
-     * 'income_mothers',
-     * 'number_of_brothers',
-     * 'number_of_sisters',
-     * 'number_of_children',
-     * 'educational_status',
-     * 'zip_code',
-     * 'phone_number',
-     * 'other_phone_number',
-     * 'relationship_phone_number',
-     * 'email:email',
-     * 'organizational_experience',
-     * 'year',
-     * 'illness',
-     * 'height_body',
-     * 'weight_body',
-     * 'dress_size',
-     * 'pants_size',
-     * 'shoe_size',
-     * 'hat_size',
-     * 'brevetaward',
-     * 'lifeskill',
-     * 'languageskill',
-     * 'membership_status',
-     * 'status_organization',
-     * 'type_member',
-     * 'tribal_members',
-     * 'identity_card:ntext',
-     * 'certificate_of_organization:ntext',
-     * 'identity_card_number',
-     * 'names_recommended',
-     * 'note',
-     * 'other_content:ntext',
-     * 'save_status',
-     * 'create_et',
-     * 'update_et',
-     * ],
-     * ])*/
-    ?>
+    <div class="col-sx-12 col-sm-9">
+        <div class="panel">
+            <div class="panel-body">
+                <div class="profile-user-info">
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'NRA') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->nra ?></span>
+                        </div>
+                    </div>
 
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Nama Lengkap') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->name; ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Nama Panggilan') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->nickname ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Kelahiran') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->birth ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> Umur</div>
+                        <div class="profile-info-value">
+                            <span><?= $model->age ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> Alamat Lengkap</div>
+                        <div class="profile-info-value">
+                            <span><?= $model->address ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Jenis Kelamin') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->gender ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Agama') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->religion ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Kebangsaan') ?> </div>
+                        <div class="profile-info-value">
+                            <i class="fa fa-map-marker"></i>
+                            &nbsp;
+                            <span><?= $model->nationality ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Asal Daerah') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->getAreaName() ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Nomor KTP') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->identity_card_number ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Asal Sekolah') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->getSchollName() ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Suku Bangsa') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->tribal_members ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Brevet Penghargaan') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->brevetaward ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Status Perkawinan') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->organizational_experience ?></span>
+                        </div>
+                    </div>
+
+
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Terdaftar') ?></div>
+                        <div class="profile-info-value">
+                            <i class="fa fa-calendar"></i>
+                            &nbsp;
+                            <span><?= $model->create_et ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Diperbaharui') ?></div>
+                        <div class="profile-info-value">
+                            <i class="fa fa-calendar"></i>
+                            &nbsp;
+                            <span><?= $model->update_et ?></span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 </div>
-</div>
 
 
-<div class="space-20"></div>
+<div class="space-10"></div>
 
 <div class="row">
     <div class="col-xs-12 col-sm-6">

@@ -2,7 +2,9 @@
 
 namespace app\modules\member;
 
+use yii\base\BootstrapInterface;
 use yii\base\Module;
+use yii\web\GroupUrlRule;
 
 define('MEMBER_SKILL', 1);
 define('MEMBER_LANG_SKILL', 2);
@@ -16,7 +18,12 @@ define('MEMBER_TYPE_PPI', 'PPI');
 define('MEMBER_TYPE_PASKIBRA', 'Paskibra');
 define('MEMBER_TYPE_CAPAS', 'Capas');
 
-class Member extends Module
+define('MEMBER_TRASH_STATUS', 'Trash');
+define('MEMBER_PUBLISH_STATUS', 'Publish');
+define('MEMBER_DRAFT_STATUS', 'Draft');
+define('MEMBER_PENDING_STATUS', 'Pending');
+
+class Member extends Module implements BootstrapInterface
 {
     public $controllerNamespace = 'app\modules\member\controllers';
 
@@ -28,5 +35,20 @@ class Member extends Module
         // custom initialization code goes here
     }
 
+    public function bootstrap($app)
+    {
+        $app->getUrlManager()->addRules([
+            'dashboard/member/ppi/index/<action:(member-ppi-list)>' => 'member/ppi/index',
+            'dashboard/member/ppi/create/<action:(member-ppi-create)>' => '/member/ppi/create',
+            'dashboard/member/ppi/update/<action:(member-ppi-update)>/<id:.*?>' => '/member/ppi/update',
+            'dashboard/member/ppi/delete/<action:(member-ppi-delete)>/<id:.*?>' => '/member/ppi/delete',
+            'dashboard/member/ppi/trash/<action:(member-ppi-trash)>/<id:.*?>' => '/member/ppi/trash',
+            'dashboard/member/ppi/view/<action:(member-ppi-view)>/<id:.*?>' => '/member/ppi/view',
+            
+            'dashboard/member/brevetaward/index/<action:(member-brevet-list)>' => '/member/brevetaward/index',
+        ], false);
+
+
+    }
 
 }
