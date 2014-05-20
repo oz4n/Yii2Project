@@ -10,8 +10,8 @@ use Yii;
  * @property integer $user_log_id
  * @property integer $taxonomy_id
  *
- * @property Taxonomy $taxonomy
  * @property UserLog $userLog
+ * @property Taxonomy $taxonomy
  */
 class Taxuserlogrelations extends \yii\db\ActiveRecord
 {
@@ -48,16 +48,16 @@ class Taxuserlogrelations extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTaxonomy()
+    public function getUserLog()
     {
-        return $this->hasOne(Taxonomy::className(), ['id' => 'taxonomy_id']);
+        return $this->hasOne(UserLog::className(), ['id' => 'user_log_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserLog()
+    public function getTaxonomy()
     {
-        return $this->hasOne(UserLog::className(), ['id' => 'user_log_id']);
+        return $this->hasOne(Taxonomy::className(), ['id' => 'taxonomy_id']);
     }
 }

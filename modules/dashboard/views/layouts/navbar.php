@@ -230,6 +230,7 @@ use Yii;
                             <a href="pages-blank.html#" class="dropdown-toggle user-menu" data-toggle="dropdown">
                                 <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/1.jpg" alt="">
                                 <span><?= Yii::$app->user->identity->username ?></span>
+                                <span><?= Yii::$app->user->identity->getId() ?></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="pages-blank.html#">Profile <span class="label label-warning pull-right">new</span></a></li>

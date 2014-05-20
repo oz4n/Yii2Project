@@ -5,21 +5,21 @@ use Yii;
 
 /** @var \yii\web\View $this */
 ?>
-<div id="main-menu" role="navigation" >
+<div id="main-menu" role="navigation">
     <div id="main-menu-inner">
-        <!--        <div class="menu-content top" id="menu-content-demo">           
-                    <div>
-                        <div class="text-bg"><span class="text-semibold">ozan rock</span></div>
-        
-                        <img src="<?php //echo Yii::getAlias('@web');        ?>/PixelAdmin/img/avatars/1.jpg" alt="" class="">
-                        <div class="btn-group">                    
-                            <a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-user"></i></a>
-                            <a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-cog"></i></a>
-                            <a href="#" class="btn btn-xs btn-danger btn-outline dark"><i class="fa fa-power-off"></i></a>
-                        </div>
-                        <a href="#" class="close">&times;</a>
-                    </div>            
-                </div>  -->
+        <!--        <div class="menu-content top" id="menu-content-demo">
+                            <div>
+                                <div class="text-bg"><span class="text-semibold">ozan rock</span></div>
+                
+                                <img src="<?php //echo Yii::getAlias('@web');           ?>/PixelAdmin/img/avatars/1.jpg" alt="" class="">
+                                <div class="btn-group">                    
+                                    <a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-user"></i></a>
+                                    <a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-cog"></i></a>
+                                    <a href="#" class="btn btn-xs btn-danger btn-outline dark"><i class="fa fa-power-off"></i></a>
+                                </div>
+                                <a href="#" class="close">&times;</a>
+                            </div>            
+                        </div>  -->
         <?php
         echo Sidebar::widget([
             'options' => ['class' => 'navigation'],
@@ -50,7 +50,7 @@ use Yii;
                             'items' => [
                                 [
                                     'label' => 'PPI',
-                                    'url' => ['/member/ppi/index'],
+                                    'url' => ['/member/ppi/index', 'action' => 'member-ppi-list'],
                                     'icon' => 'menu-icon fa fa-angle-double-right',
                                     'options' => [
                                         'id' => 'ppi'
@@ -76,7 +76,7 @@ use Yii;
                         ],
                         [
                             'label' => 'Brevet Penghargaan',
-                            'url' => ['/member/brevetaward/index'],
+                            'url' => ['/member/brevetaward/index', 'action' => 'member-brevet-list'],
                             'icon' => 'menu-icon fa fa-angle-double-right',
                             'options' => [
                                 'id' => 'appreciation'
@@ -156,6 +156,23 @@ use Yii;
                     ]
                 ],
                 [
+                    'label' => 'File Manager',
+                    'url' => ['#'],
+                    'icon' => 'menu-icon fa fa-briefcase',
+                    'items' => [
+                        [
+                            'label' => 'Gambar',
+                            'url' => ["/filemanager/image/index", "action" => "filemanager-image-list"],
+                            'icon' => 'menu-icon fa fa-angle-double-right'
+                        ],
+                        [
+                            'label' => 'Dokument',
+                            'url' => ["/filemanager/document/index", "action" => "filemanager-document-list"],
+                            'icon' => 'menu-icon fa fa-angle-double-right'
+                        ],
+                    ]
+                ],
+                [
                     'label' => 'Tampilan',
                     'url' => ['#'],
                     'icon' => 'menu-icon fa fa-leaf',
@@ -183,9 +200,30 @@ use Yii;
                     'icon' => 'menu-icon fa   fa-comments-o'
                 ],
                 [
-                    'label' => 'Akun',
+                    'label' => 'Pengguna',
                     'url' => ['#'],
-                    'icon' => 'menu-icon fa fa-users'
+                    'icon' => 'menu-icon fa fa-users',
+                    'options' => [
+                        'id' => 'user'
+                    ],
+                    'items' => [
+                        [
+                            'label' => 'Akun',
+                            'url' => '#',
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'account'
+                            ]
+                        ],
+                        [
+                            'label' => 'Log Akun',
+                            'url' => ['/userlog/userlog/index', 'action' => 'user-log-list'],
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'log-account'
+                            ]
+                        ]
+                    ]
                 ],
             ],
         ]);
@@ -193,8 +231,8 @@ use Yii;
         <div class="menu-content">
 
         </div>
-    </div> 
+    </div>
     <!-- / #main-menu-inner -->
-</div> 
+</div>
 <!-- / #main-menu -->
 

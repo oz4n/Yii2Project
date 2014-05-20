@@ -33,14 +33,18 @@ class DashboardAsset extends AssetBundle
         'PixelAdmin/css/label.css',
         'PixelAdmin/css/space.css',
         'PixelAdmin/css/widget-box.css',
+        'PixelAdmin/css/thumbnail.css',
     ];
+   
     public $js = [
         /**
          * JS Global Compulsory
          */
 //        'PixelAdmin/js/jquery.2.0.3.min.js',
         'PixelAdmin/js/bootstrap.min.js',
-        'PixelAdmin/js/pixel-admin.min.js',      
+        'PixelAdmin/js/pixel-admin.min.js',
+        'PixelAdmin/js/bootstrap-datepicker.js',
+        'PixelAdmin/js/bootstrap-datepicker.id.js',
     ];
 
 }
