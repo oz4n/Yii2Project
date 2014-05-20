@@ -2,8 +2,9 @@
 
 namespace app\modules\userlog\controllers;
 
+
 use Yii;
-use app\modules\dao\ar\UserLog;
+use app\modules\userlog\models\UserLogModel;
 use app\modules\userlog\searchs\UserLogSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -34,7 +35,9 @@ class UserlogController extends Controller
     {
         $searchModel = new UserLogSerch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
+        if ((Yii::$app->request->get('bulk_action1') == 'delete' || Yii::$app->request->get('bulk_action2') == 'delete')) {
+            $this->deleteAll(Yii::$app->request->get('selection'));
+        }
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -60,7 +63,7 @@ class UserlogController extends Controller
      */
     public function actionCreate()
     {
-        $model = new UserLog;
+        $model = new UserLogModel;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -100,7 +103,24 @@ class UserlogController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'action' => 'user-log-list']);
+    }
+
+    /**
+     * @param array $data
+     * @return \yii\web\Response
+     */
+    protected function deleteAll($data)
+    {
+        if (null != $data) {
+            foreach ($data as $id) {
+                $model = $this->findModel($id);
+                $model->delete();
+            }
+            return $this->redirect(['index', 'action' => 'user-log-list']);
+        } else {
+            return $this->redirect(['index', 'action' => 'user-log-list']);
+        }
     }
 
     /**
@@ -112,10 +132,12 @@ class UserlogController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = UserLog::findOne($id)) !== null) {
+        if (($model = UserLogModel::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+
 }

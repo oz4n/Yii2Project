@@ -21,21 +21,43 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'user_id') ?>
 
-    <?= $form->field($model, 'create_at') ?>
+    <?= $form->field($model, 'user_ip') ?>
 
-    <?= $form->field($model, 'url') ?>
+    <?= $form->field($model, 'title') ?>
 
     <?= $form->field($model, 'content') ?>
 
+    <?php // echo $form->field($model, 'absolute_url') ?>
+
+    <?php // echo $form->field($model, 'usera_gent') ?>
+
+    <?php // echo $form->field($model, 'action_method') ?>
+
+    <?php // echo $form->field($model, 'platform') ?>
+
     <?php // echo $form->field($model, 'contry') ?>
 
-    <?php // echo $form->field($model, 'ip_address') ?>
+    <?php // echo $form->field($model, 'country_code') ?>
 
-    <?php // echo $form->field($model, 'sistem_oprasi') ?>
+    <?php // echo $form->field($model, 'region') ?>
 
     <?php // echo $form->field($model, 'city') ?>
 
+    <?php // echo $form->field($model, 'zip_code') ?>
+
     <?php // echo $form->field($model, 'browser') ?>
+
+    <?php // echo $form->field($model, 'browser_version') ?>
+
+    <?php // echo $form->field($model, 'latitude') ?>
+
+    <?php // echo $form->field($model, 'longitude') ?>
+
+    <?php // echo $form->field($model, 'time_zone') ?>
+
+    <?php // echo $form->field($model, 'create_at') ?>
+
+    <?php // echo $form->field($model, 'update_et') ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
