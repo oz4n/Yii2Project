@@ -2,14 +2,18 @@
 
 namespace app\modules\member\controllers;
 
+define("DS", DIRECTORY_SEPARATOR);
+
+
 use Yii;
-use app\modules\member\models\PpiModel;
-use app\modules\member\searchs\PpiSerch;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\member\models\LifeSkillModel;
+use app\modules\filemanager\librarys\Image;
+use app\modules\member\models\PpiModel;
+use app\modules\member\searchs\PpiSerch;
 
 /**
  * PpiController implements the CRUD actions for PpiModel model.
@@ -23,6 +27,24 @@ class PpiController extends Controller
     public $brevetaward;
     public $other_skill;
     public $otherlifeskillid;
+
+    public $path;
+    public $original;
+    public $certificate;
+    public $identitycard;
+    public $frontphoto;
+    public $sidephoto;
+
+    public function init()
+    {
+        $this->path = Yii::$app->getBasePath() . DS . 'web' . DS . 'resources' . DS . 'images' . DS;
+        $this->original = $this->path . 'original' . DS;
+        $this->frontphoto = $this->path . 'member' . DS . 'frontphoto' . DS;
+        $this->sidephoto = $this->path . 'member' . DS . 'sidephoto' . DS;
+        $this->certificate = $this->path . 'member' . DS . 'certificate' . DS;
+        $this->identitycard = $this->path . 'member' . DS . 'identitycard' . DS;
+        parent::init();
+    }
 
     public function behaviors()
     {
@@ -51,8 +73,8 @@ class PpiController extends Controller
             $this->trashAll(Yii::$app->request->get('selection'));
         }
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
@@ -64,7 +86,7 @@ class PpiController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -84,60 +106,63 @@ class PpiController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
             $form = Yii::$app->request->post('PpiModel');
-            $langskill = $form['language_skill'];
-            $lifeskill = $form['life_skill'];
-            $otherlifeskill = $form['otherlifeskill'];
-            $brevetaward = $form['brevet_award'];
+            $this->langskill = $form['language_skill'];
+            $this->lifeskill = $form['life_skill'];
+            $this->otherlifeskill = $form['otherlifeskill'];
+            $this->brevetaward = $form['brevet_award'];
 
+            $this->copyProntPhoto($form['front_photo']);
+            $this->copySidePhoto($form['side_photo']);
+            $this->copyCertificatePhoto($form['certificate_of_organization']);
+            $this->copyIdentityCardPhoto($form['identity_card']);
 
-            $other_skill = '';
-            if (null != $otherlifeskill) {
-                $life = $this->saveOtherLifeSkill($otherlifeskill);
-                $other_skill = [$otherlifeskill];
-                $other_skill_id = [(count($lifeskill) + 1) => $this->otherlifeskillid];
-                array_push($lifeskill, $other_skill_id[(count($lifeskill) + 1)]);
+            if (null != $this->otherlifeskill) {
+                $this->saveOtherLifeSkill($this->otherlifeskill);
+                $this->other_skill = [$this->otherlifeskill];
+                $other_skill_id = [(count($this->lifeskill) + 1) => $this->otherlifeskillid];
+                array_push($this->lifeskill, $other_skill_id[(count($this->lifeskill) + 1)]);
             }
 
-            if (null != $langskill) {
-                $data_lang = $model->getAllLangSkillNameById($langskill);
+            if (null != $this->langskill) {
+                $data_lang = $model->getAllLangSkillNameById($this->langskill);
                 $model->setAttribute('languageskill', implode(', ', $data_lang));
             }
 
-            if (null != $lifeskill) {
-                $data_skill = $model->getAllSkillNameById($lifeskill);
-                if (isset($other_skill[0])) {
-                    array_push($data_skill, $other_skill[0]);
+            if (null != $this->lifeskill) {
+                $data_skill = $model->getAllSkillNameById($this->lifeskill);
+                if (isset($this->other_skill[0])) {
+                    array_push($data_skill, $this->other_skill[0]);
                 }
                 $model->setAttribute('lifeskill', implode(', ', $data_skill));
             }
 
 
-            if (null != $brevetaward) {
-                $data_brevet = $model->getAllBrevetNameById($brevetaward);
+            if (null != $this->brevetaward) {
+                $data_brevet = $model->getAllBrevetNameById($this->brevetaward);
                 $model->setAttribute('brevetaward', implode(', ', $data_brevet));
             }
             if ($model->save()) {
-                if (null !== $lifeskill) {
-                    $model->saveTaxRelation($lifeskill, $model->id);
+                if (null != $this->lifeskill) {
+                    $model->saveTaxRelation($this->lifeskill, $model->id);
                 }
 
-                if (null != $langskill) {
-                    $model->saveTaxRelation($langskill, $model->id);
+                if (null != $this->langskill) {
+                    $model->saveTaxRelation($this->langskill, $model->id);
                 }
 
-                if (null != $brevetaward) {
-                    $model->saveTaxRelation($brevetaward, $model->id);
+                if (null != $this->brevetaward) {
+                    $model->saveTaxRelation($this->brevetaward, $model->id);
                 }
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'action' => 'member-ppi-view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
 
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -154,59 +179,61 @@ class PpiController extends Controller
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         $model->setAttribute('user_id', Yii::$app->user->identity->getId());
         if ($model->load(Yii::$app->request->post())) {
-
             $form = Yii::$app->request->post('PpiModel');
-            $langskill = $form['language_skill'];
-            $lifeskill = $form['life_skill'];
-            $otherlifeskill = $form['otherlifeskill'];
-            $brevetaward = $form['brevet_award'];
+            $this->langskill = $form['language_skill'];
+            $this->lifeskill = $form['life_skill'];
+            $this->otherlifeskill = $form['otherlifeskill'];
+            $this->brevetaward = $form['brevet_award'];
 
+            $this->copyProntPhoto($form['front_photo']);
+            $this->copySidePhoto($form['side_photo']);
+            $this->copyCertificatePhoto($form['certificate_of_organization']);
+            $this->copyIdentityCardPhoto($form['identity_card']);
 
-            $other_skill = '';
-            if (null != $otherlifeskill) {
-                $life = $this->saveOtherLifeSkill($otherlifeskill);
-                $other_skill = [$otherlifeskill];
-                $other_skill_id = [(count($lifeskill) + 1) => $this->otherlifeskillid];
-                array_push($lifeskill, $other_skill_id[(count($lifeskill) + 1)]);
+            if (null != $this->otherlifeskill) {
+                $this->saveOtherLifeSkill($this->otherlifeskill);
+                $this->other_skill = [$this->otherlifeskill];
+                $other_skill_id = [(count($this->lifeskill) + 1) => $this->otherlifeskillid];
+                array_push($this->lifeskill, $other_skill_id[(count($this->lifeskill) + 1)]);
             }
 
-            if (null != $brevetaward) {
-                $data_brevet = $model->getAllBrevetNameById($brevetaward);
+            if (null != $this->brevetaward) {
+                $data_brevet = $model->getAllBrevetNameById($this->brevetaward);
                 $model->setAttribute('brevetaward', implode(', ', $data_brevet));
             }
 
 
-            if (null != $langskill) {
-                $data_lang = $model->getAllLangSkillNameById($langskill);
+            if (null != $this->langskill) {
+                $data_lang = $model->getAllLangSkillNameById($this->langskill);
                 $model->setAttribute('languageskill', implode(', ', $data_lang));
             }
 
-            if (null != $lifeskill) {
-                $data_skill = $model->getAllSkillNameById($lifeskill);
-                if (isset($other_skill[0])) {
-                    array_push($data_skill, $other_skill[0]);
+            if (null != $this->lifeskill) {
+                $data_skill = $model->getAllSkillNameById($this->lifeskill);
+                if (isset($this->other_skill[0])) {
+                    array_push($data_skill, $this->other_skill[0]);
                 }
                 $model->setAttribute('lifeskill', implode(', ', $data_skill));
             }
 
             if ($model->save()) {
 
-                if (null != $lifeskill) {
-                    $model->saveTaxRelation($lifeskill, $model->id);
+                if (null != $this->lifeskill) {
+                    $model->saveTaxRelation($this->lifeskill, $model->id);
                 } else {
                     $data = ArrayHelper::map($model->getTaxonomiesBySkill()->all(), 'id', 'id');
                     $model->deleteAllTaxRelationByMemberId($data, $model->id);
                 }
 
-                if (null != $langskill) {
-                    $model->saveTaxRelation($langskill, $model->id);
+                if (null != $this->langskill) {
+                    $model->saveTaxRelation($this->langskill, $model->id);
                 } else {
                     $data = ArrayHelper::map($model->getTaxonomiesByLangSkill()->all(), 'id', 'id');
                     $model->deleteAllTaxRelationByMemberId($data, $model->id);
                 }
 
-                if (null != $brevetaward) {
-                    $model->saveTaxRelation($brevetaward, $model->id);
+                if (null != $this->brevetaward) {
+                    $model->saveTaxRelation($this->brevetaward, $model->id);
                 } else {
                     $data = ArrayHelper::map($model->getTaxonomiesByBrevet()->all(), 'id', 'id');
                     $model->deleteAllTaxRelationByMemberId($data, $model->id);
@@ -215,12 +242,12 @@ class PpiController extends Controller
                 return $this->redirect(['view', 'action' => 'member-ppi-view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
             return $this->render('update', [
-                        'model' => $model
+                'model' => $model
             ]);
         }
     }
@@ -242,10 +269,6 @@ class PpiController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        $this->deleteMemberImage($model->front_photo);
-        $this->deleteMemberImage($model->side_photo);
-        $this->deleteMemberImage($model->identity_card);
-        $this->deleteMemberImage($model->certificate_of_organization);
         $model->delete();
         return $this->redirect(['index', 'action' => 'member-ppi-list']);
     }
@@ -274,10 +297,6 @@ class PpiController extends Controller
 
             foreach ($data as $id) {
                 $model = $this->findModel($id);
-                $this->deleteMemberImage($model->front_photo);
-                $this->deleteMemberImage($model->side_photo);
-                $this->deleteMemberImage($model->identity_card);
-                $this->deleteMemberImage($model->certificate_of_organization);
                 $model->delete();
             }
             return $this->redirect(['index', 'action' => 'member-ppi-list']);
@@ -302,12 +321,67 @@ class PpiController extends Controller
         }
     }
 
-    protected function deleteMemberImage($img)
+    protected function copyProntPhoto($name)
     {
-        $path = Yii::$app->getBasePath() . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'member' . DIRECTORY_SEPARATOR;
-        $thumb_path = $path . DIRECTORY_SEPARATOR . 'thumbnail' . DIRECTORY_SEPARATOR;
-        unlink($path . $img);
-        unlink($thumb_path . $img);
+        if (null != $name) {
+//            return \yii\imagine\Image::thumbnail($this->original . $name, 215, 300)
+//            ->save($this->frontphoto . $name , ['quality' => 100]);
+            $img = new Image();
+            return $img->adaptiveResize($this->original . $name, $this->frontphoto . $name, 215, 300);
+        }
+    }
+
+    protected function copySidePhoto($name)
+    {
+        if (null != $name) {
+//            return \yii\imagine\Image::thumbnail($this->original . $name, 215, 300)
+//                ->save($this->sidephoto . $name, ['quality' => 100]);
+            $img = new Image();
+            return $img->adaptiveResize($this->original . $name, $this->sidephoto . $name, 215, 300);
+        }
+    }
+
+    protected function copyCertificatePhoto($name)
+    {
+        if (null != $name) {
+            return copy($this->original . $name, $this->certificate . $name);
+        }
+    }
+
+    protected function copyIdentityCardPhoto($name)
+    {
+        if (null != $name) {
+            return copy($this->original . $name, $this->identitycard . $name);
+        }
+    }
+
+
+    protected function deleteProntPhoto($name)
+    {
+        if (null != $name) {
+            return unlink($this->frontphoto . $name);
+        }
+    }
+
+    protected function deleteSidePhoto($name)
+    {
+        if (null != $name) {
+            return unlink($this->sidephoto . $name);
+        }
+    }
+
+    protected function deleteCertificatePhoto($name)
+    {
+        if (null != $name) {
+            return unlink($this->certificate . $name);
+        }
+    }
+
+    protected function deleteIdentityCardPhoto($name)
+    {
+        if (null != $name) {
+            return unlink($this->identitycard . $name);
+        }
     }
 
     protected function saveOtherLifeSkill($otherlifeskill)

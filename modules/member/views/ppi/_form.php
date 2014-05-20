@@ -323,7 +323,7 @@ $form = ActiveForm::begin([
                             </div>
                             <div class="dz-thumbnail-wrapper">
                                 <div class="dz-thumbnail" style="width: 265px; height: 170px;">
-                                    <img id="img-target-photo" src="<?php echo $model->front_photo == null ? "" : Yii::getAlias('@web') . "/resources/member/thumbnail/" . $model->front_photo; ?>" data-dz-thumbnail="" style="max-height: 202px;">
+                                    <img id="img-target-photo" src="<?php echo $model->front_photo == null ? "" : Yii::getAlias('@web') . "/resources/images/member/frontphoto/" . $model->front_photo; ?>" data-dz-thumbnail="" style="max-height: 202px;">
                                 </div>
                             </div>
                         </div>                        
@@ -357,7 +357,7 @@ $form = ActiveForm::begin([
                             </div>
                             <div class="dz-thumbnail-wrapper">
                                 <div class="dz-thumbnail" style="width: 265px; height: 170px;">
-                                    <img id="img-target-photo" src="<?php echo $model->side_photo == null ? "" : Yii::getAlias('@web') . "/resources/member/thumbnail/" . $model->side_photo; ?>" data-dz-thumbnail="" style="max-height: 202px;">
+                                    <img id="img-target-photo" src="<?php echo $model->side_photo == null ? "" : Yii::getAlias('@web') . "/resources/images/member/sidephoto/" . $model->side_photo; ?>" data-dz-thumbnail="" style="max-height: 202px;">
                                 </div>
                             </div>
                         </div>                        
@@ -390,7 +390,7 @@ $form = ActiveForm::begin([
                             </div>
                             <div class="dz-thumbnail-wrapper">
                                 <div class="dz-thumbnail" style="width: 265px; height: 170px;">
-                                    <img id="img-target-photo" src="<?php echo $model->identity_card == null ? "" : Yii::getAlias('@web') . "/resources/member/thumbnail/" . $model->identity_card; ?>" data-dz-thumbnail="" style="max-height: 202px;">
+                                    <img id="img-target-photo" src="<?php echo $model->identity_card == null ? "" : Yii::getAlias('@web') . "/resources/images/member/identitycard/" . $model->identity_card; ?>" data-dz-thumbnail="" style="max-height: 202px;">
                                 </div>
                             </div>
                         </div>                        
@@ -424,7 +424,7 @@ $form = ActiveForm::begin([
                             </div>
                             <div class="dz-thumbnail-wrapper">
                                 <div class="dz-thumbnail" style="width: 265px; height: 170px;">
-                                    <img id="img-target-photo" src="<?php echo $model->certificate_of_organization == null ? "" : Yii::getAlias('@web') . "/resources/member/thumbnail/" . $model->certificate_of_organization; ?>" data-dz-thumbnail="" style="max-height: 202px;">
+                                    <img id="img-target-photo" src="<?php echo $model->certificate_of_organization == null ? "" : Yii::getAlias('@web') . "/resources/images/member/certificate/" . $model->certificate_of_organization; ?>" data-dz-thumbnail="" style="max-height: 202px;">
                                 </div>
                             </div>
                         </div>                        
@@ -481,4 +481,4 @@ $form = ActiveForm::begin([
     </div>
 </div>
 <?php ActiveForm::end(); ?>
-<?= $this->render('modal/ppi_modal') ?>
+<?= $this->render('../membermodal/imagemodal') ?>

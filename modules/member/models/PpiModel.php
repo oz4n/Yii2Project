@@ -8,10 +8,11 @@
 
 namespace app\modules\member\models;
 
-use app\modules\dao\ar\Taxonomy;
+
 use Yii;
 use app\modules\dao\ar\Member;
 use app\modules\dao\ar\Taxmemberrelations;
+use app\modules\dao\ar\Taxonomy;
 
 class PpiModel extends Member
 {

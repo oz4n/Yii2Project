@@ -56,7 +56,7 @@ $this->registerJs(
     <div class="col-sx-12 col-sm-3 text-center">
         <span class="profile-picture">
             <?=
-            Html::img(Yii::getAlias('@web') . '/resources/member/thumbnail/' . $model->front_photo, ['id' => 'avatar', 'class' => 'editable img-responsive', 'alt' => $model->name]);
+            Html::img(Yii::getAlias('@web') . '/resources/images/member/frontphoto/' . $model->front_photo, ['id' => 'avatar', 'class' => 'editable img-responsive', 'alt' => $model->name]);
             ?>
         </span>
 

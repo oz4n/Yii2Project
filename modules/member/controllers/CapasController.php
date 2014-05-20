@@ -26,6 +26,8 @@ class CapasController extends Controller
         ];
     }
 
+
+
     /**
      * Lists all Member models.
      * @return mixed
