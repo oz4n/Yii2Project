@@ -66,7 +66,7 @@ use Yii;
                                 ],
                                 [
                                     'label' => 'Capas',
-                                    'url' => ['/member/capas/index'],
+                                    'url' => ['/member/capas/index','action' => 'member-capas-list'],
                                     'icon' => 'menu-icon fa fa-angle-double-right',
                                     'options' => [
                                         'id' => 'capas'
