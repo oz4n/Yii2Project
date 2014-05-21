@@ -47,7 +47,7 @@ $this->registerJs(
 <?php
 $form = ActiveForm::begin([
             'layout' => 'horizontal',
-            'options' => ['novalidate' => 'novalidate', 'id' => 'member-form', 'enctype' => 'multipart/form-data'],
+            'options' => ['novalidate' => 'novalidate', 'id' => 'member-form'],
             'fieldConfig' => [
                 // 'template' => "{label}\n{input}\n{hint}\n{error}",
                 'horizontalCssClasses' => [

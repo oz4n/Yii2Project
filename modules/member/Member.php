@@ -52,7 +52,13 @@ class Member extends Module implements BootstrapInterface
             'dashboard/member/paskibra/trash/<action:(member-paskibra-trash)>/<id:.*?>' => '/member/paskibra/trash',
             'dashboard/member/paskibra/view/<action:(member-paskibra-view)>/<id:.*?>' => '/member/paskibra/view',
 
-            
+            'dashboard/member/capas/index/<action:(member-capas-list)>' => 'member/capas/index',
+            'dashboard/member/capas/create/<action:(member-capas-create)>' => '/member/capas/create',
+            'dashboard/member/capas/update/<action:(member-capas-update)>/<id:.*?>' => '/member/capas/update',
+            'dashboard/member/capas/delete/<action:(member-capas-delete)>/<id:.*?>' => '/member/capas/delete',
+            'dashboard/member/capas/trash/<action:(member-capas-trash)>/<id:.*?>' => '/member/capas/trash',
+            'dashboard/member/capas/view/<action:(member-capas-view)>/<id:.*?>' => '/member/capas/view',
+
             'dashboard/member/brevetaward/index/<action:(member-brevet-list)>' => '/member/brevetaward/index',
         ], false);
 
