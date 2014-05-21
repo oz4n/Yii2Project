@@ -112,6 +112,7 @@ class CapasController extends Controller
             $this->brevetaward = $form['brevet_award'];
 
             $this->copyProntPhoto($form['front_photo']);
+            $this->copyProntPhotoThumb($form['front_photo']);
             $this->copySidePhoto($form['side_photo']);
             $this->copyCertificatePhoto($form['certificate_of_organization']);
             $this->copyIdentityCardPhoto($form['identity_card']);
@@ -186,6 +187,7 @@ class CapasController extends Controller
             $this->brevetaward = $form['brevet_award'];
 
             $this->copyProntPhoto($form['front_photo']);
+            $this->copyProntPhotoThumb($form['front_photo']);
             $this->copySidePhoto($form['side_photo']);
             $this->copyCertificatePhoto($form['certificate_of_organization']);
             $this->copyIdentityCardPhoto($form['identity_card']);
@@ -327,6 +329,16 @@ class CapasController extends Controller
 //            ->save($this->frontphoto . $name , ['quality' => 100]);
             $img = new Image();
             return $img->adaptiveResize($this->original . $name, $this->frontphoto . $name, 215, 300);
+        }
+    }
+    
+    protected function copyProntPhotoThumb($name)
+    {
+        if (null != $name) {
+//            return \yii\imagine\Image::thumbnail($this->original . $name, 215, 300)
+//            ->save($this->frontphoto . $name , ['quality' => 100]);
+            $img = new Image();
+            return $img->adaptiveResize($this->original . $name, $this->frontphoto . '42x42'. DS . $name, 42, 42);
         }
     }
 

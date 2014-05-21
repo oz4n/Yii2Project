@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class AreaController extends Controller
 {
+
     public function behaviors()
     {
         return [
@@ -36,8 +37,8 @@ class AreaController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
         ]);
     }
 
@@ -49,7 +50,7 @@ class AreaController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -65,10 +66,10 @@ class AreaController extends Controller
         $model->setAttribute('create_et', date("Y-m-d H:i:s"));
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'action' => 'member-area-view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -84,10 +85,10 @@ class AreaController extends Controller
         $model = $this->findModel($id);
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'action' => 'member-area-view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -96,11 +97,10 @@ class AreaController extends Controller
     {
         if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
             $this->deleteAll(Yii::$app->request->post('selection'));
-            return $this->redirect(['index']);
+            return $this->redirect(['index', 'action' => 'member-area-list']);
         } else {
-            return $this->redirect(['index']);
+            return $this->redirect(['index', 'action' => 'member-area-list']);
         }
-
     }
 
     /**
@@ -113,7 +113,7 @@ class AreaController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'action' => 'member-area-list']);
     }
 
     /**
@@ -127,10 +127,9 @@ class AreaController extends Controller
                 $this->findModel($id)->delete();
             }
         } else {
-            return $this->redirect(['index']);
+            return $this->redirect(['index', 'action' => 'member-area-list']);
         }
     }
-
 
     /**
      * Finds the AreaModel model based on its primary key value.
@@ -147,4 +146,5 @@ class AreaController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

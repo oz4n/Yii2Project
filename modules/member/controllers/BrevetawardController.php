@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class BrevetawardController extends Controller
 {
+
     public function behaviors()
     {
         return [
@@ -36,8 +37,8 @@ class BrevetawardController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
         ]);
     }
 
@@ -49,7 +50,7 @@ class BrevetawardController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -65,10 +66,10 @@ class BrevetawardController extends Controller
         $model->setAttribute('create_et', date("Y-m-d H:i:s"));
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'action' => 'member-brevet-view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -84,10 +85,10 @@ class BrevetawardController extends Controller
         $model = $this->findModel($id);
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'action' => 'member-brevet-view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -96,11 +97,10 @@ class BrevetawardController extends Controller
     {
         if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
             $this->deleteAll(Yii::$app->request->post('selection'));
-            return $this->redirect(['index']);
+            return $this->redirect(['index','action'=>'member-brevet-list']);
         } else {
-            return $this->redirect(['index']);
+            return $this->redirect(['index','action'=>'member-brevet-list']);
         }
-
     }
 
     /**
@@ -113,7 +113,7 @@ class BrevetawardController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index','action'=>'member-brevet-list']);
     }
 
     /**
@@ -127,7 +127,7 @@ class BrevetawardController extends Controller
                 $this->findModel($id)->delete();
             }
         } else {
-            return $this->redirect(['index']);
+            return $this->redirect(['index','action'=>'member-brevet-list']);
         }
     }
 
@@ -146,4 +146,5 @@ class BrevetawardController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }
