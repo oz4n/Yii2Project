@@ -2,7 +2,7 @@
 
 namespace app\modules\guestbook;
 
-class guestbook extends \yii\base\Module
+class GuestBook extends \yii\base\Module
 {
     public $controllerNamespace = 'app\modules\guestbook\controllers';
 
