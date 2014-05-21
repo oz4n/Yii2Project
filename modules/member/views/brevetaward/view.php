@@ -21,10 +21,10 @@ $this->registerJs(
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute('/dashboard/dashboard/index'); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute('/member/brevetaward/index'); ?>"><?php echo Yii::t('app', Html::encode('Brevet Penghargaan')); ?></a>
+        <a href="<?php echo Url::toRoute(['/member/brevetaward/index','action' => 'member-brevet-list']); ?>"><?php echo Yii::t('app', Html::encode('Brevet Penghargaan')); ?></a>
     </li>
     <li class="active">
         <?php echo Yii::t('app', Html::encode($this->title)); ?>
@@ -40,8 +40,8 @@ $this->registerJs(
                 <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
-                    'modelClass' => 'Brevet Penghargaan',
-                ]), ['create'])
+                            'modelClass' => 'Brevet Penghargaan',
+                        ]), Url::toRoute(['/member/brevetaward/create','action' => 'member-brevet-create']))
                 ?>
             </h1>
         </div>
@@ -78,19 +78,6 @@ $this->registerJs(
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-12">
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?=
-        Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ])
-        ?>
-    </div>
-</div>
+
 
 

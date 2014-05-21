@@ -26,10 +26,10 @@ $this->registerJs(
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute('/dashboard/dashboard/index'); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute('/member/area/index'); ?>"><?php echo Yii::t('app', Html::encode('Daerah')); ?></a>
+        <a href="<?php echo Url::toRoute(['/member/area/index', 'action' => 'member-area-list']); ?>"><?php echo Yii::t('app', Html::encode('Daerah')); ?></a>
     </li>
 </ul>
 
@@ -45,14 +45,14 @@ $this->registerJs(
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Daerah',
-                ]), ['create'])
+                ]), Url::toRoute(['/member/area/create', 'action' => 'member-area-create']))
                 ?>
             </h1>
         </div>
         <div class="col-xs-4">
             <div class="pull-right">
                 <?php $form = ActiveForm::begin([
-                    'action' => ["/member/area/index"],
+                    'action' => ["/member/area/index",'action' => 'member-area-list'],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [
@@ -76,14 +76,14 @@ $this->registerJs(
     <div class="col-sm-12">
         <?php
         $form = ActiveForm::begin([
-            'action' => ['/member/area/bulk']
+            'action' => ['/member/area/bulk','action' => 'member-area-bulk'],
         ]);
         ?>
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            'filterUrl' => ['/member/area/index'],
+            'filterUrl' => ['/member/area/index','action' => 'member-area-list'],
             'pager' => ['maxButtonCount' => 3],
             'tableOptions' => ['class' => 'table'],
             'layout' =>
@@ -169,33 +169,33 @@ $this->registerJs(
                         }
                 ],
                 [
-                    'class' => 'yii\grid\ActionColumn',
-                    'header' => '<div class="text-center">Aksi</div>',
-                    'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}</div>',
-                    'buttons' => [
-                        'view' => function ($url) {
-                                return Html::a('<i class="fa fa-eye"></i>', $url, [
-                                    'class' => 'btn btn-success btn-xs',
-                                    'title' => Yii::t('yii', 'Lihat Detail'),
-                                ]);
-                            },
-                        'update' => function ($url) {
-                                return Html::a('<i class="fa fa-pencil"></i>', $url, [
-                                    'class' => 'btn btn-primary btn-xs',
-                                    'title' => Yii::t('yii', 'Memperbarui'),
-                                ]);
-                            },
-                        'delete' => function ($url) {
-                                return Html::a('<i class="fa  fa-trash-o"></i>', $url, [
-                                    'class' => 'btn btn-danger btn-xs',
-                                    'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
-                                    'data-method' => 'post',
-                                    'data-pjax' => 0,
-                                    'title' => Yii::t('yii', 'Hapus'),
-                                ]);
-                            }
-                    ]
-                ],
+            'class' => 'yii\grid\ActionColumn',
+            'header' => '<div class="text-center">Aksi</div>',
+            'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}</div>',
+            'buttons' => [
+                'view' => function ($url, $data) {
+                        return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/member/area/view', 'action' => 'member-area-view', 'id' => $data->id]), [
+                            'class' => 'btn btn-success btn-xs',
+                            'title' => Yii::t('yii', 'Lihat Detail'),
+                        ]);
+                    },
+                'update' => function ($url, $data) {
+                        return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/member/area/update", 'action' => 'member-area-update', 'id' => $data->id]), [
+                            'class' => 'btn btn-primary btn-xs',
+                            'title' => Yii::t('yii', 'Memperbarui'),
+                        ]);
+                    },
+                'delete' => function ($url, $data) {
+                        return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/member/area/delete", 'action' => 'member-area-delete', 'id' => $data->id]), [
+                            'class' => 'btn btn-danger btn-xs',
+                            'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
+                            'data-method' => 'post',
+                            'data-pjax' => 0,
+                            'title' => Yii::t('yii', 'Hapus'),
+                        ]);
+                    },
+            ]
+        ],
             ],
         ]);
         ?>

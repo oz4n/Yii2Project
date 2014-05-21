@@ -4,25 +4,25 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
 use yii\web\View;
+
 /**
  * @var yii\web\View $this
  * @var \app\modules\dao\ar\School $model
  */
-
 $this->title = $model->name;
 $this->registerJs(
-    "$('ul.navigation > li.mm-dropdown > ul > li#school').addClass('active').parent().parent().addClass('active open');"
-    , View::POS_READY);
+        "$('ul.navigation > li.mm-dropdown > ul > li#school').addClass('active').parent().parent().addClass('active open');"
+        , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute('/dashboard/dashboard/index'); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute('/member/school/index'); ?>"><?php echo Yii::t('app', Html::encode('Sekolah')); ?></a>
+        <a href="<?php echo Url::toRoute(['/member/school/index', 'action' => 'member-school-list']); ?>"><?php echo Yii::t('app', Html::encode('Sekolah')); ?></a>
     </li>
     <li class="active">
         <?= Yii::t('app', 'Lihat Detail Sekolah'); ?>
@@ -38,8 +38,8 @@ $this->registerJs(
                 <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
-                    'modelClass' => 'Sekolah',
-                ]), ['create'])
+                            'modelClass' => 'Sekolah',
+                        ]), Url::toRoute(['/member/school/create', 'action' => 'member-school-create']));
                 ?>
             </h1>
         </div>
@@ -48,36 +48,29 @@ $this->registerJs(
 
 <div class="row">
     <div class="col-sm-12">
-        <?=
-        DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                'id',
-                'taxonomy_id',
-                'name',
-                'type',
-                'address',
-                'email:email',
-                'zip_code',
-                'phone_number',
-                'create_et',
-                'update_et',
-            ],
-        ])
-        ?>
+        <div class="panel">
+            <div class="panel-body">
+                <?=
+                DetailView::widget([
+                    'model' => $model,
+                    'options' => ['class' => 'table'],
+                    'attributes' => [
+                        'id',
+                        'taxonomy_id',
+                        'name',
+                        'type',
+                        'address',
+                        'email:email',
+                        'zip_code',
+                        'phone_number',
+                        'create_et',
+                        'update_et',
+                    ],
+                ])
+                ?>
+
+            </div>
+        </div>
     </div>
 
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?=
-        Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
-    </div>
 </div>

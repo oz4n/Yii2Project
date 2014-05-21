@@ -16,8 +16,9 @@ use app\modules\member\searchs\PpiSerch;
 
 $this->title = Yii::t('app', 'Anggota');
 
-$this->registerJs(
-    "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#ppi').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
+$this->registerJs(''
+    . '$("td").css({"padding-top": "20px"});'
+    ."$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#ppi').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
     . '$("td > select").select2({ allowClear: true, placeholder: "Filter item"});'
     . '$("select.select-year").select2({ allowClear: true, placeholder: "Tahun"});'
     . '$("select.opsi").select2({ allowClear: true, placeholder: "Tahun"});'
@@ -163,11 +164,20 @@ GridView::widget([
         . Html::endTag('div')
         . Html::endTag('div'),
     'columns' => [
+        ['class' => 'yii\grid\CheckboxColumn'],
         [
-            'class' => 'yii\grid\CheckboxColumn'
+            'attribute'=>'front_photo',
+            'label' => '',
+            'format' => 'raw',
+            'value' => function($data){
+                      return Html::tag('div' ,Html::img(Yii::getAlias('@web') . "/resources/images/member/frontphoto/42x42/" . $data->front_photo, ['class'=>'member-avatar']),['class'=>'member','style'=>"margin-top: -10px"]);
+            }
         ],
+        
+       
         'nra',
         'name',
+              
         'nickname',
         [
             'attribute' => 'birth',

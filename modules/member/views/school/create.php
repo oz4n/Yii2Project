@@ -16,10 +16,10 @@ $this->title = Yii::t('app', 'Tambah {modelClass}', [
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute('/dashboard/dashboard/index'); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute('/member/school/index'); ?>"><?php echo Yii::t('app', Html::encode('Sekolah')); ?></a>
+        <a href="<?php echo Url::toRoute(['/member/school/index', 'action' => 'member-school-list']); ?>"><?php echo Yii::t('app', Html::encode('Sekolah')); ?></a>
     </li>
     <li class="active">
         <?= Yii::t('app','Tambah Sekolah baru'); ?>

@@ -25,10 +25,10 @@ $this->registerJs(
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute('/dashboard/dashboard/index'); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute('/member/languageskill/index'); ?>"><?php echo Yii::t('app', Html::encode('Keterampilan Bahasa')); ?></a>
+        <a href="<?php echo Url::toRoute(['/member/languageskill/index','action'=>'member-languageskill-list']); ?>"><?php echo Yii::t('app', Html::encode('Keterampilan')); ?></a>
     </li>
 </ul>
 
@@ -44,14 +44,14 @@ $this->registerJs(
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Keterampilan Bahasa',
-                ]), ['create'])
+                ]), Url::toRoute(['/member/languageskill/create','action'=>'member-languageskill-create']))
                 ?>
             </h1>
         </div>
         <div class="col-xs-4">
             <div class="pull-right">
                 <?php $form = ActiveForm::begin([
-                    'action' => ["/member/languageskill/index"],
+                    'action' => ['/member/languageskill/index','action'=>'member-languageskill-list'],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [
@@ -75,14 +75,14 @@ $this->registerJs(
     <div class="col-sm-12">
         <?php
         $form = ActiveForm::begin([
-            'action' => ['/member/languageskill/bulk']
+            'action' => ['/member/languageskill/bulk','action'=>'member-languageskill-bulk']
         ]);
         ?>
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            'filterUrl' => ['/member/languageskill/index'],
+            'filterUrl' => ['/member/languageskill/index','action'=>'member-languageskill-list'],
             'pager' => ['maxButtonCount' => 3],
             'tableOptions' => ['class' => 'table'],
             'layout' =>
@@ -168,33 +168,33 @@ $this->registerJs(
                         }
                 ],
                 [
-                    'class' => 'yii\grid\ActionColumn',
-                    'header' => '<div class="text-center">Aksi</div>',
-                    'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}</div>',
-                    'buttons' => [
-                        'view' => function ($url) {
-                                return Html::a('<i class="fa fa-eye"></i>', $url, [
-                                    'class' => 'btn btn-success btn-xs',
-                                    'title' => Yii::t('yii', 'Lihat Detail'),
-                                ]);
-                            },
-                        'update' => function ($url) {
-                                return Html::a('<i class="fa fa-pencil"></i>', $url, [
-                                    'class' => 'btn btn-primary btn-xs',
-                                    'title' => Yii::t('yii', 'Memperbarui'),
-                                ]);
-                            },
-                        'delete' => function ($url) {
-                                return Html::a('<i class="fa  fa-trash-o"></i>', $url, [
-                                    'class' => 'btn btn-danger btn-xs',
-                                    'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
-                                    'data-method' => 'post',
-                                    'data-pjax' => 0,
-                                    'title' => Yii::t('yii', 'Hapus'),
-                                ]);
-                            }
-                    ]
-                ],
+            'class' => 'yii\grid\ActionColumn',
+            'header' => '<div class="text-center">Aksi</div>',
+            'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}</div>',
+            'buttons' => [
+                'view' => function ($url, $data) {
+                        return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/member/languageskill/view', 'action' => 'member-languageskill-view', 'id' => $data->id]), [
+                            'class' => 'btn btn-success btn-xs',
+                            'title' => Yii::t('yii', 'Lihat Detail'),
+                        ]);
+                    },
+                'update' => function ($url, $data) {
+                        return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/member/languageskill/update", 'action' => 'member-languageskill-update', 'id' => $data->id]), [
+                            'class' => 'btn btn-primary btn-xs',
+                            'title' => Yii::t('yii', 'Memperbarui'),
+                        ]);
+                    },
+                'delete' => function ($url, $data) {
+                        return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/member/languageskill/delete", 'action' => 'member-languageskill-delete', 'id' => $data->id]), [
+                            'class' => 'btn btn-danger btn-xs',
+                            'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
+                            'data-method' => 'post',
+                            'data-pjax' => 0,
+                            'title' => Yii::t('yii', 'Hapus'),
+                        ]);
+                    },
+            ]
+        ],
             ],
         ]);
         ?>
