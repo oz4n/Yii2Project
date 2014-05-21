@@ -61,26 +61,26 @@ class CapasSerch extends CapasModel
             return $dataProvider;
         }
 
-        if (isset($params['PpiSerch']['status_filtr1'])) {
-            $ss1 = $params['PpiSerch']['status_filtr1'];
+        if (isset($params['CapasSerch']['status_filtr1'])) {
+            $ss1 = $params['CapasSerch']['status_filtr1'];
             $query->orFilterWhere(['like', 'save_status', $ss1]);
         }
 
-        if (isset($params['PpiSerch']['status_filtr2'])) {
-            $ss2 = $params['PpiSerch']['status_filtr2'];
+        if (isset($params['CapasSerch']['status_filtr2'])) {
+            $ss2 = $params['CapasSerch']['status_filtr2'];
             $query->orFilterWhere(['like', 'save_status', $ss2]);
         }
 
-        if (isset($params['PpiSerch']['year_filtr1'])) {
-            $this->year_filtr1 = $params['PpiSerch']['year_filtr1'];
+        if (isset($params['CapasSerch']['year_filtr1'])) {
+            $this->year_filtr1 = $params['CapasSerch']['year_filtr1'];
         }
 
-        if (isset($params['PpiSerch']['year_filtr2'])) {
-            $this->year_filtr2 = $params['PpiSerch']['year_filtr2'];
+        if (isset($params['CapasSerch']['year_filtr2'])) {
+            $this->year_filtr2 = $params['CapasSerch']['year_filtr2'];
         }
 
-        if (isset($params['PpiSerch']['year_opsi'])) {
-            $this->year_opsi = $params['PpiSerch']['year_opsi'];
+        if (isset($params['CapasSerch']['year_opsi'])) {
+            $this->year_opsi = $params['CapasSerch']['year_opsi'];
         }
 
         switch ($this->year_opsi) {
@@ -108,16 +108,16 @@ class CapasSerch extends CapasModel
         }
 
 
-        if (isset($params['PpiSerch']['year_filtr3'])) {
-            $this->year_filtr3 = $params['PpiSerch']['year_filtr3'];
+        if (isset($params['CapasSerch']['year_filtr3'])) {
+            $this->year_filtr3 = $params['CapasSerch']['year_filtr3'];
         }
 
-        if (isset($params['PpiSerch']['year_filtr4'])) {
-            $this->year_filtr4 = $params['PpiSerch']['year_filtr4'];
+        if (isset($params['CapasSerch']['year_filtr4'])) {
+            $this->year_filtr4 = $params['CapasSerch']['year_filtr4'];
         }
 
-        if (isset($params['PpiSerch']['year_opsi1'])) {
-            $this->year_opsi1 = $params['PpiSerch']['year_opsi1'];
+        if (isset($params['CapasSerch']['year_opsi1'])) {
+            $this->year_opsi1 = $params['CapasSerch']['year_opsi1'];
         }
 
         switch ($this->year_opsi1) {
@@ -144,8 +144,8 @@ class CapasSerch extends CapasModel
                 break;
         }
 
-        if (isset($params['PpiSerch']['keyword'])) {
-            $this->keyword = $params['PpiSerch']['keyword'];
+        if (isset($params['CapasSerch']['keyword'])) {
+            $this->keyword = $params['CapasSerch']['keyword'];
             $query->orFilterWhere(['like', 'nra', $this->keyword])
                 ->orFilterWhere(['like', 'name', $this->keyword])
                 ->orFilterWhere(['like', 'nickname', $this->keyword])
