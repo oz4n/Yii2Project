@@ -1,6 +1,8 @@
 <?php
 
 namespace app\modules\filemanager\controllers;
+define("DS", DIRECTORY_SEPARATOR);
+
 
 use Yii;
 use app\modules\dao\ar\File;
@@ -15,6 +17,7 @@ use app\modules\filemanager\librarys\Image;
 use app\modules\filemanager\forms\ModalForm;
 use app\modules\filemanager\FileManager;
 use app\modules\filemanager\models\TaxImageRelationModel;
+use app\modules\filemanager\forms\FormSearch;
 use app\modules\filemanager\models\AlbumModel;
 
 /**
@@ -23,15 +26,21 @@ use app\modules\filemanager\models\AlbumModel;
 class ImageController extends Controller
 {
 
-    public $img_path;
-    public $img_thumb_path;
-    public $img_150x150_thumb_path;
+    public $path;
+    public $original;
+    public $thumb_145x145;
+    public $thumb_191x128;
+    public $thumb_original;
+
 
     public function init()
     {
-        $this->img_path = Yii::$app->getBasePath() . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'member' . DIRECTORY_SEPARATOR;
-        $this->img_thumb_path = $this->img_path . 'thumbnail' . DIRECTORY_SEPARATOR;
-        $this->img_150x150_thumb_path = $this->img_thumb_path . '150x150' . DIRECTORY_SEPARATOR;
+        $this->path = Yii::$app->getBasePath() . DS . 'web' . DS . 'resources' . DS . 'images' . DS;
+        $this->original = $this->path . 'original' . DS;
+        $this->thumb_145x145 = $this->path . 'thumbnail' . DS . '145x145' . DS;
+        $this->thumb_191x128 = $this->path . 'thumbnail' . DS . '191x128' . DS;
+        $this->thumb_original = $this->path . 'thumbnail' . DS . 'original' . DS;
+
         parent::init();
     }
 
@@ -47,64 +56,48 @@ class ImageController extends Controller
         ];
     }
 
-    public function findData($id)
-    {
-        return \app\modules\filemanager\models\ImageModel::findOne($id);
-    }
-
-    public function actionTest()
-    {
-
-
-        $model = AlbumModel::findOne(1);
-//        $model = \app\modules\member\models\PpiModel::findOne(45);
-//        $d = $model->getImagefilerelations(1)->all();
-        $c = $model->getImagesByAlbum()->all();
-        $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => $c,
-            'pagination' => [
-                'pageSize' => 2
-            ]
-        ]);
-        echo count($dataProvider);
-        foreach ($dataProvider->query as $v) {
-            echo $v->unique_name . "<br>";
-        }
-        echo "<pre>";
-//        print_r($c);
-//        print_r($dataProvider);
-    }
 
     public function actionLoads()
     {
         $album = AlbumModel::findOne(1);
+        $leng = count($album->getImagesByAlbum()->asArray()->all());
         if (Yii::$app->request->isAjax) {
             $param = Yii::$app->request->getQueryParams();
-            $key = isset($param['keyword']) ? $param['keyword'] : "";
-            if ($param['page'] == 0) {                
+            $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : "";
+            $per_page = 8;
+            if ($param["FormSearch"]['page'] == 0) {
                 $data = $album->getImagesByAlbum()
-                                ->orFilterWhere(['like', 'name', $key])
-                                ->orFilterWhere(['like', 'orginal_name', $key])
-                                ->orFilterWhere(['like', 'description', $key])
-                                ->orderBy(['create_at' => SORT_DESC])
-                                ->offset($param['page'])
-                                ->limit(8)->asArray()->all();
+                    ->orFilterWhere(['like', 'name', $key])
+                    ->orFilterWhere(['like', 'orginal_name', $key])
+                    ->orFilterWhere(['like', 'unique_name', $key])
+                    ->orFilterWhere(['like', 'description', $key])
+                    ->orderBy(['create_at' => SORT_DESC])
+                    ->limit(8)
+                    ->offset(0)
+                    ->asArray()->all();
                 echo Json::encode([
-                    'page' => $param['page'] + 8,
-                    'data' => $data
+                    'page' => 1,
+                    'data' => $data,
+                    'keyword' => $key,
+                    'count' => $leng
                 ]);
             } else {
-                $page = $param['page'] + 8;
+                $page = $param["FormSearch"]['page'];
+                $position = ($page * $per_page);
                 $data = $album->getImagesByAlbum()
-                                ->orFilterWhere(['like', 'name', $key])
-                                ->orFilterWhere(['like', 'orginal_name', $key])
-                                ->orFilterWhere(['like', 'description', $key])
-                                ->orderBy(['create_at' => SORT_DESC])
-                                ->offset($page)->limit(8)
-                                ->asArray()->all();
+                    ->orFilterWhere(['like', 'name', $key])
+                    ->orFilterWhere(['like', 'orginal_name', $key])
+                    ->orFilterWhere(['like', 'unique_name', $key])
+                    ->orFilterWhere(['like', 'description', $key])
+                    ->orderBy(['create_at' => SORT_DESC])
+                    ->limit($per_page)
+                    ->offset($position)
+                    ->asArray()->all();
                 echo Json::encode([
-                    'page' => $page,
-                    'data' => $data
+                    'page' => ($page + 1),
+                    'data' => $data,
+                    'keyword' => $key,
+                    'count' => $leng
                 ]);
             }
         } else {
@@ -117,22 +110,22 @@ class ImageController extends Controller
         if (Yii::$app->request->isAjax) {
             $model = new ModalForm;
             $form = Yii::$app->request->post('ModalForm');
-//            echo json_encode($form);
-//            exit();
+
             /**
              * Upload Image
              */
             $file = UploadedFile::getInstance($model, 'file');
             $unique_name = preg_replace('/\s+/', '-', date("Y-m-d-H:i:s") . '-' . rand(0, 999999999) . '-' . $file->name);
-            $file->saveAs($this->img_path . $unique_name);
+            $file->saveAs($this->original . $unique_name);
 
             /**
              * Resize Image
              */
             $img = new Image();
-            $img->adaptiveResize($this->img_path . $unique_name, $this->img_150x150_thumb_path . $unique_name, 150, 150);
-            $img->adaptiveResize($this->img_path . $unique_name, $this->img_thumb_path . $unique_name, 399, 600);
-            $img->resize($this->img_path . $unique_name, $this->img_path . $unique_name, 1024);
+            $img->adaptiveResize($this->original . $unique_name, $this->thumb_145x145 . $unique_name, 145, 145);
+            $img->adaptiveResize($this->original . $unique_name, $this->thumb_191x128 . $unique_name, 191, 128);
+            $img->resize($this->original . $unique_name, $this->thumb_original . $unique_name, 256);
+            $img->resize($this->original . $unique_name, $this->original . $unique_name, 1024);
 
             /**
              * Save Image name and order attr to database
@@ -158,7 +151,7 @@ class ImageController extends Controller
             $tax->file_id = $model->id;
             $tax->save();
 
-            $base_path = Yii::getAlias('@web') . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'member' . DIRECTORY_SEPARATOR;
+            $base_path = Yii::getAlias('@web') . DS . 'resources' . DS . 'images' . DS;
 
             echo Json::encode([
                 "form" => $form,
@@ -167,8 +160,8 @@ class ImageController extends Controller
                 "orginal_name" => $file->name,
                 "unique_name" => $unique_name,
                 "path" => $base_path,
-                "thumb_path" => $base_path . 'thumbnail' . DIRECTORY_SEPARATOR,
-                "thumb_path_150x150" => $base_path . 'thumbnail' . DIRECTORY_SEPARATOR . '150x150' . DIRECTORY_SEPARATOR,
+                "thumb_path" => $base_path . 'thumbnail' . DS . 'original' . DS,
+                "thumb_path_145x145" => $base_path . 'thumbnail' . DS . '145x145' . DS,
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -185,8 +178,8 @@ class ImageController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
@@ -198,7 +191,7 @@ class ImageController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -215,7 +208,7 @@ class ImageController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
@@ -234,7 +227,7 @@ class ImageController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                        'model' => $model,
+                'model' => $model,
             ]);
         }
     }
