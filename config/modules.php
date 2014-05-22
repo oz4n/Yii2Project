@@ -4,7 +4,7 @@ return [
         'class' => 'yii\gii\Module',
     ],
     'dashboard' => [
-        'class' => 'app\modules\dashboard\dashboard',
+        'class' => 'app\modules\dashboard\Dashboard',
     ],
     'word' => [
         'class' => 'app\modules\word\Word',

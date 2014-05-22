@@ -10,8 +10,10 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
         'log',
+        'dashboard',
         'member',
-        'userlog'
+        'userlog',
+        'word'
     ],
     'extensions' => require(__DIR__ . '/../vendor/yiisoft/extensions.php'),
     'defaultRoute' => 'site/site/index',
