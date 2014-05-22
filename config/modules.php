@@ -7,7 +7,7 @@ return [
         'class' => 'app\modules\dashboard\dashboard',
     ],
     'word' => [
-        'class' => 'app\modules\word\word',
+        'class' => 'app\modules\word\Word',
     ],
     'member' => [
         'class' => 'app\modules\member\Member',
