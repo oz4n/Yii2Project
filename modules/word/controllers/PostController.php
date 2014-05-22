@@ -3,14 +3,14 @@
 namespace app\modules\word\controllers;
 
 use Yii;
-use app\modules\dao\ar\Post;
+use app\modules\word\models\PostModel;
 use app\modules\word\searchs\PostSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PostController implements the CRUD actions for Post model.
+ * PostModelController implements the CRUD actions for PostModel model.
  */
 class PostController extends Controller
 {
@@ -27,7 +27,7 @@ class PostController extends Controller
     }
 
     /**
-     * Lists all Post models.
+     * Lists all PostModel models.
      * @return mixed
      */
     public function actionIndex()
@@ -42,7 +42,7 @@ class PostController extends Controller
     }
 
     /**
-     * Displays a single Post model.
+     * Displays a single PostModel model.
      * @param integer $id
      * @return mixed
      */
@@ -54,13 +54,13 @@ class PostController extends Controller
     }
 
     /**
-     * Creates a new Post model.
+     * Creates a new PostModel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Post;
+        $model = new PostModel;
         $model->setAttribute('user_id', Yii::$app->user->getId());
         $model->setAttribute('create_et', date("Y-m-d H:i:s"));
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
@@ -75,7 +75,7 @@ class PostController extends Controller
     }
 
     /**
-     * Updates an existing Post model.
+     * Updates an existing PostModel model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,7 +94,7 @@ class PostController extends Controller
     }
 
     /**
-     * Deletes an existing Post model.
+     * Deletes an existing PostModel model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +107,15 @@ class PostController extends Controller
     }
 
     /**
-     * Finds the Post model based on its primary key value.
+     * Finds the PostModel model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Post the loaded model
+     * @return PostModel the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Post::findOne($id)) !== null) {
+        if (($model = PostModel::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

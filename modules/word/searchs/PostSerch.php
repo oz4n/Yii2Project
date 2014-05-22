@@ -2,10 +2,14 @@
 
 namespace app\modules\word\searchs;
 
+use app\modules\word\models\CategoryModel;
+use app\modules\word\models\TagModel;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\dao\ar\Post;
+use yii\helpers\ArrayHelper;
+use app\modules\word\Word;
 
 /**
  * PostSerch represents the model behind the search form about `app\modules\dao\ar\Post`.
@@ -65,5 +69,23 @@ class PostSerch extends Post
             ->andFilterWhere(['like', 'comment_status', $this->comment_status]);
 
         return $dataProvider;
+    }
+
+    public static function getCategories($none = 'None')
+    {
+        $models = CategoryModel::find();
+        $models->onCondition(['term_id' => Word::WORD_CATEGORY]);
+        $data = ArrayHelper::map($models->asArray()->all(), 'id', 'name');
+//        return $data;
+        return ArrayHelper::merge(['' => $none], $data);
+    }
+
+    public static function getTags($none = 'None')
+    {
+        $models = TagModel::find();
+        $models->onCondition(['term_id' => Word::WORD_TAG]);
+        $data = ArrayHelper::map($models->asArray()->all(), 'id', 'name');
+//        return $data;
+        return ArrayHelper::merge(['' => $none], $data);
     }
 }
