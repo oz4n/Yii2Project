@@ -173,12 +173,9 @@ GridView::widget([
                       return Html::tag('div' ,Html::img(Yii::getAlias('@web') . "/resources/images/member/frontphoto/42x42/" . $data->front_photo, ['class'=>'member-avatar']),['class'=>'member','style'=>"margin-top: -10px"]);
             }
         ],
-        
-       
-        'nra',
         'name',
-              
         'nickname',
+        'nra',
         [
             'attribute' => 'birth',
             'filterOptions' => ['id' => 'birth-input']
