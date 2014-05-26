@@ -14,4 +14,21 @@ use app\modules\dao\ar\Taxonomy;
 class YearModel extends Taxonomy
 {
 
+    public function behaviors()
+    {
+        return [
+            'slug' => [
+                'class' => 'Zelenin\yii\behaviors\Slug',
+                'source_attribute' => 'name',
+                'slug_attribute' => 'slug',
+
+                // optional params
+                'translit' => false,
+                'replacement' => '-',
+                'lowercase' => true,
+                'unique' => true
+            ]
+        ];
+    }
+
 } 

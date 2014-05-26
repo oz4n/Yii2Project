@@ -44,13 +44,6 @@ class ImageSearc extends ImageModel
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-            'create_at' => $this->create_at,
-            'update_et' => $this->update_et,
-        ]);
-
         $query->andFilterWhere(['like', 'name', $this->name])
                 ->andFilterWhere(['like', 'orginal_name', $this->orginal_name])
                 ->andFilterWhere(['like', 'unique_name', $this->unique_name])

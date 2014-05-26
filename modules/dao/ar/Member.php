@@ -92,7 +92,7 @@ class Member extends \yii\db\ActiveRecord
     {
         return [
             [['taxonomy_id', 'school_id', 'user_id', 'age', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
-            [['nra', 'name', 'nickname', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'year', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'tribal_members', 'identity_card_number', 'note', 'save_status','age'], 'required', 'message' => 'Tidak boleh kosong.'],
+            [['nra', 'name', 'nickname', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'year', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'tribal_members', 'identity_card_number', 'note', 'save_status','age','pants_size','shoe_size','hat_size'], 'required', 'message' => 'Tidak boleh kosong.'],
             [['front_photo', 'side_photo', 'identity_card', 'certificate_of_organization', 'other_content'], 'string'],
             [['create_et', 'update_et'], 'safe'],
             [['nra'], 'string', 'max' => 32],

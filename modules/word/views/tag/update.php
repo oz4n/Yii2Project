@@ -21,6 +21,9 @@ $this->title = Yii::t('app', 'Perbaharui {modelClass} ', [
         <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
+        <a href="<?= Url::toRoute(['/word/post/index', 'action' => 'word-post-list']); ?>"><?= Yii::t('app', Html::encode('Post')); ?></a>
+    </li>
+    <li>
         <a href="<?php echo Url::toRoute(['/word/tag/index','action'=>'word-tag-list']); ?>"><?php echo Yii::t('app', Html::encode('Tag')); ?></a>
     </li>
     <li class="active">

@@ -481,4 +481,43 @@ $form = ActiveForm::begin([
     </div>
 </div>
 <?php ActiveForm::end(); ?>
-<?= $this->render('../membermodal/imagemodal') ?>
+<?php //$this->render('../membermodal/imagemodal') ?>
+<div class="row" style="display: none">
+    <div class="col-sm-12">
+        <textarea id="redactor"></textarea>
+    </div>
+</div>
+
+<?php
+$this->registerJs(
+        '$("#redactor").redactor({
+        imageUpload:"'.Url::toRoute(['/filemanager/image/uploadredactorimage']).'",
+        imageGetJson:"'.Url::toRoute(['/filemanager/image/loadredactorimage']).'",
+        imageUploadErrorCallback:function(data){
+            $("html,body").animate({ scrollTop: 0 }, 500);
+            PixelAdmin.plugins.alerts.add("<strong>Maap!</strong>&nbsp;" + data.error, {
+                type:"danger",
+                auto_close:9
+            });
+        },
+        buttons: ["italic"],
+        fileUpload:"'.Url::toRoute(['/filemanager/document/uploaddredactorfile']).'", 
+        fileGetJson:"'.Url::toRoute(['/filemanager/document/loadredactorfile']).'",
+        fileUploadErrorCallback:function(data){           
+            $("html,body").animate({ scrollTop: 0 }, 500);
+            PixelAdmin.plugins.alerts.add("<strong>Maap!</strong>&nbsp;" + data.error, {
+                type:"danger",
+                auto_close:9
+            });
+        },
+        uploadFields:{
+            "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '",
+        },
+        lang: "id",
+        imgLoading:"'.Yii::getAlias('@web') . "/PixelAdmin/img/loading.gif".'",        
+        _csrf:"' . Yii::$app->request->getCsrfToken() . '",
+        _csrfname:"' . Yii::$app->request->csrfParam . '",
+    });
+    $(".redactor_box").css({"display":"none"});
+', View::POS_READY);
+?>

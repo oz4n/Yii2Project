@@ -230,7 +230,7 @@ $this->registerJs(
 
 ?>
 <div id="modal-loading" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
-    <div class="modal-dialog modal-sm animated bounceIn" style="margin-top: 15%">
+    <div class="modal-dialog modal-sm animated bounceInRight" style="margin-top: 15%">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="text-center"><img src="<?= Yii::getAlias('@web') . "/PixelAdmin/img/loading-2.gif" ?>"></div>
@@ -238,22 +238,22 @@ $this->registerJs(
         </div><!-- / .modal-content -->
     </div><!-- / .modal-dialog -->
 </div>
-<div id="modal-images" class="modal fade modal-blur" tabindex="-1" role="dialog" style="display: none;">
-    <div id="modal-photo-ppi" class="modal-dialog animated bounceIn" style="width: 1035px;">
-        <div class="modal-content">
-            <div class="modal-header">
+<div id="modal-images" class="modal fade " tabindex="-1" role="dialog" style="display: none;">
+    <div id="modal-photo-ppi" class="modal-dialog modal-sm animated bounceInRight" style="width: 1035px;">
+        <div class="modal-content" style="border-radius:0">
+<!--            <div class="modal-header" style="border-radius:0">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">Photo</h4>
-            </div>
-            <div class="modal-body">
+            </div>-->
+            <div class="modal-body" >
                 <div class="row">
                     <div class="col-sm-8">
                         <ul id="uidemo-tabs-default-demo" class="nav nav-tabs" style="margin-bottom: 5px;">
-                            <li class="active">
-                                <a href="#upload-photo" data-toggle="tab">Unggah Photo</a>
+                            <li class="active" style="border-radius:0">
+                                <a href="#upload-photo" data-toggle="tab" style="border-radius:0">Unggah Photo</a>
                             </li>
-                            <li class="">
-                                <a href="#list-photo" data-toggle="tab">List Photo</a>
+                            <li class="" style="border-radius:0">
+                                <a href="#list-photo" data-toggle="tab" style="border-radius:0">List Photo</a>
                             </li>
                         </ul>
                         <div class="tab-content tab-content-bordered" style="padding: 0; border: none">
@@ -333,9 +333,9 @@ $this->registerJs(
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <?= Html::button("<i class='fa fa-times'></i>&nbsp; Batalkan", ['class' => 'btn btn-primary', "data-dismiss" => "modal"]) ?>
-            </div>
+<!--            <div class="modal-footer" style="border-radius:0">
+                <?php //Html::button("<i class='fa fa-times'></i>&nbsp; Batalkan", ['class' => 'btn btn-primary', "data-dismiss" => "modal"]) ?>
+            </div>-->
         </div>
     </div>
 </div> 

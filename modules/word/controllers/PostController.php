@@ -14,6 +14,10 @@ use yii\filters\VerbFilter;
  */
 class PostController extends Controller
 {
+
+    private $category;
+    private $tag;
+
     public function behaviors()
     {
         return [
@@ -36,8 +40,8 @@ class PostController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
         ]);
     }
 
@@ -49,7 +53,7 @@ class PostController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -64,12 +68,33 @@ class PostController extends Controller
         $model->setAttribute('user_id', Yii::$app->user->getId());
         $model->setAttribute('create_et', date("Y-m-d H:i:s"));
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+        if ($model->load(Yii::$app->request->post())) {
+            $param = Yii::$app->request->post("PostModel");
+            $data = [];
+            if (null != $param["category"]) {
+                $cat = $model->findAllCategoryNameById($param["category"]);
+                $this->category = $param["category"];
+                array_push($data, ["category" => $cat]);
+            }
+            if (null != $param['tag']) {
+                $tag = $model->findAllTagNameById($param["tag"]);
+                $this->tag = $param["tag"];
+                array_push($data, ['tag' => $tag]);
+            }
+            $model->other_content = \yii\helpers\Json::encode($data);
+            $model->save();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view','action'=>'word-post-view', 'id' => $model->id]);
+            if (null != $param['tag']) {
+                $model->saveTaxRelation($this->tag, $model->id);
+            }
+
+            if (null != $param['category']) {
+                $model->saveTaxRelation($this->category, $model->id);
+            }
+            return $this->redirect(['view', 'action' => 'word-post-view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -83,12 +108,34 @@ class PostController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+        if ($model->load(Yii::$app->request->post())) {
+            $param = Yii::$app->request->post("PostModel");
+            $data = [];
+            if (null != $param["category"]) {
+                $cat = $model->findAllCategoryNameById($param["category"]);
+                $this->category = $param["category"];
+                array_push($data, ["category" => $cat]);
+            }
+            if (null != $param['tag']) {
+                $tag = $model->findAllTagNameById($param["tag"]);
+                $this->tag = $param["tag"];
+                array_push($data, ['tag' => $tag]);
+            }
+            $model->other_content = \yii\helpers\Json::encode($data);
+            $model->save();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view','action'=>'word-post-view', 'id' => $model->id]);
+            if (null != $param['tag']) {
+                $model->saveTaxRelation($this->tag, $model->id);
+            }
+
+            if (null != $param['category']) {
+                $model->saveTaxRelation($this->category, $model->id);
+            }
+            return $this->redirect(['view', 'action' => 'word-post-view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -121,4 +168,5 @@ class PostController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

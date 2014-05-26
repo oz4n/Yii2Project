@@ -23,6 +23,9 @@ $this->registerJs(
         <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
+        <a href="<?= Url::toRoute(['/word/post/index', 'action' => 'word-post-list']); ?>"><?= Yii::t('app', Html::encode('Post')); ?></a>
+    </li>
+    <li>
         <a href="<?php echo Url::toRoute(['/word/tag/index','action'=>'word-tag-list']); ?>"><?php echo Yii::t('app', Html::encode('Tag')); ?></a>
     </li>
     <li class="active">
@@ -78,4 +81,17 @@ $this->registerJs(
     </div>
 </div>
 
-
+<script>
+    + '<form id="form-search" action="/filemanager/image/loads" method="get">'
+	+ '<input type="hidden" name="action" value="filemanager-image-load">'
+	+ '<div class="input-group input-group-sm">'
+	+ '<input type="text" id="formsearch-keyword" class="form-control" name="keyword" value="" placeholder="Cari">'                                            
+	+ '<input type="hidden" id="formsearch-page" name="page" value="0">'
+	+ '<span class="input-group-btn">'
+	+ '<button type="submit" class="btn btn-primary">'
+	+ '<span class="fa fa-search"></span>'
+	+ '</button>'
+	+'</span>'
+	+ '</div>'
+    + '</form>'
+</script>

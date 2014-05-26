@@ -5,9 +5,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 namespace app\modules\dashboard\assets;
 
 use yii\web\AssetBundle;
+
 /**
  * Description of DashboardAsset
  *
@@ -19,10 +21,9 @@ class DashboardAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        /*Open Sans font from Google CDN*/
+        /* Open Sans font from Google CDN */
         'http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin',
-        
-        /*Pixel Admin's stylesheets*/
+        /* Pixel Admin's stylesheets */
         'PixelAdmin/css/bootstrap.min.css',
         'PixelAdmin/css/pixel-admin.css',
         'PixelAdmin/css/widgets.css',
@@ -35,8 +36,9 @@ class DashboardAsset extends AssetBundle
         'PixelAdmin/css/widget-box.css',
         'PixelAdmin/css/thumbnail.css',
         'PixelAdmin/css/widgets.css',
+        'redactor/redactor.css',
+        'PixelAdmin/css/galery.css',
     ];
-   
     public $js = [
         /**
          * JS Global Compulsory
@@ -46,6 +48,10 @@ class DashboardAsset extends AssetBundle
         'PixelAdmin/js/pixel-admin.min.js',
         'PixelAdmin/js/bootstrap-datepicker.js',
         'PixelAdmin/js/bootstrap-datepicker.id.js',
+        'redactor/redactor.js',
+        'redactor/plugins/fullscreen/fullscreen.js',
+        'redactor/lang/id.js',
     ];
+    
 
 }

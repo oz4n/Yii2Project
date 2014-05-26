@@ -1,8 +1,8 @@
 <?php
 
 namespace app\modules\filemanager\controllers;
-define("DS", DIRECTORY_SEPARATOR);
 
+define("DS", DIRECTORY_SEPARATOR);
 
 use Yii;
 use app\modules\dao\ar\File;
@@ -12,12 +12,14 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
+use app\modules\filemanager\forms\FormSearch;
+
 use app\modules\filemanager\models\ImageModel;
 use app\modules\filemanager\librarys\Image;
 use app\modules\filemanager\forms\ModalForm;
 use app\modules\filemanager\FileManager;
 use app\modules\filemanager\models\TaxImageRelationModel;
-use app\modules\filemanager\forms\FormSearch;
 use app\modules\filemanager\models\AlbumModel;
 
 /**
@@ -31,7 +33,6 @@ class ImageController extends Controller
     public $thumb_145x145;
     public $thumb_191x128;
     public $thumb_original;
-
 
     public function init()
     {
@@ -56,25 +57,24 @@ class ImageController extends Controller
         ];
     }
 
-
     public function actionLoads()
     {
-        $album = AlbumModel::findOne(1);
-        $leng = count($album->getImagesByAlbum()->asArray()->all());
+        $images = ImageModel::find();
+        $leng = count($images->asArray()->all());
         if (Yii::$app->request->isAjax) {
             $param = Yii::$app->request->getQueryParams();
             $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : "";
             $per_page = 8;
             if ($param["FormSearch"]['page'] == 0) {
-                $data = $album->getImagesByAlbum()
-                    ->orFilterWhere(['like', 'name', $key])
-                    ->orFilterWhere(['like', 'orginal_name', $key])
-                    ->orFilterWhere(['like', 'unique_name', $key])
-                    ->orFilterWhere(['like', 'description', $key])
-                    ->orderBy(['create_at' => SORT_DESC])
-                    ->limit(8)
-                    ->offset(0)
-                    ->asArray()->all();
+                $data = $images->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
+                                ->orFilterWhere(['like', 'name', $key])
+                                ->orFilterWhere(['like', 'orginal_name', $key])
+                                ->orFilterWhere(['like', 'unique_name', $key])
+                                ->orFilterWhere(['like', 'description', $key])
+                                ->orderBy(['create_at' => SORT_DESC])
+                                ->limit(8)
+                                ->offset(0)
+                                ->asArray()->all();
                 echo Json::encode([
                     'page' => 1,
                     'data' => $data,
@@ -84,21 +84,154 @@ class ImageController extends Controller
             } else {
                 $page = $param["FormSearch"]['page'];
                 $position = ($page * $per_page);
-                $data = $album->getImagesByAlbum()
-                    ->orFilterWhere(['like', 'name', $key])
-                    ->orFilterWhere(['like', 'orginal_name', $key])
-                    ->orFilterWhere(['like', 'unique_name', $key])
-                    ->orFilterWhere(['like', 'description', $key])
-                    ->orderBy(['create_at' => SORT_DESC])
-                    ->limit($per_page)
-                    ->offset($position)
-                    ->asArray()->all();
+                $data = $images->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
+                                ->orFilterWhere(['like', 'name', $key])
+                                ->orFilterWhere(['like', 'orginal_name', $key])
+                                ->orFilterWhere(['like', 'unique_name', $key])
+                                ->orFilterWhere(['like', 'description', $key])
+                                ->orderBy(['create_at' => SORT_DESC])
+                                ->limit($per_page)
+                                ->offset($position)
+                                ->asArray()->all();
                 echo Json::encode([
                     'page' => ($page + 1),
                     'data' => $data,
                     'keyword' => $key,
                     'count' => $leng
                 ]);
+            }
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function actionUploadredactorimage()
+    {
+        if (Yii::$app->request->isAjax || Yii::$app->request->isPost) {
+            /**
+             * Upload Image
+             */
+            $file = UploadedFile::getInstanceByName('file');
+            if ($file->size === 0) {
+                echo Json::encode([
+                    'error' => 'Ukuran file yang anda unggah terlalu besar! Maksimum ' . ini_get('upload_max_filesize')
+                ]);
+            } else if (($file->type == "image/jpeg" || $file->type == "image/png") || ($file->type == "image/gif" || $file->type == "image/jpg" )) {
+                $unique_name = preg_replace('/\s+/', '-', date("YmdHis") . '-' . rand(0, 999999999) . '-' . $file->name);
+
+                $file->saveAs($this->original . $unique_name);
+
+                /**
+                 * Resize Image
+                 */
+                $img = new Image();
+                $img->adaptiveResize($this->original . $unique_name, $this->thumb_145x145 . $unique_name, 145, 145);
+                $img->adaptiveResize($this->original . $unique_name, $this->thumb_191x128 . $unique_name, 191, 128);
+                $img->resize($this->original . $unique_name, $this->thumb_original . $unique_name, 256);
+                $img->resize($this->original . $unique_name, $this->original . $unique_name, 1024);
+
+                /**
+                 * Save Image name and order attr to database
+                 */
+                $model = new ImageModel;
+                $model->user_id = Yii::$app->user->identity->getId();
+                $model->name = $file->name;
+                $model->orginal_name = $file->name;
+                $model->unique_name = $unique_name;
+                $model->type = FileManager::FILE_TYPE_IMAGE;
+                $model->size = "$file->size";
+                $model->file_type = $file->type;
+                $model->description = "Photo Anggota";
+                $model->create_at = date("Y-m-d H:i:s");
+                $model->update_et = date("Y-m-d H:i:s");
+                $model->save();
+
+                /**
+                 * Ssave image cate album
+                 */
+                $tax = new TaxImageRelationModel;
+//                $tax->tax_id = FileManager::FILE_IMAGE_CAT_PPI;
+                $tax->tax_id = 126;
+                $tax->file_id = $model->id;
+                $tax->save();
+
+                $base_path = Yii::getAlias('@web') . DS . 'resources' . DS . 'images' . DS;
+
+                echo Json::encode([
+                    'filelink' => $base_path . 'original' . DS . $unique_name,
+                    'uid' => $model->id,
+                    'filename' => $file->name,
+                    'uniquename' => $unique_name
+                ]);
+            } else {
+                echo Json::encode(['error' => 'Tipe file yang anda unggah tidak di izinkan.']);
+            }
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    
+   
+
+    public function actionLoadredactorimage()
+    {
+        if (Yii::$app->request->isAjax) {
+            $album = new AlbumModel;            
+            $param = Yii::$app->request->getQueryParams();            
+            $page = isset($param["FormSearch"]['page']) ? $param["FormSearch"]['page'] : 0;
+            $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : "";
+            $per_page = 8;
+            $position = ($page * $per_page);
+            $data = [];
+          
+            
+            if (isset($param["FormSearch"]['album_id']) && (0 != $param["FormSearch"]['album_id'])) {
+                
+                $query = $album->getImageByAlbumId($param["FormSearch"]['album_id'], $per_page, $position, $key);
+                foreach ($query as $v) {
+                    $data[] = [
+                        'filelink' => Yii::getAlias('@web') . "/resources/images/original/" . $v->unique_name,
+                        'thumb' => Yii::getAlias('@web') . "/resources/images/thumbnail/145x145/" . $v->unique_name,
+                        'title' => $v->name,
+                        'image' => Yii::getAlias('@web') . "/resources/images/original/" . $v->unique_name,
+                        'imguid' => 1,
+                        'page' => ($page + 1),
+                        'key' => $key,
+                        'des' => $v->description,
+                        'uniquename' => $v->unique_name,
+                        'album_id' => $param["FormSearch"]['album_id'],
+                        'album' => $album->getAlbums('Pilih album')
+                    ];
+                }
+                echo Json::encode($data);
+            } else {        
+                $images = ImageModel::find();
+                $query = $images->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
+                        ->orFilterWhere(['like', 'name', $key])
+                        ->orFilterWhere(['like', 'orginal_name', $key])
+                        ->orFilterWhere(['like', 'unique_name', $key])
+                        ->orFilterWhere(['like', 'description', $key])
+                        ->orderBy(['create_at' => SORT_DESC])
+                        ->limit($per_page)
+                        ->offset($position)
+                        ->all();
+
+                /** @var File $v */
+                foreach ($query as $v) {
+                    $data[] = [
+                        'filelink' => Yii::getAlias('@web') . "/resources/images/original/" . $v->unique_name,
+                        'thumb' => Yii::getAlias('@web') . "/resources/images/thumbnail/145x145/" . $v->unique_name,
+                        'title' => $v->name,
+                        'image' => Yii::getAlias('@web') . "/resources/images/original/" . $v->unique_name,
+                        'imguid' => 1,
+                        'page' => ($page + 1),
+                        'key' => $key,
+                        'uniquename' => $v->unique_name,
+                        'des' => $v->description,                       
+                        'album' => $album->getAlbums('Pilih album')
+                    ];
+                }
+                echo Json::encode($data);
             }
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -115,7 +248,7 @@ class ImageController extends Controller
              * Upload Image
              */
             $file = UploadedFile::getInstance($model, 'file');
-            $unique_name = preg_replace('/\s+/', '-', date("Y-m-d-H:i:s") . '-' . rand(0, 999999999) . '-' . $file->name);
+            $unique_name = preg_replace('/\s+/', '-', date("YmdHis") . '-' . rand(0, 999999999) . '-' . $file->name);
             $file->saveAs($this->original . $unique_name);
 
             /**
@@ -174,12 +307,10 @@ class ImageController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ImageSearc;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
+        $model = new AlbumModel;
+        $data = $model->getAllImages(19, 0, null);
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
+                    'model' => $data,
         ]);
     }
 
@@ -191,7 +322,7 @@ class ImageController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -208,7 +339,7 @@ class ImageController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -227,7 +358,7 @@ class ImageController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }

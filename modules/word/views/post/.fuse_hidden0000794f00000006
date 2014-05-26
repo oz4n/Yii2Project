@@ -1,0 +1,98 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\web\View;
+use app\modules\word\searchs\PostSerch;
+use yii\helpers\Url;
+use yii\imperavi\Widget as ImperaviWidget;
+/**
+ * @var yii\web\View $this
+ * @var app\modules\dao\ar\Post $model
+ * @var yii\widgets\ActiveForm $form
+ */
+$this->registerJs(
+    "$('ul.navigation > li.mm-dropdown > ul > li#post').addClass('active').parent().parent().addClass('active open');"
+    . '$("#select-tag").select2({ allowClear: true, placeholder: "Tag ..."}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
+    . '$("#select-status").select2({ allowClear: true, placeholder: "Tag ..."}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
+    . '$("div#redactor_image_box").slimScroll({height: 230});'
+    , View::POS_READY);
+?>
+<?php $form = ActiveForm::begin(); ?>
+    <div class="col-sm-8">
+
+        <?= $form->field($model, 'title')->textInput(['placeholder' => 'Judul . . .', 'maxlength' => 225])->label("") ?>
+        <?php //$form->field($model, 'content')->textarea(['placeholder' => 'Isi . . .', 'rows' => 6])->label("") ?>
+        <?=
+        ImperaviWidget::widget([
+            'model' => $model,
+            'attribute' => 'content',
+            'options' => [
+                'imageUpload' => '#',
+                'imageGetJson' => Url::toRoute(['/filemanager/image/loadredactor']),
+                'fileUpload' => '#',
+                'placeholder' =>'Isi...',
+                'convertVideoLinks' =>true,
+                'convertImageLinks' =>true,
+                'observeLinks' => true,
+//                'toolbarFixed' => true,
+                'linkAnchor'=>true,
+                'linkEmail' => true
+            ],
+        ])
+        ?>
+        <?=
+        $form->field($model, 'status')->dropDownList([
+            '' => 'None',
+            'Publish' => 'Publish',
+            'Draft' => 'Draft',
+            'Trash' => 'Trash'
+        ], ['id' => 'select-status', 'maxlength' => 15]);
+        ?>
+
+    </div>
+
+    <div class="col-sm-4">
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="panel-title">Kategory</span>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <?=  Html::activeCheckboxList($model, 'status',PostSerch::getCategories()) ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-heading">
+                <span class="panel-title">Tag</span>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <?=  Html::activeDropDownList($model, 'tag',PostSerch::getTags(),['id'=>'select-tag','multiple'=>'multiple']) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+<?php ActiveForm::end(); ?>
+
+<script>
+//    jQuery('#redactor-texarea').redactor({
+//        'convertVideoLinks':true,
+//        'convertImageLinks':true,
+//        'focus':true,
+//        'toolbarFixed':true,
+//        'placeholder':'Content...',
+//        'imageUpload':'/yii-ebook/index.php/dropbox/cache/uploadimage',
+//        'imageGetJson':'/yii-ebook/index.php/dropbox/cache/getredactorimages',
+//        'fileUpload':'/yii-ebook/index.php/dropbox/cache/uploadfile',
+//        'linkAnchor':true,
+//        'linkEmail':true,
+//        'plugins':['fullscreen','redmore']
+//    });
+</script>

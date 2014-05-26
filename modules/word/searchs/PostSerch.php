@@ -76,8 +76,8 @@ class PostSerch extends Post
         $models = CategoryModel::find();
         $models->onCondition(['term_id' => Word::WORD_CATEGORY]);
         $data = ArrayHelper::map($models->asArray()->all(), 'id', 'name');
-//        return $data;
-        return ArrayHelper::merge(['' => $none], $data);
+        return $data;
+//        return ArrayHelper::merge(['' => $none], $data);
     }
 
     public static function getTags($none = 'None')
@@ -85,7 +85,7 @@ class PostSerch extends Post
         $models = TagModel::find();
         $models->onCondition(['term_id' => Word::WORD_TAG]);
         $data = ArrayHelper::map($models->asArray()->all(), 'id', 'name');
-//        return $data;
-        return ArrayHelper::merge(['' => $none], $data);
+        return $data;
+//        return ArrayHelper::merge(['' => $none], $data);
     }
 }

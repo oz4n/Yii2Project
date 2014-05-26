@@ -19,13 +19,13 @@ define("FILE_IMAGE_CAT_GALERY", 1);
 class FileManager extends Module
 {
 
-    const FILE_IMAGE_TERM = 15;
+    const FILE_IMAGE_TERM = 16;
     const FILE_VIDEO_TERM = 15;
     const FILE_DOCUMENT_TERM = 15;
     const FILE_TYPE_IMAGE = 'image';
     const FILE_TYPE_DOCUMENT = 'document';
     const FILE_TYPE_VIDEO = 'video';
-    const FILE_IMAGE_CAT_PPI = 1;
+    const FILE_IMAGE_CAT_PPI = 120;
 
     public $controllerNamespace = 'app\modules\filemanager\controllers';
 

@@ -201,8 +201,7 @@ GridView::widget([
             'filter' => [
                 'Publish' => 'Publish',
                 'Draft' => 'Draft',
-                'Trash' => 'Trash',
-                'Pending'=>'Pending'
+                'Trash' => 'Trash'               
             ]
         ],
 

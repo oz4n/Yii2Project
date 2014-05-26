@@ -33,7 +33,7 @@ $this->registerJs(
     <div class="row">
         <div class="col-xs-8">
             <h1 class="text-center text-left-sm">
-                <i class="fa fa-bookmark-o page-header-icon"> </i>
+                <i class="fa  fa-male page-header-icon"> </i>
                 &nbsp;
                 <?= Html::encode('Log Akun') ?>
             </h1>

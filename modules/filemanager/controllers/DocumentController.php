@@ -2,18 +2,36 @@
 
 namespace app\modules\filemanager\controllers;
 
+define("DS", DIRECTORY_SEPARATOR);
+
 use Yii;
 use app\modules\dao\ar\File;
 use app\modules\filemanager\searchs\DocumentSearc;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
+use Symfony\Component\Filesystem\Filesystem;
+use app\modules\filemanager\FileManager;
+use yii\web\UploadedFile;
+use app\modules\filemanager\models\DocumentModel;
 
 /**
  * DocumentController implements the CRUD actions for File model.
  */
 class DocumentController extends Controller
 {
+
+    public $path;
+    public $filesystem;
+
+    public function init()
+    {
+        $this->path = Yii::$app->getBasePath() . DS . 'web' . DS . 'resources' . DS . 'documents' . DS;
+        $this->filesystem = new Filesystem();
+        parent::init();
+    }
+
     public function behaviors()
     {
         return [
@@ -26,6 +44,86 @@ class DocumentController extends Controller
         ];
     }
 
+    public function actionUploaddredactorfile()
+    {
+//        echo date('Ym',strtotime("2009-05-23 01:25:08"));
+
+        $file = UploadedFile::getInstanceByName('file');
+        if ($file->size === 0) {
+            echo Json::encode([
+                'error'=>'Ukuran file yang anda unggah terlalu besar! Maksimum ' . ini_get('upload_max_filesize')
+             ]);
+        } else {
+            $dir = date("Ym");
+            $this->filesystem->mkdir($this->path . $dir);
+            $unique_name = preg_replace('/\s+/', '-', date("YmdHis") . '-' . rand(0, 999999999) . '-' . $file->name);
+
+            $file->saveAs($this->path . $dir . DS . $unique_name);
+
+            /**
+             * Save DocumentModel name and order attr to database
+             */
+            $model = new DocumentModel();
+            $model->user_id = Yii::$app->user->identity->getId();
+            $model->name = $file->name;
+            $model->orginal_name = $file->name;
+            $model->unique_name = $unique_name;
+            $model->type = FileManager::FILE_TYPE_DOCUMENT;
+            $model->size = "$file->size";
+            $model->file_type = $file->type;
+            $model->description = "Dokumen " . $file->name;
+            $model->create_at = date("Y-m-d H:i:s");
+            $model->update_et = date("Y-m-d H:i:s");
+            $model->save();
+            $base_path = Yii::getAlias('@web') . DS . 'resources' . DS . 'documents' . DS;
+            echo Json::encode([
+                'filelink' => $base_path . $dir . DS . $unique_name,
+                'uid' => $model->id,
+                'filename' => $file->name,
+                'size' => $file->size,
+                'maxsize' => ini_get('upload_max_filesize')
+            ]);
+        }
+    }
+
+    public function actionLoadredactorfile()
+    {
+
+        if (Yii::$app->request->isAjax) {
+            $file = DocumentModel::find();
+            $param = Yii::$app->request->getQueryParams();
+            $data = [];
+            $per_page = 6;
+            $page = isset($param["FormSearch"]['page']) ? $param["FormSearch"]['page'] : 0;
+            $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : "";
+            $position = ($page * $per_page);
+            $query = $file->onCondition(['type' => FileManager::FILE_TYPE_DOCUMENT])
+                    ->orFilterWhere(['like', 'name', $key])
+                    ->orFilterWhere(['like', 'orginal_name', $key])
+                    ->orFilterWhere(['like', 'unique_name', $key])
+                    ->orFilterWhere(['like', 'description', $key])
+                    ->orderBy(['create_at' => SORT_DESC])
+                    ->limit($per_page)
+                    ->offset($position)
+                    ->all();
+            /** @var File $v */
+            foreach ($query as $v) {
+                $data[] = [
+                    'filelink' => Yii::getAlias('@web') . "/resources/documents/" . date('Ym', strtotime($v->create_at)) . '/' . $v->unique_name,
+                    'title' => $v->name,
+                    'des' => $v->description,
+                    'size' => $v->size,
+                    'page' => ($page + 1),
+                    'key' => $key
+                ];
+            }
+
+            echo Json::encode($data);
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
     /**
      * Lists all File models.
      * @return mixed
@@ -36,8 +134,8 @@ class DocumentController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
         ]);
     }
 
@@ -49,7 +147,7 @@ class DocumentController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -66,7 +164,7 @@ class DocumentController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -85,7 +183,7 @@ class DocumentController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -118,4 +216,22 @@ class DocumentController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    protected function bytes($val)
+    {
+        $val = trim($val);
+        $last = strtolower($val[strlen($val) - 1]);
+        switch ($last) {
+            // The 'G' modifier is available since PHP 5.1.0
+            case 'g':
+                $val *= 1024;
+            case 'm':
+                $val *= 1024;
+            case 'k':
+                $val *= 1024;
+        }
+
+        return $val;
+    }
+
 }

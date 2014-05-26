@@ -13,7 +13,7 @@ use app\modules\word\searchs\CategorySerch;
  * @var app\modules\word\searchs\CategorySerch $searchModel
  */
 
-$this->title = Yii::t('app', 'Kategory');
+$this->title = Yii::t('app', 'Kategori');
 $this->registerJs(
     "$('ul.navigation > li.mm-dropdown > ul > li#category').parent().parent().addClass('active open');"
     , View::POS_READY);
@@ -26,7 +26,10 @@ $this->registerJs(
         <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute(['/word/category/index','action'=>'word-category-list']); ?>"><?php echo Yii::t('app', Html::encode('Kategory')); ?></a>
+        <a href="<?= Url::toRoute(['/word/post/index', 'action' => 'word-post-list']); ?>"><?= Yii::t('app', Html::encode('Post')); ?></a>
+    </li>
+    <li>
+        <a href="<?php echo Url::toRoute(['/word/category/index','action'=>'word-category-list']); ?>"><?php echo Yii::t('app', Html::encode('Kategori')); ?></a>
     </li>
 </ul>
 
@@ -37,11 +40,11 @@ $this->registerJs(
             <h1 class="text-center text-left-sm">
                 <i class="fa  fa-sitemap page-header-icon"> </i>
                 &nbsp;
-                <?= Html::encode('Kategory') ?>
+                <?= Html::encode('Kategori') ?>
                 <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
-                    'modelClass' => 'Kategory',
+                    'modelClass' => 'Kategori',
                 ]), Url::toRoute(['/word/category/create','action'=>'word-category-create']))
                 ?>
             </h1>
@@ -142,7 +145,7 @@ $this->registerJs(
                 ],
                 [
                     'attribute' => 'name',
-                    'label' => 'Nama Kategory',
+                    'label' => 'Nama Kategori',
                     'format' => 'RAW',
                     'filter' => CategorySerch::getFilterNames(),
                     'value' => function ($data) {
