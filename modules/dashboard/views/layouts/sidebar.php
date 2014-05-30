@@ -210,8 +210,11 @@ use Yii;
                         ],
                         [
                             'label' => 'Menu',
-                            'url' => '#',
-                            'icon' => 'menu-icon fa fa-angle-double-right'
+                            'url' => ['/appearance/menu/index','action'=>'appearance-menu-list'],
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'menu'
+                            ]
                         ],
                         [
                             'label' => 'Widget',

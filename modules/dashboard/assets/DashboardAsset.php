@@ -38,6 +38,7 @@ class DashboardAsset extends AssetBundle
         'PixelAdmin/css/widgets.css',
         'redactor/redactor.css',
         'PixelAdmin/css/galery.css',
+        'jnestable/nestable.css',
     ];
     public $js = [
         /**
@@ -51,6 +52,23 @@ class DashboardAsset extends AssetBundle
         'redactor/redactor.js',
         'redactor/plugins/fullscreen/fullscreen.js',
         'redactor/lang/id.js',
+       
+        
+        //jQuery UI widget factory
+        'jfileupload/js/vendor/jquery.ui.widget.js', 
+        //JavaScript-Load-Image
+        'jloadimage/js/load-image.min.js',
+        'jcanvastoblob/canvas-to-blob.min.js',
+        //file upload
+        'jfileupload/js/jquery.iframe-transport.js',        
+        'jfileupload/js/jquery.fileupload.js',
+        'jfileupload/js/jquery.fileupload-process.js',
+        'jfileupload/js/jquery.fileupload-image.js',
+        'jfileupload/js/jquery.fileupload-audio.js',
+        'jfileupload/js/jquery.fileupload-video.js',
+        'jfileupload/js/jquery.fileupload-validate.js',
+        
+        'jnestable/jquery.nestable.js',
     ];
     
 
