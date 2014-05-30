@@ -24,6 +24,7 @@ $this->registerJs(
         $("#post-content").redactor({
         imageUpload:"'.Url::toRoute(['/filemanager/image/uploadredactorimage']).'",
         imageGetJson:"'.Url::toRoute(['/filemanager/image/loadredactorimage']).'",
+        albumGetJson:"'.Url::toRoute(['/filemanager/image/loadredactoralbum']).'",
         imageUploadErrorCallback:function(data){
             $("html,body").animate({ scrollTop: 0 }, 500);
             PixelAdmin.plugins.alerts.add("<strong>Maap!</strong>&nbsp;" + data.error, {
@@ -44,6 +45,7 @@ $this->registerJs(
             "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '",
         },
         lang: "id",
+        deniedTags: ["div"],
         imgLoading:"'.Yii::getAlias('@web') . "/PixelAdmin/img/loading.gif".'",
         
         _csrf:"' . Yii::$app->request->getCsrfToken() . '",
@@ -63,9 +65,10 @@ $this->registerJs(
 <?php $form = ActiveForm::begin(); ?>
     <div class="col-sm-8">
 
-        <div class="form-group">
-            <?= Html::activetextInput($model, 'title', ['class'=>'form-control','placeholder' => 'Judul . . .', 'maxlength' => 225]) ?>
-        </div>
+        <!--<div class="form-group">-->
+            <?php //Html::activetextInput($model, 'title', ['class'=>'form-control','placeholder' => 'Judul . . .', 'maxlength' => 225]) ?>
+            <?= $form->field($model, 'title') ?>
+        <!--</div>-->
         <div class="form-group">
             <?= Html::activetextarea($model, 'content',['id'=>'post-content','class'=>'form-control','placeholder' => 'Isi . . .', 'rows' => 6]) ?>
         </div> 

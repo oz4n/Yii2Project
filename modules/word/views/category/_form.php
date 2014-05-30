@@ -17,7 +17,7 @@ $this->registerJs(
 <?php $form = ActiveForm::begin(); ?>
 <?= $form->field($model, 'name')->textInput(['maxlength' => 255])->label('Nama Kategory') ?>
 <?= $form->field($model, 'parent_id')->dropDownList(CategorySerch::getParents())->label('Induk') ?>
-<?= $form->field($model, 'description')->textarea(['rows'=>6,'maxlength' => 255])->label('Keterangan') ?>
+<?= $form->field($model, 'description')->textarea(['rows'=>6,'maxlength' => 255, 'style' => 'resize: none;'])->label('Keterangan') ?>
 <div class="form-group">
     <?= Html::submitButton(Html::tag('i','',['class'=>'fa  fa-check']).'&nbsp; '.Yii::t('app', 'Simpan'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 </div>

@@ -8,6 +8,7 @@ use app\modules\word\searchs\PostSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\modules\word\Word;
 
 /**
  * PostModelController implements the CRUD actions for PostModel model.
@@ -68,16 +69,17 @@ class PostController extends Controller
         $model->setAttribute('user_id', Yii::$app->user->getId());
         $model->setAttribute('create_et', date("Y-m-d H:i:s"));
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+        $model->setAttribute('type', Word::POST_POST_TYPE_INFO);
         if ($model->load(Yii::$app->request->post())) {
             $param = Yii::$app->request->post("PostModel");
             $data = [];
             if (null != $param["category"]) {
-                $cat = $model->findAllCategoryNameById($param["category"]);
+                $cat = $model->findAllCategoryAttrById($param["category"]);
                 $this->category = $param["category"];
                 array_push($data, ["category" => $cat]);
             }
             if (null != $param['tag']) {
-                $tag = $model->findAllTagNameById($param["tag"]);
+                $tag = $model->findAllTagAttrById($param["tag"]);
                 $this->tag = $param["tag"];
                 array_push($data, ['tag' => $tag]);
             }
@@ -113,12 +115,12 @@ class PostController extends Controller
             $param = Yii::$app->request->post("PostModel");
             $data = [];
             if (null != $param["category"]) {
-                $cat = $model->findAllCategoryNameById($param["category"]);
+                $cat = $model->findAllCategoryAttrById($param["category"]);
                 $this->category = $param["category"];
                 array_push($data, ["category" => $cat]);
             }
             if (null != $param['tag']) {
-                $tag = $model->findAllTagNameById($param["tag"]);
+                $tag = $model->findAllTagAttrById($param["tag"]);
                 $this->tag = $param["tag"];
                 array_push($data, ['tag' => $tag]);
             }

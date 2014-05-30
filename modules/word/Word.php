@@ -10,6 +10,9 @@ class Word extends Module implements BootstrapInterface
 {
     const WORD_CATEGORY = 13;
     const WORD_TAG = 14;
+    const POST_POST_TYPE_INFO = 'info';
+    const POST_POST_TYPE_PAGE = 'page';
+    const POST_POST_TYPE_PAGE_HELPER = 'pagehelper';
     public $controllerNamespace = 'app\modules\word\controllers';
 
     public function init()

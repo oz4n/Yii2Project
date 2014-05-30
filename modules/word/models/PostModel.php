@@ -43,6 +43,20 @@ class PostModel extends Post
         }
         return $data;
     }
+    public function findAllCategoryAttrById($dataid)
+    {
+        $data = [];
+        foreach ($dataid as $id) {
+            $cat = CategoryModel::findOne($id);
+            $data[] = [
+                'id' => $cat->id,
+                'name' => $cat->name,
+                'slug' => $cat->slug
+            ];
+        }
+        return $data;
+    }
+    
 
     public function findAllTagNameById($dataid)
     {
@@ -50,6 +64,20 @@ class PostModel extends Post
         foreach ($dataid as $id) {
             $tag = TagModel::findOne($id);
             $data[] = $tag->name;
+        }
+        return $data;
+    }
+    
+    public function findAllTagAttrById($dataid)
+    {
+        $data = [];
+        foreach ($dataid as $id) {
+            $tag = TagModel::findOne($id);
+            $data[] = [
+                'id' => $tag->id,
+                'name' => $tag->name,
+                'slug' => $tag->slug
+            ];
         }
         return $data;
     }
