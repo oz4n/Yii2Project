@@ -39,21 +39,21 @@ class Member extends Module implements BootstrapInterface
     public function bootstrap($app)
     {
         $app->getUrlManager()->addRules([
-            'dashboard/member/ppi/index/<action:(member-ppi-list)>' => 'member/ppi/index',
+            'dashboard/member/ppi/index/<action:(member-ppi-list)>' => '/member/ppi/index',
             'dashboard/member/ppi/create/<action:(member-ppi-create)>' => '/member/ppi/create',
             'dashboard/member/ppi/update/<action:(member-ppi-update)>/<id:.*?>' => '/member/ppi/update',
             'dashboard/member/ppi/delete/<action:(member-ppi-delete)>/<id:.*?>' => '/member/ppi/delete',
             'dashboard/member/ppi/trash/<action:(member-ppi-trash)>/<id:.*?>' => '/member/ppi/trash',
             'dashboard/member/ppi/view/<action:(member-ppi-view)>/<id:.*?>' => '/member/ppi/view',
 
-            'dashboard/member/paskibra/index/<action:(member-paskibra-list)>' => 'member/paskibra/index',
+            'dashboard/member/paskibra/index/<action:(member-paskibra-list)>' => '/member/paskibra/index',
             'dashboard/member/paskibra/create/<action:(member-paskibra-create)>' => '/member/paskibra/create',
             'dashboard/member/paskibra/update/<action:(member-paskibra-update)>/<id:.*?>' => '/member/paskibra/update',
             'dashboard/member/paskibra/delete/<action:(member-paskibra-delete)>/<id:.*?>' => '/member/paskibra/delete',
             'dashboard/member/paskibra/trash/<action:(member-paskibra-trash)>/<id:.*?>' => '/member/paskibra/trash',
             'dashboard/member/paskibra/view/<action:(member-paskibra-view)>/<id:.*?>' => '/member/paskibra/view',
 
-            'dashboard/member/capas/index/<action:(member-capas-list)>' => 'member/capas/index',
+            'dashboard/member/capas/index/<action:(member-capas-list)>' => '/member/capas/index',
             'dashboard/member/capas/create/<action:(member-capas-create)>' => '/member/capas/create',
             'dashboard/member/capas/update/<action:(member-capas-update)>/<id:.*?>' => '/member/capas/update',
             'dashboard/member/capas/delete/<action:(member-capas-delete)>/<id:.*?>' => '/member/capas/delete',
@@ -102,8 +102,6 @@ class Member extends Module implements BootstrapInterface
             'dashboard/member/tribe/delete/<action:(member-tribe-delete)>/<id:.*?>' => '/member/tribe/delete',
             'dashboard/member/tribe/view/<action:(member-tribe-view)>/<id:.*?>' => '/member/tribe/view',
         ], false);
-
-
     }
 
 }
