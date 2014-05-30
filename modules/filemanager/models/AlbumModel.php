@@ -13,6 +13,7 @@ use app\modules\dao\ar\File;
 use app\modules\filemanager\FileManager;
 use yii\helpers\ArrayHelper;
 use app\modules\filemanager\models\ImageModel;
+
 /**
  * Description of AlbumModel
  *
@@ -21,24 +22,48 @@ use app\modules\filemanager\models\ImageModel;
 class AlbumModel extends Taxonomy
 {
 
+    public function behaviors()
+    {
+        return [
+            'slug' => [
+                'class' => 'Zelenin\yii\behaviors\Slug',
+                'source_attribute' => 'name',
+                'slug_attribute' => 'slug',
+                // optional params
+                'translit' => false,
+                'replacement' => '-',
+                'lowercase' => true,
+                'unique' => true
+            ]
+        ];
+    }
+
+    public function getParentName()
+    {
+        $m = self::findBySql("SELECT * FROM " . $this->tableName() . " WHERE id='" . $this->parent_id . "'")->one();
+        return $m["name"];
+    }
+
+    public function getAlbumNameById($id)
+    {
+        $m = self::findBySql("SELECT * FROM " . $this->tableName() . " WHERE id='" . $id . "'")->one();
+        return $m["name"];
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getImagesByAlbum()
     {
         return $this->hasMany(File::className(), ['id' => 'file_id'])
-                        ->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
+                        ->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])                
                         ->viaTable('taxfilerelations', ['tax_id' => 'id']);
     }
 
-    public function getImageByAlbumId($id, $limit, $offset, $key = null)
+    public function getImageByAlbumId($id, $limit, $offset)
     {
         $image = self::findOne($id);
         $query = $image->getImagesByAlbum()
-                ->orFilterWhere(['like', 'name', $key])
-                ->orFilterWhere(['like', 'orginal_name', $key])
-                ->orFilterWhere(['like', 'unique_name', $key])
-                ->orFilterWhere(['like', 'description', $key])
                 ->orderBy(['create_at' => SORT_DESC])
                 ->limit($limit)
                 ->offset($offset)
@@ -61,7 +86,7 @@ class AlbumModel extends Taxonomy
         return $query;
     }
 
-    public static function getAllAlbums()
+    public function getAllAlbums()
     {
         $models = self::find();
         $query = $models->onCondition(['term_id' => FileManager::FILE_IMAGE_TERM])

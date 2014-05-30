@@ -26,7 +26,7 @@ class ImageModel extends File
      */
     public function getImagefilerelations($tax_id)
     {
-        return $this->hasOne(Taxfilerelations::className(), ['file_id' => 'id'])->where(['tax_id' => $tax_id]);
+        return $this->hasOne(Taxfilerelations::className(), ['file_id' => 'id'])->where(['tax_id' => $tax_id])->with(Taxonomy::className());
     }
 
     /**

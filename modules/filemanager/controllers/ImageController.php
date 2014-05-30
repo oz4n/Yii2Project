@@ -6,21 +6,18 @@ define("DS", DIRECTORY_SEPARATOR);
 
 use Yii;
 use app\modules\dao\ar\File;
-use app\modules\filemanager\searchs\ImageSearc;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\helpers\Json;
-use yii\helpers\ArrayHelper;
 use app\modules\filemanager\forms\FormSearch;
-
 use app\modules\filemanager\models\ImageModel;
 use app\modules\filemanager\librarys\Image;
-use app\modules\filemanager\forms\ModalForm;
 use app\modules\filemanager\FileManager;
 use app\modules\filemanager\models\TaxImageRelationModel;
 use app\modules\filemanager\models\AlbumModel;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * ImageController implements the CRUD actions for File model.
@@ -104,6 +101,23 @@ class ImageController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    public function actionLoadredactoralbum()
+    {
+        if (Yii::$app->request->isAjax) {
+            $model = new AlbumModel;            
+            $data = [];
+            foreach ($model->getAllAlbums() as $v){
+                $data[] = [
+                    'id' => $v->id,
+                    'name' => $v->name
+                ];
+            }
+            echo Json::encode($data);
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 
     public function actionUploadredactorimage()
     {
@@ -111,6 +125,7 @@ class ImageController extends Controller
             /**
              * Upload Image
              */
+            $param = Yii::$app->request->post();          
             $file = UploadedFile::getInstanceByName('file');
             if ($file->size === 0) {
                 echo Json::encode([
@@ -147,13 +162,14 @@ class ImageController extends Controller
                 $model->save();
 
                 /**
-                 * Ssave image cate album
+                 * Save image cate album
                  */
-                $tax = new TaxImageRelationModel;
-//                $tax->tax_id = FileManager::FILE_IMAGE_CAT_PPI;
-                $tax->tax_id = 126;
-                $tax->file_id = $model->id;
-                $tax->save();
+                if(isset($param['cat_id']) || $param['cat_id'] != null){
+                    $tax = new TaxImageRelationModel;                   
+                    $tax->tax_id = $param['cat_id'];
+                    $tax->file_id = $model->id;
+                    $tax->save();
+                }
 
                 $base_path = Yii::getAlias('@web') . DS . 'resources' . DS . 'images' . DS;
 
@@ -170,23 +186,21 @@ class ImageController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    
-   
 
     public function actionLoadredactorimage()
     {
         if (Yii::$app->request->isAjax) {
-            $album = new AlbumModel;            
-            $param = Yii::$app->request->getQueryParams();            
+            $album = new AlbumModel;
+            $param = Yii::$app->request->getQueryParams();
             $page = isset($param["FormSearch"]['page']) ? $param["FormSearch"]['page'] : 0;
             $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : "";
             $per_page = 8;
             $position = ($page * $per_page);
             $data = [];
-          
-            
+
+
             if (isset($param["FormSearch"]['album_id']) && (0 != $param["FormSearch"]['album_id'])) {
-                
+
                 $query = $album->getImageByAlbumId($param["FormSearch"]['album_id'], $per_page, $position, $key);
                 foreach ($query as $v) {
                     $data[] = [
@@ -204,7 +218,7 @@ class ImageController extends Controller
                     ];
                 }
                 echo Json::encode($data);
-            } else {        
+            } else {
                 $images = ImageModel::find();
                 $query = $images->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
                         ->orFilterWhere(['like', 'name', $key])
@@ -227,7 +241,7 @@ class ImageController extends Controller
                         'page' => ($page + 1),
                         'key' => $key,
                         'uniquename' => $v->unique_name,
-                        'des' => $v->description,                       
+                        'des' => $v->description,
                         'album' => $album->getAlbums('Pilih album')
                     ];
                 }
@@ -241,13 +255,11 @@ class ImageController extends Controller
     public function actionUpload()
     {
         if (Yii::$app->request->isAjax) {
-            $model = new ModalForm;
-            $form = Yii::$app->request->post('ModalForm');
 
             /**
              * Upload Image
              */
-            $file = UploadedFile::getInstance($model, 'file');
+            $file = UploadedFile::getInstanceByName('file');
             $unique_name = preg_replace('/\s+/', '-', date("YmdHis") . '-' . rand(0, 999999999) . '-' . $file->name);
             $file->saveAs($this->original . $unique_name);
 
@@ -269,7 +281,7 @@ class ImageController extends Controller
             $model->orginal_name = $file->name;
             $model->unique_name = $unique_name;
             $model->type = FileManager::FILE_TYPE_IMAGE;
-            $model->size = $form['size'];
+            $model->size = "$file->size";
             $model->file_type = $file->type;
             $model->description = "Photo Anggota";
             $model->create_at = date("Y-m-d H:i:s");
@@ -279,22 +291,26 @@ class ImageController extends Controller
             /**
              * Ssave image cate album
              */
-            $tax = new TaxImageRelationModel;
-            $tax->tax_id = FileManager::FILE_IMAGE_CAT_PPI;
-            $tax->file_id = $model->id;
-            $tax->save();
+            $param = Yii::$app->request->post();
+            if ($param['album_id'] != 0) {
+                $tax = new TaxImageRelationModel;
+                $tax->tax_id = $param['album_id'];
+                $tax->file_id = $model->id;
+                $tax->save();
+            }
 
             $base_path = Yii::getAlias('@web') . DS . 'resources' . DS . 'images' . DS;
 
             echo Json::encode([
-                "form" => $form,
-                "status" => true,
-                "id" => $model->id,
-                "orginal_name" => $file->name,
-                "unique_name" => $unique_name,
-                "path" => $base_path,
-                "thumb_path" => $base_path . 'thumbnail' . DS . 'original' . DS,
-                "thumb_path_145x145" => $base_path . 'thumbnail' . DS . '145x145' . DS,
+                "files" => [
+                    "status" => true,
+                    "id" => $model->id,
+                    "orginal_name" => $file->name,
+                    "unique_name" => $unique_name,
+                    "path" => $base_path,
+                    "original" => $base_path . 'original' . DS . $unique_name,
+                    "thumb" => $base_path . 'thumbnail' . DS . '145x145' . DS . $unique_name,
+                ]
             ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -307,11 +323,55 @@ class ImageController extends Controller
      */
     public function actionIndex()
     {
-        $model = new AlbumModel;
-        $data = $model->getAllImages(19, 0, null);
-        return $this->render('index', [
-                    'model' => $data,
-        ]);
+        $per_page = 19;
+        if (Yii::$app->request->isAjax) {
+            $model = new AlbumModel;
+            $param = Yii::$app->request->getQueryParams();
+            $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : null;
+            $page = $param['page'];
+            $position = ($page * $per_page);
+            if ((isset($param['album_id']) && $param['album_id'] != 0) && $key == null) {
+                $data = $model->getImageByAlbumId($param['album_id'], $per_page, $position);
+                echo Json::encode([
+                    'data' => $data,
+                    'page' => ($page + 1)
+                ]);
+            } else {
+                $data = $model->getAllImages($per_page, $position, $key);
+                echo Json::encode([
+                    'data' => $data,
+                    'page' => ($page + 1)
+                ]);
+            }
+        } else {
+
+            $model = new AlbumModel;
+            $searchModel = new FormSearch;
+            $param = Yii::$app->request->getQueryParams();
+            $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : null;
+
+            if ((isset($param['album_id']) && $param['album_id'] != 0) && $key == null) {
+                $data = $model->getImageByAlbumId($param['album_id'], $per_page, 0);
+                return $this->render('index', [
+                            'model' => $data,
+                            'album_id' => $param['album_id'],
+                            'album' => $model->getAllAlbums(),
+                            'album_name' => $model->getAlbumNameById($param['album_id']),
+                            'searchModel' => $searchModel,
+                            'keyword' => $key
+                ]);
+            } else {
+
+                $data = $model->getAllImages($per_page, 0, $key);
+                return $this->render('index', [
+                            'model' => $data,
+                            'album_id' => 0,
+                            'album' => $model->getAllAlbums(),
+                            'searchModel' => $searchModel,
+                            'keyword' => $key
+                ]);
+            }
+        }
     }
 
     /**
@@ -369,11 +429,20 @@ class ImageController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        if(Yii::$app->request->isAjax){
+            $system = new Filesystem();
+            $param = Yii::$app->request->post();
+            $model = $this->findModel($param['id']);
+            $system->remove($this->original . $model->unique_name);
+            $system->remove($this->thumb_145x145 . $model->unique_name);
+            $system->remove($this->thumb_original . $model->unique_name);
+            $system->remove($this->thumb_191x128 . $model->unique_name);          
+            $model->delete();            
+        }
+        
+        
     }
 
     /**
