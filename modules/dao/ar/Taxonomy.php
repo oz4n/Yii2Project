@@ -9,10 +9,12 @@ use Yii;
  *
  * @property integer $id
  * @property integer $parent_id
+ * @property integer $taxmenu
  * @property integer $term_id
  * @property string $name
+ * @property string $type
  * @property string $description
- * @property string $count
+ * @property integer $count
  * @property string $slug
  * @property string $status
  * @property integer $position
@@ -31,6 +33,7 @@ use Yii;
  * @property Terminologi $term
  * @property Taxonomy $parent
  * @property Taxonomy[] $taxonomies
+ * @property Taxonomy $taxmenu
  * @property Taxpostrelations $taxpostrelations
  * @property Post[] $posts
  * @property Taxuserlogrelations $taxuserlogrelations
@@ -46,30 +49,19 @@ class Taxonomy extends \yii\db\ActiveRecord
         return 'taxonomy';
     }
 
-    public function rules()
-    {
-        return [
-            [['parent_id', 'term_id', 'position', 'lft', 'rgt', 'root', 'level'], 'integer'],
-            [['name'], 'required'],
-            [['create_et', 'update_et'], 'safe'],
-            [['name', 'description', 'slug'], 'string', 'max' => 255],
-            [['count', 'status'], 'string', 'max' => 45]
-        ];
-    }
-
     /**
      * @inheritdoc
      */
-//    public function rules()
-//    {
-//        return [
-//            [['parent_id', 'term_id', 'position', 'lft', 'rgt', 'root', 'level'], 'integer'],
-//            [['term_id', 'name', 'slug', 'create_et', 'update_et'], 'required'],
-//            [['create_et', 'update_et'], 'safe'],
-//            [['name', 'description', 'slug'], 'string', 'max' => 255],
-//            [['count', 'status'], 'string', 'max' => 45]
-//        ];
-//    }
+    public function rules()
+    {
+        return [
+            [['parent_id', 'taxmenu', 'term_id', 'count', 'position', 'lft', 'rgt', 'root', 'level'], 'integer'],
+            [['name', 'create_et', 'update_et'], 'required','message'=>'Tidak boleh kosong'],
+            [['create_et', 'update_et'], 'safe'],
+            [['name', 'description', 'slug'], 'string', 'max' => 255],
+            [['type', 'status'], 'string', 'max' => 45]
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -79,8 +71,10 @@ class Taxonomy extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'parent_id' => Yii::t('app', 'Parent ID'),
+            'taxmenu' => Yii::t('app', 'Taxmenu'),
             'term_id' => Yii::t('app', 'Term ID'),
             'name' => Yii::t('app', 'Name'),
+            'type' => Yii::t('app', 'Type'),
             'description' => Yii::t('app', 'Description'),
             'count' => Yii::t('app', 'Count'),
             'slug' => Yii::t('app', 'Slug'),
@@ -156,7 +150,15 @@ class Taxonomy extends \yii\db\ActiveRecord
      */
     public function getTaxonomies()
     {
-        return $this->hasMany(Taxonomy::className(), ['parent_id' => 'id']);
+        return $this->hasMany(Taxonomy::className(), ['taxmenu' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaxmenu()
+    {
+        return $this->hasOne(Taxonomy::className(), ['id' => 'taxmenu']);
     }
 
     /**

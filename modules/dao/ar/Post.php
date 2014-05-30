@@ -43,7 +43,7 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'integer'],
-            [['title', 'slug', 'create_et', 'update_et'], 'required'],
+            [['title', 'slug', 'create_et', 'update_et','status'], 'required','message'=>'Tidak boleh kosong'],
             [['content', 'slug', 'image', 'other_content'], 'string'],
             [['create_et', 'update_et'], 'safe'],
             [['title'], 'string', 'max' => 225],
