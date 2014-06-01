@@ -52,38 +52,7 @@ use app\modules\site\helpers\Navigation;
             <div class="collapse navbar-collapse navbar-responsive-collapse">               
                 <?php
                 echo Navigation::widget([
-                    'options' => ['class' => 'nav navbar-nav pull-left'],
-                    'items' => [
-                        ['label' => 'Beranda', 'url' => ['/site/site/index']],
-                        [
-                            'label' => 'Tentang Kami', 'url' => ['/site/site/about'],
-                            'items' => [
-                                ['label' => 'Sejarah', 'url' => ['/site/site/about']],
-                                ['label' => 'Visi Misi', 'url' => ['/site/site/about1']],                               
-                                ['label' => 'Profil Anggota', 'url' => ['/site/site/about2']]
-                            ]
-                        ],
-                        [
-                            'label' => 'Informasi', 'url' => ['/site/site/info'],
-                            'items' => [
-                                ['label' => 'Berita', 'url' => ['/site/site/info']],
-                                ['label' => 'Pengumuman', 'url' => ['/site/site/info1']],
-                                ['label' => 'Database', 'url' => ['/site/site/info5']],
-                                ['label' => 'Bisnis', 'url' => ['/site/site/info2']],                               
-                                ['label' => 'Nusantara', 'url' => ['/site/site/info3']],                               
-                                ['label' => 'Koprasi PPI', 'url' => ['/site/site/info4']], 
-                            ]
-                        ],
-                        
-                        ['label' => 'Buku Tamu', 'url' => ['/site/site/logbook']],
-                        ['label' => 'Kontak Kami', 'url' => ['/site/site/contact']],
-                        
-                    Yii::$app->user->isGuest ?
-                        ['label' => 'Login', 'url' => ['/user/security/login']] :
-                        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                            'url' => ['/user/security/logout'],
-                            'linkOptions' => ['data-method' => 'post']],
-                    ],
+                    'options' => ['class' => 'nav navbar-nav']
                 ]);
                 ?>
             </div><!--/navbar-collapse-->
