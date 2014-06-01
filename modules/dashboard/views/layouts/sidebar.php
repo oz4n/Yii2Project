@@ -162,7 +162,7 @@ use Yii;
                     'items' => [
                         [
                             'label' => 'Semua Halaman',
-                            'url' => ['#'],
+                            'url' => ['/page/page/index','action'=>'page-list'],
                             'icon' => 'menu-icon fa fa-angle-double-right',
                             'options' => [
                                 'id' => 'pages'
@@ -170,8 +170,11 @@ use Yii;
                         ],
                         [
                             'label' => 'Tambah Baru',
-                            'url' => ['#'],
-                            'icon' => 'menu-icon fa fa-angle-double-right'
+                             'url' => ['/page/page/create','action'=>'page-create'],
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'create-pages'
+                            ]
                         ]
                     ]
                 ],
@@ -204,9 +207,12 @@ use Yii;
                     'icon' => 'menu-icon fa fa-leaf',
                     'items' => [
                         [
-                            'label' => 'Header',
-                            'url' => '#',
-                            'icon' => 'menu-icon fa fa-angle-double-right'
+                            'label' => 'Umum',
+                            'url' => ['/appearance/general/index','action'=>'appearance-general-list'],
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'general'
+                            ]
                         ],
                         [
                             'label' => 'Menu',

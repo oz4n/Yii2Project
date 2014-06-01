@@ -14,8 +14,9 @@ $this->registerJs(
         , View::POS_HEAD);
 $this->registerJsFile('PixelAdmin/js/demo.js', [], ['position' => View::POS_BEGIN]);
 $this->registerJs(
-        'init.push(function () {});'.
-        'window.PixelAdmin.start(init);'
+        'init.push(function () {});'
+        .'window.PixelAdmin.start(init);'
+        . '$(".select-tooltip").tooltip();'
         , View::POS_END);
 ?>
 <?php $this->beginPage() ?>

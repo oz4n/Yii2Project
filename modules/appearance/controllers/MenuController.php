@@ -9,6 +9,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use app\modules\appearance\Appearance;
 use app\modules\appearance\models\MenuModel;
+use app\modules\appearance\models\PageModel;
 use app\modules\appearance\models\TaxonomyModel;
 
 /**
@@ -34,7 +35,7 @@ class MenuController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {        
+    {
         $model = new MenuModel;
         $param = Yii::$app->request->getQueryParams();
         return $this->render('index', [
@@ -70,14 +71,47 @@ class MenuController extends Controller
         $model->setAttribute('create_et', date("Y-m-d H:i:s"));
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-             return $this->redirect(['index', 'action' => 'appearance-menu-list','id' => $model->id]);
+            return $this->redirect(['index', 'action' => 'appearance-menu-list', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                        'model' => $model,                       
+                        'model' => $model,
             ]);
         }
     }
-    
+
+    public function actionAddpagetomenu()
+    {        
+        if (Yii::$app->request->isAjax) {
+            $param = Yii::$app->request->post();
+            if (isset($param['Page'])) {
+                foreach ($param['Page'] as $id) {
+                    $page = PageModel::findOne($id);
+                    $model = new MenuModel;
+                    $model->term_id = Appearance::APPEARANCE_MENU_TERM_ITEM;
+                    $model->type = $page->type == "pagehelper" ? Appearance::APPEARANCE_MENU_TERM_TYPE_HELPER : Appearance::APPEARANCE_MENU_TERM_TYPE_PAGE;
+                    $model->taxmenu = $param['MenuModel']['id'];
+                    $model->create_et = date("Y-m-d H:i:s");
+                    $model->update_et = date("Y-m-d H:i:s");
+                    $model->slug = $page->type == "pagehelper" ? '/' . str_replace("-", "/", $page->slug) : $page->slug;
+                    $model->name = $page->title;
+                    $model->description = "Menu item " . $page->title;
+                    $model->save();
+                }
+                echo Json::encode([
+                    'status' => true,
+                ]);
+            } else {
+                echo Json::encode([
+                    'status' => false,
+                    'type' => 'error',
+                    'info' => 'Pilih salah satu kategory yang akan dijadikan menu.'
+                ]);
+            }
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
     /**
      * Creates a new MenuModel model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -90,22 +124,23 @@ class MenuController extends Controller
             $param = Yii::$app->request->post();
             if (isset($param['Category'])) {
                 foreach ($param['Category'] as $id) {
+                    $cat = $this->findModel($id);
                     $model = new MenuModel;
                     $model->term_id = Appearance::APPEARANCE_MENU_TERM_ITEM;
                     $model->type = Appearance::APPEARANCE_MENU_TERM_TYPE_ITEM;
                     $model->taxmenu = $param['MenuModel']['id'];
                     $model->create_et = date("Y-m-d H:i:s");
                     $model->update_et = date("Y-m-d H:i:s");
-                    $model->slug = $this->findModel($id)->slug;
-                    $model->name = $this->findModel($id)->name;
-                    $model->description = "Menu item " . $this->findModel($id)->name;
+                    $model->slug = $cat->slug;
+                    $model->name = $cat->name;
+                    $model->description = "Menu item " . $cat->name;
                     $model->save();
                 }
                 echo Json::encode([
                     'status' => true,
                 ]);
-            }else{
-                 echo Json::encode([
+            } else {
+                echo Json::encode([
                     'status' => false,
                     'type' => 'error',
                     'info' => 'Pilih salah satu kategory yang akan dijadikan menu.'
@@ -119,7 +154,7 @@ class MenuController extends Controller
     public function actionAddlinktomenu()
     {
 
-        if (Yii::$app->request->isAjax) {            
+        if (Yii::$app->request->isAjax) {
             $param = Yii::$app->request->post();
             $model = new MenuModel;
             $model->term_id = Appearance::APPEARANCE_MENU_TERM_ITEM;
@@ -156,7 +191,7 @@ class MenuController extends Controller
         $model = $this->findModel($id);
         $model->setAttribute('update_et', date("Y-m-d H:i:s"));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'action' => 'appearance-menu-list','id' => $model->id]);
+            return $this->redirect(['index', 'action' => 'appearance-menu-list', 'id' => $model->id]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
@@ -172,6 +207,21 @@ class MenuController extends Controller
                 $model->position = $key;
                 $model->save();
             }
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function actionDeletemenuitem()
+    {
+        if (Yii::$app->request->isAjax) {
+            $param = Yii::$app->request->post();
+            $this->findModel($param['dataid'])->delete();
+            echo Json::encode([
+                'status' => true,
+                'Info' => 'Berhasil',
+                'text' => 'Menu item berhasil di hapus'
+            ]);
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }

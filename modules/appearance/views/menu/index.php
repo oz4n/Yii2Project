@@ -20,6 +20,50 @@ $this->registerJs(
        '$("#select-term-menu").select2({ allowClear: true, placeholder: "Menu"});'
         , View::POS_READY);
 
+//delte menu item
+$this->registerJs(
+       '$("body").on("click",".menu-delete",function(){'
+        . 'var data_id = $(this).attr("data-id");'        
+        . '$(this).parent().parent().parent().remove();'
+        . '$.ajax({
+                url: "' . Url::toRoute(['/appearance/menu/deletemenuitem', 'action' => 'appearance-menu-deleteitem']) . '",                              
+                type:"post",
+                data:{
+                    "dataid":data_id,
+                    "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '"
+                },
+                dataType:"json",
+                success:function(response){
+                    if(response.status == true){
+                         location.reload();                         
+                    }else{
+                    }
+                }
+            });'
+            . 'return false;'
+        . '});'
+        , View::POS_READY);
+
+//add Page to menu
+$this->registerJs(
+        '$("#form-page").on("submit",function(){'
+        . 'var url = $(this).attr("action");'        
+        . '$.ajax({
+                url: url,               
+                data: $(this).serialize(),
+                type:"post",
+                dataType:"json",
+                success:function(response){
+                    if(response.status == true){
+                         location.reload();                         
+                    }else{
+                    }
+                }
+            });'
+            . 'return false;'
+        . '});'
+        , View::POS_READY);
+
 //add category to menu
 $this->registerJs(
         '$("#form-category").on("submit",function(){'
@@ -91,7 +135,10 @@ $this->registerJs(
         };
 
         var menuBuilder = function() {
-            $("#nestable").nestable({group: 1}).on("change", updateOutput);       
+            $("#nestable").nestable({group: 1}).on("change", updateOutput);      
+            $(".dd-handle a").on("mousedown", function(e){
+                    e.stopPropagation();
+            });
             updateOutput($("#nestable").data("output", $("#nestableMenu-output")));
         };
         menuBuilder();
@@ -169,22 +216,28 @@ $this->registerJs(
 <div class="row">   
     <div class="col-sm-4">
          <div class="panel colourable">
+             <?php ActiveForm::begin(['id'=>'form-page','action' => ['/appearance/menu/addpagetomenu', 'action' => 'appearance-menu-pagetomenu']]); ?>
             <div class="panel-heading">
                 <span class="panel-title">Halaman</span>
             </div>
             <div class="panel-body">
-                Panel body content
+                <?= Html::activeHiddenInput($model, 'id') ?>     
+                <?= Html::checkboxList('Page[]', null, $model->dataPageStore(), [])?>
             </div>
+              <div class="panel-footer">               
+                <?= Html::button("<i class='fa fa-plus'></i>&nbsp; Tambahkan ke menu", ['id'=>'cat-btn-to-menu','class'=>'btn btn-primary btn-xs'])?>               
+            </div>
+              <?php ActiveForm::end(); ?>
         </div>
         
         <div class="panel colourable">
-            <?php ActiveForm::begin(['id'=>'form-category','action' => ['/appearance/menu/addcattomenu', 'action' => 'appearance-menu-addtomenu']]); ?>
+            <?php ActiveForm::begin(['id'=>'form-category','action' => ['/appearance/menu/addcattomenu', 'action' => 'appearance-menu-cattomenu']]); ?>
             <div class="panel-heading">
                 <span class="panel-title">Kategori</span>
             </div>
             <div class="panel-body">
-                <?= Html::activeHiddenInput($model, 'id') ?>
-                <?= $model->dataCategoryTreeStore() ?>
+                <?= Html::activeHiddenInput($model, 'id') ?>                
+                <?= Html::checkboxList('Category[]', null, $model->dataCategoryTreeStore(), [])?>
             </div>
             <div class="panel-footer">               
                 <?= Html::button("<i class='fa fa-plus'></i>&nbsp; Tambahkan ke menu", ['id'=>'cat-btn-to-menu','class'=>'btn btn-primary btn-xs'])?>               
@@ -193,7 +246,7 @@ $this->registerJs(
         </div>
         
         <div class="panel colourable">
-            <?php $form = ActiveForm::begin(['id'=>'form-link','action' => ['/appearance/menu/addlinktomenu', 'action' => 'appearance-menu-addtomenu']]); ?>
+            <?php $form = ActiveForm::begin(['id'=>'form-link','action' => ['/appearance/menu/addlinktomenu', 'action' => 'appearance-menu-linktomenu']]); ?>
             <div class="panel-heading">
                 <span class="panel-title">Tautan</span>
             </div>
@@ -254,3 +307,5 @@ $this->registerJs(
         </div> 
     </div>
 </div>
+
+

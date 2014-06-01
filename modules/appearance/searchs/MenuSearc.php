@@ -10,7 +10,7 @@ use app\modules\appearance\models\MenuModel;
 /**
  * MenuSearc represents the model behind the search form about `app\modules\dao\ar\Taxonomy`.
  */
-class MenuSearc extends Taxonomy
+class MenuSearc extends MenuModel
 {
     public function rules()
     {
