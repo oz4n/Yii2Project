@@ -483,7 +483,9 @@ h3.heading-xs {
     border-color: #118a53;
     background-color: #118a53;
 }
-
+.pagination>li>a, .pagination>li>span {
+    float: none;
+}
 /*Pagination Without Space*/
 .pagination-no-space .pagination {
     margin: 0;

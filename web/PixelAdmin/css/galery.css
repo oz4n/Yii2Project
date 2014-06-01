@@ -1,0 +1,142 @@
+#album-themes{
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    border-bottom-left-radius: 5px;
+    overflow: hidden;
+}
+#album-themes.theme-preview {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden !important;
+}
+#album-themes.theme-preview img {
+    width: 100%;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+}
+
+#album-select {
+    display: block;
+    height: 100%;
+    padding: 0;
+    position: fixed;
+    top: 0;
+   
+ 
+    right: 270px;
+    width:  360px;
+    top: 5px;
+    padding-right: 10px;  
+    background: #f3f5f9;   
+  
+    z-index: -5;
+
+    border: 1px solid #ddd;
+}
+#album-select.open {
+    right: -10px;
+}
+#album-select > .header {
+    position: relative;
+    z-index: 100000;
+    line-height: 20px;
+    background: #444;
+    color: #fff;
+    font-size:  11px;
+    font-weight: 600;
+    padding: 10px 20px;
+    margin: 0;
+}
+#album-select > div {
+    position: relative;
+    z-index: 100000;
+    background: #282828;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+#album-select-toggler {
+    font-size: 21px;
+    width: 50px;
+    height: 40px;
+    padding-right: 10px;
+    position: absolute;
+    left: -40px;
+    top: 0;
+    background: #444;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    border-radius: 0px;
+    z-index: 99999;
+    text-decoration: none !important;
+    -webkit-transition: color .3s;
+    -moz-transition: color .3s;
+    -ms-transition: color .3s;
+    -o-transition: color .3s;
+    transition: color .3s;
+}
+#album-select.open #album-select-toggler {
+    font-size: 16px;
+    color: #888;
+}
+#album-select.open #album-select-toggler:hover {
+    color: #fff;
+}
+#album-select.open #album-select-toggler:before {
+    content: "\\f00d";
+}
+#album-select-list {
+    padding: 0;
+    margin: 0;
+}
+#album-select-list li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: relative;
+}
+#album-select-list li > a > span {
+    line-height: 20px;
+    color: #999;
+    display: block;
+    padding: 12px 20px;
+    cursor: pointer;
+}
+#album-select-list li > a > span.active,
+#album-select-list li > a > span:hover {    
+    color: #363636;
+}
+#album-select-list li + li {
+    border-top: 1px solid #ddd;
+}
+#album-select .demo-checkbox {
+    position: absolute;
+    right: 20px;
+    top: 12px;
+}
+.right-to-left #album-select {
+    left: -270px;
+    right: auto;
+    padding-right: 0;
+    padding-left: 10px;
+}
+.right-to-left #album-select.open {
+    left: -10px;
+    right: auto;
+}
+.right-to-left #album-select-toggler {
+    padding-left: 10px;
+    padding-right: 0;
+    left: auto;
+    right: -40px;
+}
+.right-to-left #album-select .demo-checkbox {
+    right: auto;
+    left: 20px;
+}
