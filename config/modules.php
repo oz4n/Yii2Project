@@ -1,4 +1,5 @@
 <?php
+
 return [
     'gii' => [
         'class' => 'yii\gii\Module',
@@ -30,7 +31,12 @@ return [
         'admins' => ['ozan']
     ],
     'site' => [
-        'class' => 'app\modules\site\site',
+        'class' => 'app\modules\site\Site',
     ],
-
+    'appearance' => [
+        'class' => 'app\modules\appearance\Appearance',
+    ],
+    'page' => [
+        'class' => 'app\modules\page\Page',
+    ],
 ];
