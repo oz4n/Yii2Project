@@ -12,6 +12,9 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use app\modules\site\helpers\Dropdown;
 use yii\bootstrap\Nav;
+use app\modules\site\helpers\IMachTagHtml;
+use app\modules\dao\ar\Taxonomy;
+use yii\helpers\Url;
 /**
  * Description of Navigation
  *
@@ -20,10 +23,42 @@ use yii\bootstrap\Nav;
 class Navigation extends Nav
 {
 
+    public function init()
+    {
+        $model = Taxonomy::find();
+        $query = $model->onCondition(['taxmenu' => 2])
+                        ->orderBy(['position' => SORT_ASC])->asArray()->all();
+        $this->items = $this->treeMenu($query);
+        parent::init();
+    }
+
     public function run()
     {
         echo $this->renderItems();
         parent::init();
+    }
+
+    protected function countMenuItemByid($id)
+    {
+        $data = Taxonomy::find()->onCondition(['parent_id' => $id])->all();
+        return count($data);
+    }
+
+    protected function treeMenu($array, $parent = null)
+    {        
+        $data = [];
+        foreach ($array as $v) {
+            if ($v['parent_id'] == $parent) {
+                $data[] = [
+                    'id' => $v['id'],
+                    'label' => ucwords($v['name']),
+                    'icon' => $parent == null ? '' : 'icon-angle-right',
+                    'url' => $v['type'] == 'menuhelper' ? [$v['slug']] : (count(IMachTagHtml::getUrlMach($v['slug'])) == 0 ? ['/site/site/tax', 'tax' => $v['slug']] : $v['slug']),                                      
+                    'items' => $this->countMenuItemByid($v['id']) == null ? null : $this->treeMenu($array, $v['id']),
+                ];
+            }
+        }
+        return $data;
     }
 
     /**
@@ -51,6 +86,7 @@ class Navigation extends Nav
      */
     public function renderItem($item)
     {
+
         if (is_string($item)) {
             return $item;
         }
@@ -70,6 +106,7 @@ class Navigation extends Nav
         }
 
         if ($items !== null) {
+
             $linkOptions['data-toggle'] = 'dropdown';
             Html::addCssClass($options, 'dropdown');
             Html::addCssClass($linkOptions, 'dropdown-toggle');
@@ -77,6 +114,7 @@ class Navigation extends Nav
                 if ($this->activateItems) {
                     $items = $this->isChildActive($items, $active);
                 }
+
                 $items = Dropdown::widget([
                             'items' => $items,
                             'encodeLabels' => $this->encodeLabels,
