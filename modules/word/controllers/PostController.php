@@ -76,24 +76,24 @@ class PostController extends Controller
             if (null != $param["category"]) {
                 $cat = $model->findAllCategoryAttrById($param["category"]);
                 $this->category = $param["category"];
-                array_push($data, ["category" => $cat]);
+                $data["category"] = $cat;
             }
             if (null != $param['tag']) {
                 $tag = $model->findAllTagAttrById($param["tag"]);
                 $this->tag = $param["tag"];
-                array_push($data, ['tag' => $tag]);
+                $data['tag'] = $tag;
             }
             $model->other_content = \yii\helpers\Json::encode($data);
             $model->save();
 
             if (null != $param['tag']) {
-                $model->saveTaxRelation($this->tag, $model->id);
+                $model->saveTagRelation($this->tag, $model->id);
             }
 
             if (null != $param['category']) {
-                $model->saveTaxRelation($this->category, $model->id);
+                $model->saveCatRelation($this->category, $model->id);
             }
-            return $this->redirect(['view', 'action' => 'word-post-view', 'id' => $model->id]);
+             return $this->redirect(['update', 'action' => 'word-post-update', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                         'model' => $model,
@@ -117,24 +117,26 @@ class PostController extends Controller
             if (null != $param["category"]) {
                 $cat = $model->findAllCategoryAttrById($param["category"]);
                 $this->category = $param["category"];
-                array_push($data, ["category" => $cat]);
+                $data['category'] = $cat;
             }
             if (null != $param['tag']) {
                 $tag = $model->findAllTagAttrById($param["tag"]);
                 $this->tag = $param["tag"];
-                array_push($data, ['tag' => $tag]);
+                $data['tag'] = $tag;
             }
             $model->other_content = \yii\helpers\Json::encode($data);
             $model->save();
 
             if (null != $param['tag']) {
-                $model->saveTaxRelation($this->tag, $model->id);
+                $model->deleteTagRelation($this->tag, $model->id);
+                $model->saveTagRelation($this->tag, $model->id);
             }
 
             if (null != $param['category']) {
-                $model->saveTaxRelation($this->category, $model->id);
+                $model->deleteCatRelation($this->category, $model->id);
+                $model->saveCatRelation($this->category, $model->id);
             }
-            return $this->redirect(['view', 'action' => 'word-post-view', 'id' => $model->id]);
+            return $this->redirect(['update', 'action' => 'word-post-update', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                         'model' => $model,
@@ -151,8 +153,14 @@ class PostController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        return $this->redirect(['index','action'=>'word-post-list']);
+    }
+    
+    public function actionTrash($id){
+         $model = $this->findModel($id);
+         $model->status = 'Trash';
+         $model->save();
+         return $this->redirect(['index','word-post-list']);
     }
 
     /**

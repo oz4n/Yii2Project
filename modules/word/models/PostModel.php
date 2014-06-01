@@ -43,6 +43,7 @@ class PostModel extends Post
         }
         return $data;
     }
+
     public function findAllCategoryAttrById($dataid)
     {
         $data = [];
@@ -56,7 +57,6 @@ class PostModel extends Post
         }
         return $data;
     }
-    
 
     public function findAllTagNameById($dataid)
     {
@@ -67,7 +67,7 @@ class PostModel extends Post
         }
         return $data;
     }
-    
+
     public function findAllTagAttrById($dataid)
     {
         $data = [];
@@ -82,22 +82,49 @@ class PostModel extends Post
         return $data;
     }
 
-    public function saveTaxRelation($data, $post_id)
+    public function saveCatRelation($data, $post_id)
     {
-
-        foreach ($data as $id) {
-          
-            Taxpostrelations::deleteAll([
-                'tax_id' => $id,
-                'post_id' => $post_id
-            ]);
+        foreach ($data as $id) {            
             $new = new Taxpostrelations;
             $new->post_id = $post_id;
             $new->tax_id = $id;
             $new->save();
         }
-      
+
         return true;
+    }
+
+    public function saveTagRelation($data, $post_id)
+    {
+        foreach ($data as $id) {           
+            $new = new Taxpostrelations;
+            $new->post_id = $post_id;
+            $new->tax_id = $id;
+            $new->save();
+        }
+        return true;
+    }
+    
+    public function deleteTagRelation($data, $post_id)
+    {
+        foreach ($data as $id) {
+            Taxpostrelations::deleteAll([
+                'tax_id' => $id,
+                'post_id' => $post_id
+            ]);
+        }
+        return true;
+    }
+    
+    public function deleteCatRelation($data, $post_id)
+    {
+        foreach ($data as $id) {
+            Taxpostrelations::deleteAll([
+                'tax_id' => $id,
+                'post_id' => $post_id
+            ]);
+        }
+         return true;
     }
 
 }

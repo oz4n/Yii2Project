@@ -45,7 +45,9 @@ class PostSerch extends Post
     public function search($params)
     {
         $query = Post::find();
-
+         $query->onCondition([                    
+                    'type' => Word::POST_POST_TYPE_INFO
+                ]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -53,13 +55,6 @@ class PostSerch extends Post
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-            'create_et' => $this->create_et,
-            'update_et' => $this->update_et,
-        ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'content', $this->content])

@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\web\View;
-use app\modules\word\searchs\PostSerch;
+use yii\helpers\Json;
 
 /**
  * @var yii\web\View $this
@@ -16,7 +16,7 @@ use app\modules\word\searchs\PostSerch;
 $this->title = Yii::t('app', 'Post');
 
 $this->registerJs(''
-    . '$("td").css({"padding-top": "20px"});'
+//    . '$("td").css({"padding-top": "20px"});'    
     . "$('ul.navigation > li.mm-dropdown > ul > li#post').parent().parent().addClass('active open');"
     . '$("td > select").select2({ allowClear: true, placeholder: "Filter item"});'
     . '$("select.select-year").select2({ allowClear: true, placeholder: "Tahun"});'
@@ -81,10 +81,13 @@ $this->registerJs(''
 <div class="row">
 <div class="col-sm-12">
 <?php
+
+
 $form = ActiveForm::begin([
     'action' => ['/word/post/index', 'action' => 'word-post-list'],
     'method' => 'get'
 ]);
+
 ?>
 <?=
 GridView::widget([
@@ -127,9 +130,9 @@ GridView::widget([
 
         . Html::beginTag('div', ['class' => 'panel', 'style' => 'margin-bottom: 15px; margin-top: 10px'])
         . Html::beginTag('div', ['class' => 'panel-body'])
-//        . Html::beginTag('div', ['class' => 'table-responsive'])
+        . Html::beginTag('div', ['class' => 'table-responsive'])
         . '{items}'
-//        . Html::endTag('div')
+        . Html::endTag('div')
         . Html::endTag('div')
         . Html::endTag('div')
 
@@ -164,13 +167,45 @@ GridView::widget([
         . Html::endTag('div'),
     'columns' => [
         ['class' => 'yii\grid\CheckboxColumn'],
-        [
-            'attribute' => 'user_id',
-            'label' => ''
-        ],
+//        [
+//            'attribute' => 'user_id',
+//            'label' => ''
+//        ],
         [
             'attribute' => 'title',
             'label' => 'Judul'
+        ],
+        [
+            'attribute' => 'other_content',
+            'label' => 'Kategori',
+            'format' => 'RAW',
+            'value' => function($data){
+                $cat = Json::decode($data->other_content);
+                if(isset($cat['category'])){                   
+                    $item = [];
+                    foreach ($cat['category'] as $v){
+                        $item[] = $v['name'];
+                    }
+                    return implode(", ", $item);            
+                }
+                
+            }
+        ],
+        [
+            'attribute' => 'other_content',
+            'label' => 'Tag',
+            'format' => 'RAW',
+            'value' => function($data){
+                $cat = Json::decode($data->other_content);
+                if(isset($cat['tag'])){                   
+                    $item = [];
+                    foreach ($cat['tag'] as $v){
+                        $item[] = $v['name'];
+                    }
+                    return implode(", ", $item);            
+                }
+                
+            }
         ],
         [
             'attribute' => 'create_et',
@@ -180,6 +215,7 @@ GridView::widget([
             'attribute' => 'update_et',
             'label' => 'Diubah'
         ],
+        
         [
             'attribute' => 'status',
             'format' => 'raw',
@@ -208,23 +244,27 @@ GridView::widget([
         [
             'class' => 'yii\grid\ActionColumn',
             'header' => '<div class="text-center" style="width: 120px">Aksi</div>',
-            'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}&nbsp{trash}</div>',
+            'template' => '<div class="text-center">{update}&nbsp{delete}&nbsp{trash}</div>',
             'buttons' => [
-                'view' => function ($url, $data) {
-                        return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/word/post/view', 'action' => 'word-post-view', 'id' => $data->id]), [
-                            'class' => 'btn btn-success btn-xs',
-                            'title' => Yii::t('yii', 'Lihat Detail'),
-                        ]);
-                    },
+//                'view' => function ($url, $data) {
+//                        return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/word/post/view', 'action' => 'word-post-view', 'id' => $data->id]), [
+//                            'class' => 'btn btn-success btn-xs',
+//                            'title' => Yii::t('yii', 'Lihat Detail'),
+//                        ]);
+//                    },
                 'update' => function ($url, $data) {
                         return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/word/post/update", 'action' => 'word-post-update', 'id' => $data->id]), [
-                            'class' => 'btn btn-primary btn-xs',
-                            'title' => Yii::t('yii', 'Memperbarui'),
+                            'class' => 'select-tooltip btn btn-primary btn-xs',
+                             'data-toggle'=>"tooltip",
+                            'data-original-title'=>"Perbaharui",
+                            'title' => Yii::t('yii', 'Perbaharui'),
                         ]);
                     },
                 'delete' => function ($url, $data) {
                         return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/word/post/delete", 'action' => 'word-post-delete', 'id' => $data->id]), [
-                            'class' => 'btn btn-danger btn-xs',
+                            'class' => 'select-tooltip btn btn-danger btn-xs',
+                            'data-toggle'=>"tooltip",
+                            'data-original-title'=>"Hapus",
                             'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
                             'data-method' => 'post',
                             'data-pjax' => 0,
@@ -233,7 +273,9 @@ GridView::widget([
                     },
                 'trash' => function ($url, $data) {
                         return Html::a('<i class="fa  fa-trash-o"></i>', Url::toRoute(['/word/post/trash', 'action' => 'word-post-trash', 'id' => $data->id]), [
-                            'class' => 'btn btn-warning btn-xs',
+                            'class' => 'select-tooltip btn btn-warning btn-xs', 
+                            'data-toggle'=>"tooltip",
+                            'data-original-title'=>"Tong sampah",
                             'data-confirm' => 'Apakah Anda yakin ingin membuang ke tong sampah?',
                             'data-method' => 'post',
                             'data-pjax' => 0,

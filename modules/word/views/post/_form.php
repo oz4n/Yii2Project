@@ -12,11 +12,29 @@ use yii\helpers\Url;
  * @var yii\widgets\ActiveForm $form
  */
 $this->registerJsFile('PixelAdmin/js/filesize.min.js', '', ['position' => View::POS_END]);
-//$this->registerCssFile('redactor/redactor.css', '', ['position' => View::POS_BEGIN]);
 $this->registerJs(
     "$('ul.navigation > li.mm-dropdown > ul > li#post').addClass('active').parent().parent().addClass('active open');"
     . '$("#select-tag").select2({ allowClear: true, placeholder: "Tag ..."}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-status").select2({ allowClear: true, placeholder: "Tag ..."}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
+    , View::POS_READY);
+
+//fost form validation
+$this->registerJs(
+    'init.push(function () { '
+    . 'var post_form = $("#post-form");'
+    . 'post_form.validate({'
+    . 'ignore: ".ignore",'
+    . 'focusInvalid: true,'
+        . 'rules:{'
+            . '"PostModel[title]":{required: true, maxlength: 128},'
+            . '"PostModel[status]":{required: true},'           
+        . '},'
+        . 'messages: {'
+            . '"PostModel[title]" : "Tidak boleh Kosong.",'
+            . '"PostModel[status]" : "Tidak boleh Kosong.",'           
+        . '}'
+    . '});'  
+    . '});'  
     , View::POS_READY);
 
 $this->registerJs(
@@ -62,13 +80,12 @@ $this->registerJs(
     
 ', View::POS_READY);
 ?>
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['id'=>'post-form']); ?>
     <div class="col-sm-8">
-
-        <!--<div class="form-group">-->
-            <?php //Html::activetextInput($model, 'title', ['class'=>'form-control','placeholder' => 'Judul . . .', 'maxlength' => 225]) ?>
-            <?= $form->field($model, 'title') ?>
-        <!--</div>-->
+        
+        <div class="form-group">
+            <?= Html::activetextInput($model, 'title', ['class'=>'form-control','placeholder' => 'Judul . . .', 'maxlength' => 225]) ?>           
+        </div>
         <div class="form-group">
             <?= Html::activetextarea($model, 'content',['id'=>'post-content','class'=>'form-control','placeholder' => 'Isi . . .', 'rows' => 6]) ?>
         </div> 
@@ -112,13 +129,10 @@ $this->registerJs(
             </div>
             <div class="panel-footer">
                 <div class="form-group">
-                    <?= Html::submitButton(Html::tag('i','',['class'=>'fa  fa-check']).'&nbsp; '.Yii::t('app', 'Simpan'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-                    <button type="button" id="btn-test" class="btn"><i class="fa  fa-check"></i>&nbsp; test</button>
+                    <?= Html::submitButton(Html::tag('i','',['class'=>'fa  fa-check']).'&nbsp; '.Yii::t('app', 'Simpan'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>                    
                 </div>
             </div>
         </div>
     </div>
-
-    
 <?php ActiveForm::end(); ?>
 

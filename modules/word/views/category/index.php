@@ -170,27 +170,37 @@ $this->registerJs(
                         }
                 ],
                 [
+                    'attribute' => 'description',
+                    'label' => 'Keterangan',                    
+                ],
+                [
                     'class' => 'yii\grid\ActionColumn',
                     'header' => '<div class="text-center">Aksi</div>',
                     'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}</div>',
                     'buttons' => [
                         'view' => function ($url, $data) {
                                 return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/word/category/view', 'action' => 'word-category-view', 'id' => $data->id]), [
-                                    'class' => 'btn btn-success btn-xs',
+                                    'class' => 'select-tooltip btn btn-success btn-xs',
+                                    'data-toggle'=>"tooltip",
+                                    'data-original-title'=>"Lihat Detail",
                                     'title' => Yii::t('yii', 'Lihat Detail'),
                                 ]);
                             },
                         'update' => function ($url, $data) {
                                 return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/word/category/update", 'action' => 'word-category-update', 'id' => $data->id]), [
-                                    'class' => 'btn btn-primary btn-xs',
-                                    'title' => Yii::t('yii', 'Memperbarui'),
+                                    'class' => 'select-tooltip btn btn-primary btn-xs',
+                                    'data-toggle'=>"select-tooltip tooltip",
+                                    'data-original-title'=>"Perbaharui",
+                                    'title' => Yii::t('yii', 'Perbaharui'),
                                 ]);
                             },
                         'delete' => function ($url, $data) {
                                 return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/word/category/delete", 'action' => 'word-category-delete', 'id' => $data->id]), [
-                                    'class' => 'btn btn-danger btn-xs',
+                                    'class' => 'select-tooltip btn btn-danger btn-xs',
+                                    'data-toggle'=>"tooltip",
+                                    'data-original-title'=>"Hapus",
                                     'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
-                                    'data-method' => 'post',
+                                    'data-method' => 'post',                                    
                                     'data-pjax' => 0,
                                     'title' => Yii::t('yii', 'Hapus'),
                                 ]);
