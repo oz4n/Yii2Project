@@ -5,6 +5,10 @@ namespace app\modules\site\controllers;
 use Yii;
 use yii\web\Controller;
 use app\modules\site\searchs\PostSerch;
+use app\modules\site\models\PostModel;
+use app\modules\site\models\PageModel;
+use app\modules\site\searchs\PageSerch;
+use yii\helpers\Json;
 
 class SiteController extends Controller
 {
@@ -30,13 +34,24 @@ class SiteController extends Controller
     public function actionTax()
     {
         $model = new PostSerch;
-        $dataProvider = $model->search(Yii::$app->request->getQueryParams());
         $param = Yii::$app->request->getQueryParams();
-        return $this->render('tax', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $model,
-                    'tax' => $model->findTaxNameBySLug($param['tax']),
-        ]);
+        if ($model->findTaxBySlug($param['tax'])->type == "menupage") {
+            $page = new PageSerch;
+            $query = $page->getPage(Yii::$app->request->getQueryParams()); 
+            return $this->render('taxpage', [
+                        'model' => $query,                       
+                        'tax' => $model->findTaxNameBySLug($param['tax']),
+                        'other' => Json::decode($query->other_content)
+            ]);
+        } else {
+           
+            $dataProvider = $model->search(Yii::$app->request->getQueryParams());            
+            return $this->render('taxpost', [
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $model,
+                        'tax' => $model->findTaxNameBySLug($param['tax']),
+            ]);
+        }
     }
 
     public function actionView()
