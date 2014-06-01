@@ -14,6 +14,7 @@ use Yii;
  * @property string $type
  * @property string $slug
  * @property string $status
+ * @property string $layout
  * @property string $image
  * @property string $other_content
  * @property string $comment_status
@@ -43,11 +44,11 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'integer'],
-            [['title', 'slug', 'create_et', 'update_et','status'], 'required','message'=>'Tidak boleh kosong'],
+            [['title', 'slug', 'create_et', 'update_et'], 'required'],
             [['content', 'slug', 'image', 'other_content'], 'string'],
             [['create_et', 'update_et'], 'safe'],
             [['title'], 'string', 'max' => 225],
-            [['type'], 'string', 'max' => 45],
+            [['type', 'layout'], 'string', 'max' => 45],
             [['status', 'comment_status'], 'string', 'max' => 15]
         ];
     }
@@ -65,6 +66,7 @@ class Post extends \yii\db\ActiveRecord
             'type' => Yii::t('app', 'Type'),
             'slug' => Yii::t('app', 'Slug'),
             'status' => Yii::t('app', 'Status'),
+            'layout' => Yii::t('app', 'Layout'),
             'image' => Yii::t('app', 'Image'),
             'other_content' => Yii::t('app', 'Other Content'),
             'comment_status' => Yii::t('app', 'Comment Status'),
