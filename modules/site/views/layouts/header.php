@@ -1,5 +1,6 @@
 <?php
 use app\modules\site\helpers\Navigation;
+
 /**
  * @var \yii\web\View $this
  */
@@ -10,23 +11,12 @@ use app\modules\site\helpers\Navigation;
     <div class="topbar">
         <div class="container">
             <!-- Topbar Navigation -->
-            <ul class="loginbar pull-right">
-                <li>
-                    <i class="fa fa-globe"></i>
-                    <a>Languages</a>
-                    <ul class="lenguages">
-                        <li class="active">
-                            <a href="page_home2.html#">English <i class="fa fa-check"></i></a> 
-                        </li>
-                        <li><a href="page_home2.html#">Spanish</a></li>
-                        <li><a href="page_home2.html#">Russian</a></li>
-                        <li><a href="page_home2.html#">German</a></li>
-                    </ul>
-                </li>
+            <ul class="loginbar pull-right">                                                        
+                <li><a href="page_faq.html"><i class="fa  fa-facebook-square" style="font-size: 12px;color:#46629e "></i>&nbsp;Facebook</a></li>  
                 <li class="topbar-devider"></li>   
-                <li><a href="page_faq.html">Help</a></li>  
+                <li><a href="page_faq.html"><i class="fa  fa-google-plus-square" style="font-size: 12px; color:#df5138"></i>&nbsp;Google+</a></li>  
                 <li class="topbar-devider"></li>   
-                <li><a href="page_login.html">Login</a></li>   
+                <li><a href="page_faq.html"><i class="fa  fa-twitter-square" style="font-size: 12px; color: #55acee"></i>&nbsp;Twiter</a></li>                  
             </ul>
             <!-- End Topbar Navigation -->
         </div>
@@ -51,9 +41,15 @@ use app\modules\site\helpers\Navigation;
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-responsive-collapse">               
                 <?php
-                echo Navigation::widget([
-                    'options' => ['class' => 'nav navbar-nav']
-                ]);
+                if ((Navigation::getMenuByHeaderTerm() !== null) && (Navigation::getMenuByHeaderTerm()->status === "Publish")) {
+                    echo Navigation::widget([
+                        'taxmenuid' => Navigation::getMenuByHeaderTerm()->id,
+                        'options' => [
+                            'class' => 'nav navbar-nav',
+                            'style' => "margin-right: -15px;"
+                        ]
+                    ]);
+                }
                 ?>
             </div><!--/navbar-collapse-->
         </div>    

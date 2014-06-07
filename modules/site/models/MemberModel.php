@@ -7,14 +7,15 @@
  */
 
 namespace app\modules\site\models;
-use app\modules\dao\ar\Post;
+
+use app\modules\dao\ar\Member;
 
 /**
- * Description of PostModel
+ * Description of MemberModel
  *
  * @author melengo
  */
-class PostModel extends Post
+class MemberModel extends Member
 {
-
+    //put your code here
 }

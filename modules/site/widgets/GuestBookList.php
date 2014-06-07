@@ -6,15 +6,16 @@
  * and open the template in the editor.
  */
 
-namespace app\modules\site\models;
-use app\modules\dao\ar\Post;
+namespace app\modules\site\widgets;
+
+use yii\base\Widget;
 
 /**
- * Description of PostModel
+ * Description of GuestBookList
  *
  * @author melengo
  */
-class PostModel extends Post
+class GuestBookList extends Widget
 {
-
+    //put your code here
 }

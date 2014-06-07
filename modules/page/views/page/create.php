@@ -11,7 +11,7 @@ $this->title = Yii::t('app', 'Tambah {modelClass}', [
             'modelClass' => 'Halaman',
         ]);
 $this->registerJs(
-        "$('ul.navigation > li.mm-dropdown > ul > li#create-pages').addClass('active').parent().parent().addClass('active open');"       
+        "$('ul.navigation > li#pages').addClass('active');"       
         , View::POS_READY);
 ?>
 

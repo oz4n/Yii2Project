@@ -161,14 +161,14 @@ $this->registerJs(
                             }
                         }
                 ],
-                [
-                    'attribute' => 'parent_id',
-                    'label' => 'Induk',
-                    'filter' => CategorySerch::getFilterParens(),
-                    'value' => function ($data) {
-                            return $data->getParentName();
-                        }
-                ],
+//                [
+//                    'attribute' => 'parent_id',
+//                    'label' => 'Induk',
+//                    'filter' => CategorySerch::getFilterParens(),
+//                    'value' => function ($data) {
+//                            return $data->getParentName();
+//                        }
+//                ],
                 [
                     'attribute' => 'description',
                     'label' => 'Keterangan',                    

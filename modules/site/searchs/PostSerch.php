@@ -10,6 +10,7 @@ use app\modules\site\Site;
 use app\modules\site\models\PostModel;
 use app\modules\dao\ar\Taxonomy;
 use yii\helpers\Html;
+use yii\web\NotFoundHttpException;
 
 /**
  * PostSerch represents the model behind the search form about `app\modules\dao\ar\Post`.
@@ -19,12 +20,6 @@ class PostSerch extends PostModel
 
     private static $_items = array();
     private static $_list = array(NULL => 'None');
-    private $year_filtr1;
-    private $year_filtr2;
-    private $year_filtr3;
-    private $year_filtr4;
-    private $year_opsi;
-    private $year_opsi1;
     public $keyword;
 
     public function rules()
@@ -41,27 +36,61 @@ class PostSerch extends PostModel
         return Model::scenarios();
     }
 
-    public function search($params)
+    public function searchPost($params)
     {
+
         $query = self::find();
+
         $query->onCondition([
                     'status' => Site::POST_STATUS_PUBLISH,
                     'type' => Site::POST_POST_TYPE_INFO
                 ])
-                ->orderBy(['create_et' =>  SORT_DESC])
-                ->andFilterWhere(['like', 'other_content', $params['tax']]);
+                ->orderBy(['create_et' => SORT_DESC]);
 
+
+        if (isset($params['keyword'])) {
+            $key = $params['keyword'];
+            $query->orFilterWhere(['like', 'slug', $key])
+                    ->orFilterWhere(['like', 'title', $key])
+                    ->andFilterWhere(['like', 'other_content', $params['tax']]);
+        } else {
+            $query->andFilterWhere(['like', 'other_content', $params['tax']]);
+        }
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => 9
             ]
         ]);
+        return $dataProvider;
+    }
+    
+    public function searchPage($params)
+    {
 
-        if (!($this->load($params) && $this->validate())) {
-            return $dataProvider;
+        $query = self::find();
+
+        $query->onCondition([
+                    'status' => Site::POST_STATUS_PUBLISH,
+                    'type' => Site::POST_POST_TYPE_PAGE
+                ])
+                ->orderBy(['create_et' => SORT_DESC]);
+
+
+        if (isset($params['keyword'])) {
+            $key = $params['keyword'];
+            $query->orFilterWhere(['like', 'slug', $key])
+                    ->orFilterWhere(['like', 'title', $key])
+                    ->andFilterWhere(['like', 'other_content', $params['tax']]);
+        } else {
+            $query->andFilterWhere(['like', 'other_content', $params['tax']]);
         }
-
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 9
+            ]
+        ]);
         return $dataProvider;
     }
 
@@ -70,7 +99,7 @@ class PostSerch extends PostModel
         if (($model = self::find()->onCondition(['slug' => $slug])->one()) !== null) {
             return $model;
         } else {
-            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 
@@ -79,15 +108,16 @@ class PostSerch extends PostModel
         if (($model = Taxonomy::find()->onCondition(['slug' => $slug])->asArray()->one()) !== null && null != $slug) {
             return $model['name'];
         } else {
-            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+            return false;
         }
     }
-    
-    public function findTaxBySlug($slug){
+
+    public function findTaxBySlug($slug)
+    {
         if (($model = Taxonomy::find()->onCondition(['slug' => $slug])->one()) !== null && null != $slug) {
             return $model;
         } else {
-            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+            return false;
         }
     }
 
@@ -108,17 +138,18 @@ class PostSerch extends PostModel
         return $data;
 //        return ArrayHelper::merge(['' => $none], $data);
     }
-    
+
     public function getTagLinks($tags)
     {
         $links = [];
-        foreach ($tags as $tag){
+        foreach ($tags as $tag) {
             $links[] = Html::a(Html::encode("#" . $tag['name']), ['/site/site/tax', 'tax' => $tag['slug']], ["rel" => "tooltip", "data-original-title" => Html::encode("#" . $tag['name'])]);
-        }   
+        }
         return $links;
     }
-    
-    public function getAuthorNameById(){
+
+    public function getAuthorNameById()
+    {
         
     }
 

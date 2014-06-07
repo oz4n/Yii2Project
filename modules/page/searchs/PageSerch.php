@@ -54,7 +54,15 @@ class PageSerch extends PageModel
             return $dataProvider;
         }
 
-      
+       if (isset($params['PageSerch']['keyword'])) {
+            $key = $params['PageSerch']['keyword'];
+            $query->orFilterWhere(['like', 'title', $key])
+                    ->orFilterWhere(['like', 'content', $key])
+                    ->orFilterWhere(['like', 'slug', $key])
+                    ->orFilterWhere(['like', 'status', $key])
+                    ->orFilterWhere(['like', 'layout', $key])
+                    ->orFilterWhere(['like', 'other_content', $key]);
+        }
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'content', $this->content])
             ->andFilterWhere(['like', 'type', $this->type])

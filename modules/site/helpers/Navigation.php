@@ -13,8 +13,9 @@ use yii\helpers\ArrayHelper;
 use app\modules\site\helpers\Dropdown;
 use yii\bootstrap\Nav;
 use app\modules\site\helpers\IMachTagHtml;
-use app\modules\dao\ar\Taxonomy;
-use yii\helpers\Url;
+use app\modules\site\models\MenuModel;
+use app\modules\site\Site;
+
 /**
  * Description of Navigation
  *
@@ -23,13 +24,27 @@ use yii\helpers\Url;
 class Navigation extends Nav
 {
 
+    public $taxmenuid;
+
     public function init()
     {
-        $model = Taxonomy::find();
-        $query = $model->onCondition(['taxmenu' => 2])
-                        ->orderBy(['position' => SORT_ASC])->asArray()->all();
+        $model = MenuModel::find();
+        $query = $model->onCondition([
+                            'taxmenu' => $this->taxmenuid,
+                            'status' => Site::MENU_STATUS_PUBLISH,
+                        ])
+                        ->orderBy([
+                            'position' => SORT_ASC,
+                            'parent_id' => SORT_ASC,
+                            
+                        ])->asArray()->all();
         $this->items = $this->treeMenu($query);
         parent::init();
+    }
+
+    public static function getMenuByHeaderTerm()
+    {
+        return MenuModel::findMenuByHeaderTerm();
     }
 
     public function run()
@@ -40,12 +55,12 @@ class Navigation extends Nav
 
     protected function countMenuItemByid($id)
     {
-        $data = Taxonomy::find()->onCondition(['parent_id' => $id])->all();
+        $data = MenuModel::find()->onCondition(['parent_id' => $id])->all();
         return count($data);
     }
 
     protected function treeMenu($array, $parent = null)
-    {        
+    {
         $data = [];
         foreach ($array as $v) {
             if ($v['parent_id'] == $parent) {
@@ -53,7 +68,7 @@ class Navigation extends Nav
                     'id' => $v['id'],
                     'label' => ucwords($v['name']),
                     'icon' => $parent == null ? '' : 'icon-angle-right',
-                    'url' => $v['type'] == 'menuhelper' ? [$v['slug']] : (count(IMachTagHtml::getUrlMach($v['slug'])) == 0 ? ['/site/site/tax', 'tax' => $v['slug']] : $v['slug']),                                      
+                    'url' => $v['type'] == 'menuhelper' ? [$v['slug']] : (count(IMachTagHtml::getUrlMach($v['slug'])) == 0 ? ['/site/site/tax', 'tax' => $v['slug']] : $v['slug']),
                     'items' => $this->countMenuItemByid($v['id']) == null ? null : $this->treeMenu($array, $v['id']),
                 ];
             }

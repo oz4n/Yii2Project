@@ -12,7 +12,7 @@ $this->title = Yii::t('app', 'Perbaharui {modelClass}: ', [
     'modelClass' => 'Halaman',
 ]) . ' ' . $model->title;
 $this->registerJs(
-        "$('ul.navigation > li.mm-dropdown > ul > li#pages').addClass('active').parent().parent().addClass('active open');"       
+        "$('ul.navigation > li#pages').addClass('active');"       
         , View::POS_READY);
 ?>
 

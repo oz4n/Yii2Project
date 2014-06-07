@@ -2,6 +2,7 @@
 /* Slider */
 echo $this->render('slider');
 ?>
+
 <div class="container content">
     <!--<div class="clearfix margin-bottom-20"></div>-->
     <div class="shadow-wrapper">

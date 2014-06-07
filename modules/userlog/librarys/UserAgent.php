@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: root
@@ -8,24 +9,27 @@
 
 namespace app\modules\userlog\librarys;
 
-
 use yii\web\Request;
 
 class UserAgent extends Request
 {
+
     public function getPlatform()
     {
-        return $this->parse_user_agent()['platform'];
+        $param = $this->parse_user_agent();
+        return $param['platform'];
     }
 
     public function getBrowser()
     {
-        return $this->parse_user_agent()['browser'];
+        $param = $this->parse_user_agent();
+        return $param['browser'];
     }
 
     public function getVersion()
     {
-        return $this->parse_user_agent()['version'];
+        $param = $this->parse_user_agent();
+        return $param['version'];
     }
 
     public function getUserRemoteIP()
@@ -38,7 +42,6 @@ class UserAgent extends Request
         return $this->visitorCountryByIp();
     }
 
-
     protected function visitorCountryByIp()
     {
         $ip = $_SERVER["REMOTE_ADDR"];
@@ -47,17 +50,15 @@ class UserAgent extends Request
         if (filter_var(@$_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP))
             $ip = $_SERVER['HTTP_CLIENT_IP'];
         $result = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=" . $ip))
-            ->geoplugin_countryName;
+                ->geoplugin_countryName;
         return $result <> NULL ? $result : "Unknown";
     }
 
     protected function getRealIpAddr()
     {
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) //check ip from share internet
-        {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) { //check ip from share internet
             $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) //to check ip is pass from proxy
-        {
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) { //to check ip is pass from proxy
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
             $ip = $_SERVER['REMOTE_ADDR'];
@@ -83,7 +84,8 @@ class UserAgent extends Request
 
         $empty = array('platform' => $platform, 'browser' => $browser, 'version' => $version);
 
-        if (!$u_agent) return $empty;
+        if (!$u_agent)
+            return $empty;
 
         if (preg_match('/\((.*?)\)/im', $u_agent, $parent_matches)) {
 
@@ -112,8 +114,7 @@ class UserAgent extends Request
 
         preg_match_all('%(?P<browser>Camino|Kindle(\ Fire\ Build)?|Firefox|Iceweasel|Safari|MSIE|Trident/.*rv|AppleWebKit|Chrome|IEMobile|Opera|OPR|Silk|Lynx|Midori|Version|Wget|curl|NintendoBrowser|PLAYSTATION\ (\d|Vita)+)
             (?:\)?;?)
-            (?:(?:[:/ ])(?P<version>[0-9A-Z.]+)|/(?:[A-Z]*))%ix',
-            $u_agent, $result, PREG_PATTERN_ORDER);
+            (?:(?:[:/ ])(?P<version>[0-9A-Z.]+)|/(?:[A-Z]*))%ix', $u_agent, $result, PREG_PATTERN_ORDER);
 
 
         // If nothing matched, return null (to avoid undefined index errors)
@@ -198,6 +199,6 @@ class UserAgent extends Request
         }
 
         return array('platform' => $platform, 'browser' => $browser, 'version' => $version);
-
     }
-} 
+
+}

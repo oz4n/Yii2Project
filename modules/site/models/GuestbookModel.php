@@ -7,14 +7,14 @@
  */
 
 namespace app\modules\site\models;
-use app\modules\dao\ar\Post;
+use app\modules\dao\ar\Guestbook;
 
 /**
- * Description of PostModel
+ * Description of GuestbookModel
  *
  * @author melengo
  */
-class PostModel extends Post
+class GuestbookModel extends Guestbook
 {
-
+    //put your code here
 }

@@ -77,6 +77,14 @@ class PostController extends Controller
                 $cat = $model->findAllCategoryAttrById($param["category"]);
                 $this->category = $param["category"];
                 $data["category"] = $cat;
+            } else {
+                $data["category"] = [
+                    [
+                        'id' => 0,
+                        'name' => 'Informasi',
+                        'slug' => 'info'
+                    ]
+                ];
             }
             if (null != $param['tag']) {
                 $tag = $model->findAllTagAttrById($param["tag"]);
@@ -93,7 +101,7 @@ class PostController extends Controller
             if (null != $param['category']) {
                 $model->saveCatRelation($this->category, $model->id);
             }
-             return $this->redirect(['update', 'action' => 'word-post-update', 'id' => $model->id]);
+            return $this->redirect(['update', 'action' => 'word-post-update', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                         'model' => $model,
@@ -118,6 +126,14 @@ class PostController extends Controller
                 $cat = $model->findAllCategoryAttrById($param["category"]);
                 $this->category = $param["category"];
                 $data['category'] = $cat;
+            } else {
+                $data["category"] = [
+                    [
+                        'id' => 0,
+                        'name' => 'Informasi',
+                        'slug' => 'info'
+                    ]
+                ];
             }
             if (null != $param['tag']) {
                 $tag = $model->findAllTagAttrById($param["tag"]);
@@ -153,14 +169,15 @@ class PostController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        return $this->redirect(['index','action'=>'word-post-list']);
+        return $this->redirect(['index', 'action' => 'word-post-list']);
     }
-    
-    public function actionTrash($id){
-         $model = $this->findModel($id);
-         $model->status = 'Trash';
-         $model->save();
-         return $this->redirect(['index','word-post-list']);
+
+    public function actionTrash($id)
+    {
+        $model = $this->findModel($id);
+        $model->status = 'Trash';
+        $model->save();
+        return $this->redirect(['index', 'word-post-list']);
     }
 
     /**

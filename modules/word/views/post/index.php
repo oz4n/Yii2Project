@@ -6,7 +6,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\web\View;
 use yii\helpers\Json;
-
+use app\modules\site\helpers\TextHelper;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -175,6 +175,14 @@ GridView::widget([
             'attribute' => 'title',
             'label' => 'Judul'
         ],
+          [
+                    'attribute' => 'content',
+                    'label' => 'Isi',
+                    'format' => 'raw',
+                    'value' => function($data){
+                        return TextHelper::word_limiter(strip_tags($data->content), 9);
+                    }
+                ],
         [
             'attribute' => 'other_content',
             'label' => 'Kategori',

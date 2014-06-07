@@ -35,35 +35,52 @@ class SiteController extends Controller
     {
         $model = new PostSerch;
         $param = Yii::$app->request->getQueryParams();
-        if ($model->findTaxBySlug($param['tax'])->type == "menupage") {
-            $page = new PageSerch;
-            $query = $page->getPage(Yii::$app->request->getQueryParams()); 
-            return $this->render('taxpage', [
-                        'model' => $query,                       
-                        'tax' => $model->findTaxNameBySLug($param['tax']),
-                        'other' => Json::decode($query->other_content)
-            ]);
-        } else {
-           
-            $dataProvider = $model->search(Yii::$app->request->getQueryParams());            
+
+        if ($this->findTaxBySlug() != false) {
+            if ($this->findTaxBySlug()->type == "menupage") {
+                $page = new PageSerch;
+                $query = $page->getPage(Yii::$app->request->getQueryParams());
+                return $this->render('taxpage', [
+                            'model' => $query,
+                            'tax' => $model->findTaxNameBySLug($param['tax']),
+                            'other' => Json::decode($query->other_content)
+                ]);
+            } else if ((isset($param['tax']) && $param['tax'] != null) && $this->findTaxBySlug() !== true) {
+                $dataProvider = $model->searchPost(Yii::$app->request->getQueryParams());
+                $form = new PostModel;
+                return $this->render('taxpost', [
+                            'dataProvider' => $dataProvider,
+                            'searchModel' => $model,
+                            'model' => $form,
+                            'param' => Yii::$app->request->getQueryParams(),
+                            'tax' => $this->getTaxName($model),
+                ]);
+            }
+        } else if ((isset($param['tax']) && $param['tax'] != null) && $param['tax'] == "info") {
+            $dataProvider = $model->searchPost(Yii::$app->request->getQueryParams());
+            $form = new PostModel;
             return $this->render('taxpost', [
                         'dataProvider' => $dataProvider,
                         'searchModel' => $model,
-                        'tax' => $model->findTaxNameBySLug($param['tax']),
+                        'model' => $form,
+                        'param' => Yii::$app->request->getQueryParams(),
+                        'tax' => $this->getTaxName($model),
             ]);
+        } else {
+            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
         }
     }
 
     public function actionView()
     {
-        
         $model = new PostSerch;
-        return $this->render('view', [
-            'model' => $this->getPostSlug($model),
-            'tax' => $this->getTaxName($model),
+        return $this->render('taxpost_view_more_detail', [
+                    'model' => $this->getPostSlug($model),
+                    'tax' => $this->getTaxName($model),
+                    'param' => Yii::$app->request->getQueryParams()
         ]);
     }
-    
+
     protected function getPostSlug($model)
     {
         $param = Yii::$app->request->getQueryParams();
@@ -77,70 +94,22 @@ class SiteController extends Controller
     protected function getTaxName($model)
     {
         $param = Yii::$app->request->getQueryParams();
-        if (isset($param['tax'])) {
-            return $model->findTaxNameBySLug($param['tax']);
+        if (($query = $model->findTaxNameBySLug($param['tax'])) && isset($param['tax'])) {
+            return $query;
         } else {
-            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+            return "Informasi";
         }
     }
 
-//    public function actionInfo()
-//    {
-//        return $this->render('info');
-//    }
-//
-//    public function actionInfo1()
-//    {
-//        return $this->render('info_1');
-//    }
-//
-//    public function actionInfo2()
-//    {
-//        return $this->render('info_2');
-//    }
-//
-//    public function actionInfo3()
-//    {
-//        return $this->render('info_2');
-//    }
-//
-//    public function actionInfo4()
-//    {
-//        return $this->render('info_2');
-//    }
-//
-//    public function actionInfo5()
-//    {
-//        return $this->render('info_5');
-//    }
-//
-//    public function actionInfo6()
-//    {
-//        return $this->render('info_2');
-//    }
-//
-//    public function actionAbout()
-//    {
-//        return $this->render('about');
-//    }
-//
-//    public function actionAbout1()
-//    {
-//        return $this->render('about_1');
-//    }
-//
-//    public function actionContact()
-//    {
-//        return $this->render('contact');
-//    }
-//
-//    public function actionLogbook()
-//    {
-//        return $this->render('logbook');
-//    }
-//
-//    public function actionRegulation()
-//    {
-//        return $this->render('regulation');
-//    }
+    protected function findTaxBySlug()
+    {
+        $model = new PostSerch;
+        $param = Yii::$app->request->getQueryParams();
+        if (isset($param['tax']) && ($query = $model->findTaxBySlug($param['tax'])) != false) {
+            return $query;
+        } else {
+            return false;
+        }
+    }
+
 }

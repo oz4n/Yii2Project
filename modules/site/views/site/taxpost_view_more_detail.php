@@ -8,10 +8,10 @@ $other = Json::decode($model->other_content);
 <!--=== Breadcrumbs ===-->
 <div class="breadcrumbs">
     <div class="container">
-        <h1 class="pull-left">Berita</h1>
+        <h1 class="pull-left"><?= $tax ?></h1>
         <ul class="pull-right breadcrumb">
-            <li><a href="#">Home</a></li>              
-            <li class="active">Berita</li>
+             <li><a href="<?= Url::toRoute(['/site/site/index']) ?>">Beranda</a></li>           
+            <li class="active"><?= $tax ?></li>
         </ul>
     </div>
 </div>
@@ -43,7 +43,25 @@ $other = Json::decode($model->other_content);
             </div>
         </div>
         <!-- End Bordered Funny Boxes -->
-        <div class="col-sm-4 magazine-page">
+         <div class="col-md-4 magazine-page">        
+            <?php
+            foreach (\app\modules\dao\ar\Widget::find()->all() as $value) {
+                switch ($value->type) {
+                    case "PostSerch":
+                        echo \app\modules\site\widgets\PostSerch::widget([
+                            'action' => ['/site/site/tax', 'tax' => $param['tax']],
+                        ]);
+                        break;
+                    case "RecentPosts";
+                        echo \app\modules\site\widgets\RecentPosts::widget([
+                            'title' => $value->name
+                        ]);
+                        break;
+                    case "HTML";
+                        break;
+                }
+            }
+            ?>
         </div>
     </div>    
 </div>

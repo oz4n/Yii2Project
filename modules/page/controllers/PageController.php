@@ -1,7 +1,9 @@
 <?php
 
 namespace app\modules\page\controllers;
+
 define("DS", DIRECTORY_SEPARATOR);
+
 use Yii;
 use app\modules\page\models\PageModel;
 use app\modules\page\searchs\PageSerch;
@@ -11,6 +13,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\imagine\Image;
 use Symfony\Component\Filesystem\Filesystem;
+use yii\web\HttpException;
 
 /**
  * PageController implements the CRUD actions for Post model.
@@ -19,7 +22,7 @@ class PageController extends Controller
 {
 
     public $path;
-    
+
     public function init()
     {
         $this->path = Yii::$app->getBasePath() . DS . 'web' . DS . 'resources' . DS . 'images' . DS;
@@ -44,13 +47,17 @@ class PageController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PageSerch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        if (Yii::$app->user->can('pageindex')) {
+            $searchModel = new PageSerch;
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
-        ]);
+            return $this->render('index', [
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -60,9 +67,13 @@ class PageController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-                    'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->user->can('pageview')) {
+            return $this->render('view', [
+                        'model' => $this->findModel($id),
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -72,17 +83,37 @@ class PageController extends Controller
      */
     public function actionCreate()
     {
-        $model = new PageModel;
-        $model->setAttribute('create_et', date("Y-m-d H:i:s"));
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        $model->setAttribute('type', 'page');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->user->can('pagecreate')) {
+            $model = new PageModel;
+            $model->setAttribute('create_et', date("Y-m-d H:i:s"));
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            $model->setAttribute('type', 'page');
+            $param = Yii::$app->request->post('PageModel');
+            $data = [];
+            if (isset($param['imgsliderstatus']) && null != $param['imgsliderstatus']) {
+                $data['imgsliderstatus'] = $param['imgsliderstatus'];
+            } else {
+                $data['imgsliderstatus'] = 'Disable';
+            }
+
+            if (isset($param['imgslider']) && null != $param['imgslider']) {
+                $img = explode(',', $param['imgslider']);
+                foreach ($img as $v) {
+                    Image::thumbnail($this->path . 'original' . DS . $v, 970, 384)->save($this->path . 'pageslider' . DS . 'page' . DS . $v, ['quality' => 80]);
+                }
+                $data['imgslider'] = $img;
+            }
+            $model->setAttribute('other_content', Json::encode($data));
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                            'model' => $model,
+                            'other' => ['imgsliderstatus' => 'Disable']
+                ]);
+            }
         } else {
-            return $this->render('create', [
-                        'model' => $model,
-                        'other' => ['imgsliderstatus' => 'Disable']
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -94,38 +125,43 @@ class PageController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        $param = Yii::$app->request->post('PageModel');
-        $data = [];
-        if (isset($param['imgsliderstatus']) && null != $param['imgsliderstatus']) {
-            $data['imgsliderstatus'] = $param['imgsliderstatus'];
-        } else {
-            $data['imgsliderstatus'] = 'Disable';
-        }
+        if (Yii::$app->user->can('pageupdate')) {
+            $model = $this->findModel($id);
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            $param = Yii::$app->request->post('PageModel');
 
-        if (isset($param['imgslider']) && null != $param['imgslider']) {
-            $img = explode(',', $param['imgslider']);
-            $other = Json::decode($model->other_content);
-            foreach ($other['imgslider'] as $v) {
-                $file = new Filesystem();
-                $file->remove($this->path . 'pageslider' . DS . 'page' . DS . $v);
+            $data = [];
+            if (isset($param['imgsliderstatus']) && null != $param['imgsliderstatus']) {
+                $data['imgsliderstatus'] = $param['imgsliderstatus'];
+            } else {
+                $data['imgsliderstatus'] = 'Disable';
             }
-            foreach ($img as $v) {
-                Image::thumbnail($this->path . 'original' . DS . $v, 1024, 384)->save($this->path . 'pageslider' . DS . 'page' . DS . $v);
-            }            
-            $data['imgslider'] = $img;
-        }
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->setAttribute('other_content', Json::encode($data));
-            $model->save();
-            return $this->redirect(['update', 'action' => 'page-update', 'id' => $model->id]);
+            if (isset($param['imgslider']) && null != $param['imgslider']) {
+                $img = explode(',', $param['imgslider']);
+                $other = Json::decode($model->other_content);
+                foreach ($other['imgslider'] as $v) {
+                    $file = new Filesystem();
+                    $file->remove($this->path . 'pageslider' . DS . 'page' . DS . $v);
+                }
+                foreach ($img as $v) {
+                    Image::thumbnail($this->path . 'original' . DS . $v, 970, 384)->save($this->path . 'pageslider' . DS . 'page' . DS . $v, ['quality' => 80]);
+                }
+                $data['imgslider'] = $img;
+            }
+
+            if ($model->load(Yii::$app->request->post())) {
+                $model->setAttribute('other_content', Json::encode($data));
+                $model->save();
+                return $this->redirect(['update', 'action' => 'page-update', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                            'model' => $model,
+                            'other' => Json::decode($model->other_content)
+                ]);
+            }
         } else {
-            return $this->render('update', [
-                        'model' => $model,
-                        'other' => Json::decode($model->other_content)
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -137,9 +173,20 @@ class PageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        if (Yii::$app->user->can('pagedelete')) {
+            $model = $this->findModel($id);
+            $other = Json::decode($model->other_content);
+            if (isset($other['imgslider']) && null != $other['imgslider']) {
+                foreach ($other['imgslider'] as $value) {
+                    $file = new Filesystem();
+                    $file->remove($this->path . 'pageslider' . DS . 'page' . DS . $value);
+                }
+            }
+            $model->delete();
+            return $this->redirect(['index', 'action' => 'page-list']);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**

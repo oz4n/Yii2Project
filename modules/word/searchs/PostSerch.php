@@ -16,16 +16,15 @@ use app\modules\word\Word;
  */
 class PostSerch extends Post
 {
+
     private static $_items = array();
     private static $_list = array(NULL => 'None');
-
     private $year_filtr1;
     private $year_filtr2;
     private $year_filtr3;
     private $year_filtr4;
     private $year_opsi;
     private $year_opsi1;
-
     public $keyword;
 
     public function rules()
@@ -45,9 +44,10 @@ class PostSerch extends Post
     public function search($params)
     {
         $query = Post::find();
-         $query->onCondition([                    
-                    'type' => Word::POST_POST_TYPE_INFO
-                ]);
+        
+        $query->onCondition([
+            'type' => Word::POST_POST_TYPE_INFO
+        ])->orderBy(['create_et' => SORT_DESC]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -55,13 +55,21 @@ class PostSerch extends Post
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
+        
+        if (isset($params['PostSerch']['keyword'])) {
+            $key = $params['PostSerch']['keyword'];
+            $query->orFilterWhere(['like', 'title', $key])
+                    ->orFilterWhere(['like', 'content', $key])
+                    ->orFilterWhere(['like', 'slug', $key])
+                    ->orFilterWhere(['like', 'status', $key])
+                    ->orFilterWhere(['like', 'other_content', $key]);
+        }
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'content', $this->content])
-            ->andFilterWhere(['like', 'slug', $this->slug])
-            ->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'other_content', $this->other_content])
-            ->andFilterWhere(['like', 'comment_status', $this->comment_status]);
+                ->andFilterWhere(['like', 'content', $this->content])
+                ->andFilterWhere(['like', 'slug', $this->slug])
+                ->andFilterWhere(['like', 'status', $this->status])
+                ->andFilterWhere(['like', 'other_content', $this->other_content]);
 
         return $dataProvider;
     }
@@ -83,4 +91,5 @@ class PostSerch extends Post
         return $data;
 //        return ArrayHelper::merge(['' => $none], $data);
     }
+
 }

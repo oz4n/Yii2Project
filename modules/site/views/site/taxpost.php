@@ -18,35 +18,50 @@ use yii\widgets\ListView;
 <!--/breadcrumbs-->
 <div class="container content">
     <div class="row">     
-            <?php
-            echo ListView::widget([
+        <?php
+        echo ListView::widget([
 
-                'dataProvider' => $dataProvider,
-                'layout' => '{items}<div class="text-center">{pager}</div>',
-                'options' => [
-                    'class' => 'col-md-8'
-                ],
-                'pager' => [
-                    'firstPageLabel' => 'First',
-                    'lastPageLabel' => 'Last',
-                    'nextPageLabel' => 'Next',
-                    'prevPageLabel' => 'Prev',
-                ],
-                'itemOptions' => ['class' => 'funny-boxes funny-boxes-left-green'],
-                'itemView' => function ($model, $key, $index, $widget) {
-                    $param = Yii::$app->request->getQueryParams();
-                    return $this->render('_tax_view', [
-                                'model' => $model,
-                                'index' => $index,
-                                'tax' => $param['tax']
-                    ]);
-                },
-            ]);
-            ?>
-      
+            'dataProvider' => $dataProvider,
+            'layout' => '{items}<div class="text-center">{pager}</div>',
+            'options' => [
+                'class' => 'col-md-8'
+            ],
+            'pager' => [
+                'nextPageLabel' => 'Next',
+                'prevPageLabel' => 'Prev',
+            ],
+            'itemOptions' => ['class' => 'funny-boxes funny-boxes-left-green'],
+            'itemView' => function ($data, $key, $index, $widget) {
+        $param = Yii::$app->request->getQueryParams();
+        return $this->render('_taxpost_view', [
+                    'data' => $data,
+                    'index' => $index,
+                    'tax' => $param['tax']
+        ]);
+    },
+        ]);
+        ?>
+
         <!-- End Bordered Funny Boxes -->
-        <div class="col-md-4 magazine-page">           
-
+        <div class="col-md-4 magazine-page">        
+            <?php
+            foreach (\app\modules\dao\ar\Widget::find()->orderBy(['position' => SORT_ASC])->all() as $value) {
+                switch ($value->type) {
+                    case "PostSerch":
+                        echo \app\modules\site\widgets\PostSerch::widget([
+                            'action' => ['/site/site/tax', 'tax' => $param['tax']],
+                        ]);
+                        break;
+                    case "RecentPosts";
+                        echo \app\modules\site\widgets\RecentPosts::widget([
+                            'title' => $value->name
+                        ]);
+                        break;
+                    case "HTML";
+                        break;
+                }
+            }
+            ?>
         </div>
     </div>    
 </div>
