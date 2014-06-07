@@ -2,8 +2,8 @@
 
 namespace app\modules\word;
 
+use Yii;
 use yii\base\BootstrapInterface;
-
 use yii\base\Module;
 
 class Word extends Module implements BootstrapInterface

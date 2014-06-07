@@ -196,6 +196,15 @@ class PostController extends Controller
         }
     }
 
+    public function actionBulk()
+    {
+        if (Yii::$app->user->can('postbulk')) {
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
+
+    }
+
     public function actionTrash($id)
     {
         if (Yii::$app->user->can('posttrash')) {
