@@ -20,8 +20,6 @@ class Word extends Module implements BootstrapInterface
         $this->setLayoutPath('@app/modules/dashboard/views/layouts');
         $this->layout = 'main';
         parent::init();
-
-        // custom initialization code goes here
     }
 
     public function bootstrap($app)
@@ -48,5 +46,9 @@ class Word extends Module implements BootstrapInterface
             'dashboard/word/post/tag/trash/<action:(word-tag-trash)>/<id:.*?>' => '/word/tag/trash',
             'dashboard/word/post/tag/view/<action:(word-tag-view)>/<id:.*?>' => '/word/tag/view',
         ], false);
+        if (!Yii::$app->user->isGuest) {
+            $app->getErrorHandler()->errorAction = '/dashboard/dashboard/error';
+        }
     }
+
 }

@@ -5,7 +5,9 @@ namespace app\modules\word\controllers;
 use Yii;
 use app\modules\word\models\PostModel;
 use app\modules\word\searchs\PostSerch;
+use yii\helpers\Json;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\word\Word;
@@ -37,13 +39,17 @@ class PostController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PostSerch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        if (Yii::$app->user->can('postindex')) {
+            $searchModel = new PostSerch;
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
 
-        return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
-        ]);
     }
 
     /**
@@ -53,9 +59,13 @@ class PostController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-                    'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->user->can('postview')) {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -65,47 +75,51 @@ class PostController extends Controller
      */
     public function actionCreate()
     {
-        $model = new PostModel;
-        $model->setAttribute('user_id', Yii::$app->user->getId());
-        $model->setAttribute('create_et', date("Y-m-d H:i:s"));
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        $model->setAttribute('type', Word::POST_POST_TYPE_INFO);
-        if ($model->load(Yii::$app->request->post())) {
-            $param = Yii::$app->request->post("PostModel");
-            $data = [];
-            if (null != $param["category"]) {
-                $cat = $model->findAllCategoryAttrById($param["category"]);
-                $this->category = $param["category"];
-                $data["category"] = $cat;
+        if (Yii::$app->user->can('postcreate')) {
+            $model = new PostModel;
+            $model->setAttribute('user_id', Yii::$app->user->getId());
+            $model->setAttribute('create_et', date("Y-m-d H:i:s"));
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            $model->setAttribute('type', Word::POST_POST_TYPE_INFO);
+            if ($model->load(Yii::$app->request->post())) {
+                $param = Yii::$app->request->post("PostModel");
+                $data = [];
+                if (null != $param["category"]) {
+                    $cat = $model->findAllCategoryAttrById($param["category"]);
+                    $this->category = $param["category"];
+                    $data["category"] = $cat;
+                } else {
+                    $data["category"] = [
+                        [
+                            'id' => 0,
+                            'name' => 'Informasi',
+                            'slug' => 'info'
+                        ]
+                    ];
+                }
+                if (null != $param['tag']) {
+                    $tag = $model->findAllTagAttrById($param["tag"]);
+                    $this->tag = $param["tag"];
+                    $data['tag'] = $tag;
+                }
+                $model->other_content = Json::encode($data);
+                $model->save();
+
+                if (null != $param['tag']) {
+                    $model->saveTagRelation($this->tag, $model->id);
+                }
+
+                if (null != $param['category']) {
+                    $model->saveCatRelation($this->category, $model->id);
+                }
+                return $this->redirect(['update', 'action' => 'word-post-update', 'id' => $model->id]);
             } else {
-                $data["category"] = [
-                    [
-                        'id' => 0,
-                        'name' => 'Informasi',
-                        'slug' => 'info'
-                    ]
-                ];
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
             }
-            if (null != $param['tag']) {
-                $tag = $model->findAllTagAttrById($param["tag"]);
-                $this->tag = $param["tag"];
-                $data['tag'] = $tag;
-            }
-            $model->other_content = \yii\helpers\Json::encode($data);
-            $model->save();
-
-            if (null != $param['tag']) {
-                $model->saveTagRelation($this->tag, $model->id);
-            }
-
-            if (null != $param['category']) {
-                $model->saveCatRelation($this->category, $model->id);
-            }
-            return $this->redirect(['update', 'action' => 'word-post-update', 'id' => $model->id]);
         } else {
-            return $this->render('create', [
-                        'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -117,46 +131,50 @@ class PostController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post())) {
-            $param = Yii::$app->request->post("PostModel");
-            $data = [];
-            if (null != $param["category"]) {
-                $cat = $model->findAllCategoryAttrById($param["category"]);
-                $this->category = $param["category"];
-                $data['category'] = $cat;
+        if (Yii::$app->user->can('postupdate')) {
+            $model = $this->findModel($id);
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            if ($model->load(Yii::$app->request->post())) {
+                $param = Yii::$app->request->post("PostModel");
+                $data = [];
+                if (null != $param["category"]) {
+                    $cat = $model->findAllCategoryAttrById($param["category"]);
+                    $this->category = $param["category"];
+                    $data['category'] = $cat;
+                } else {
+                    $data["category"] = [
+                        [
+                            'id' => 0,
+                            'name' => 'Informasi',
+                            'slug' => 'info'
+                        ]
+                    ];
+                }
+                if (null != $param['tag']) {
+                    $tag = $model->findAllTagAttrById($param["tag"]);
+                    $this->tag = $param["tag"];
+                    $data['tag'] = $tag;
+                }
+                $model->other_content = Json::encode($data);
+                $model->save();
+
+                if (null != $param['tag']) {
+                    $model->deleteTagRelation($this->tag, $model->id);
+                    $model->saveTagRelation($this->tag, $model->id);
+                }
+
+                if (null != $param['category']) {
+                    $model->deleteCatRelation($this->category, $model->id);
+                    $model->saveCatRelation($this->category, $model->id);
+                }
+                return $this->redirect(['update', 'action' => 'word-post-update', 'id' => $model->id]);
             } else {
-                $data["category"] = [
-                    [
-                        'id' => 0,
-                        'name' => 'Informasi',
-                        'slug' => 'info'
-                    ]
-                ];
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
             }
-            if (null != $param['tag']) {
-                $tag = $model->findAllTagAttrById($param["tag"]);
-                $this->tag = $param["tag"];
-                $data['tag'] = $tag;
-            }
-            $model->other_content = \yii\helpers\Json::encode($data);
-            $model->save();
-
-            if (null != $param['tag']) {
-                $model->deleteTagRelation($this->tag, $model->id);
-                $model->saveTagRelation($this->tag, $model->id);
-            }
-
-            if (null != $param['category']) {
-                $model->deleteCatRelation($this->category, $model->id);
-                $model->saveCatRelation($this->category, $model->id);
-            }
-            return $this->redirect(['update', 'action' => 'word-post-update', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                        'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -168,16 +186,28 @@ class PostController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        return $this->redirect(['index', 'action' => 'word-post-list']);
+        if (Yii::$app->user->can('postdelete')) {
+            $this->findModel($id)->delete();
+            return $this->redirect(['index',
+                'action' => 'word-post-list'
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     public function actionTrash($id)
     {
-        $model = $this->findModel($id);
-        $model->status = 'Trash';
-        $model->save();
-        return $this->redirect(['index', 'word-post-list']);
+        if (Yii::$app->user->can('posttrash')) {
+            $model = $this->findModel($id);
+            $model->status = 'Trash';
+            $model->save();
+            return $this->redirect(['index',
+                'action' => 'word-post-list'
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**

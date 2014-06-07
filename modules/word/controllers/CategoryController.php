@@ -4,6 +4,7 @@ namespace app\modules\word\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\word\Word;
@@ -33,13 +34,16 @@ class CategoryController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CategorySerch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-        ]);
+        if (Yii::$app->user->can('categoryindex')) {
+            $searchModel = new CategorySerch;
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -49,9 +53,13 @@ class CategoryController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->user->can('categoryview')) {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -61,17 +69,23 @@ class CategoryController extends Controller
      */
     public function actionCreate()
     {
-        $model = new CategoryModel;
-
-        $model->setAttribute('term_id', Word::WORD_CATEGORY);
-        $model->setAttribute('create_et', date("Y-m-d H:i:s"));
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'action' => 'word-category-view', 'id' => $model->id]);
+        if (Yii::$app->user->can('categorycreate')) {
+            $model = new CategoryModel;
+            $model->setAttribute('term_id', Word::WORD_CATEGORY);
+            $model->setAttribute('create_et', date("Y-m-d H:i:s"));
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view',
+                    'action' => 'word-category-view',
+                    'id' => $model->id
+                ]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -83,24 +97,39 @@ class CategoryController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'action' => 'word-category-view', 'id' => $model->id]);
+        if (Yii::$app->user->can('categoryupdate')) {
+            $model = $this->findModel($id);
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view',
+                    'action' => 'word-category-view',
+                    'id' => $model->id
+                ]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
     public function actionBulk()
     {
-        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
-            $this->deleteAll(Yii::$app->request->post('selection'));
-            return $this->redirect(['index', 'action' => 'word-category-list']);
+        if (Yii::$app->user->can('categorybulk')) {
+            if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+                $this->deleteAll(Yii::$app->request->post('selection'));
+                return $this->redirect(['index',
+                    'action' => 'word-category-list'
+                ]);
+            } else {
+                return $this->redirect(['index',
+                    'action' => 'word-category-list'
+                ]);
+            }
         } else {
-            return $this->redirect(['index', 'action' => 'word-category-list']);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -112,9 +141,14 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index', 'action' => 'word-category-list']);
+        if (Yii::$app->user->can('categorydelete')) {
+            $this->findModel($id)->delete();
+            return $this->redirect(['index',
+                'action' => 'word-category-list'
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**

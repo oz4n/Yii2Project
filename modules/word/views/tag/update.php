@@ -18,13 +18,13 @@ $this->title = Yii::t('app', 'Perbaharui {modelClass} ', [
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/word/post/index', 'action' => 'word-post-list']); ?>"><?= Yii::t('app', Html::encode('Post')); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute(['/word/tag/index','action'=>'word-tag-list']); ?>"><?php echo Yii::t('app', Html::encode('Tag')); ?></a>
+        <a href="<?php echo Url::toRoute(['/word/tag/index', 'action' => 'word-tag-list']); ?>"><?php echo Yii::t('app', Html::encode('Tag')); ?></a>
     </li>
     <li class="active">
         <?php echo Yii::t('app', Html::encode($this->title . ' : ' . $model->name)); ?>
@@ -41,7 +41,7 @@ $this->title = Yii::t('app', 'Perbaharui {modelClass} ', [
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Tag',
-                ]), Url::toRoute(['/word/tag/create','action'=>'word-tag-create']))
+                ]), Url::toRoute(['/word/tag/create', 'action' => 'word-tag-create']))
                 ?>
             </h1>
         </div>

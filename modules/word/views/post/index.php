@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use yii\web\View;
 use yii\helpers\Json;
 use app\modules\site\helpers\TextHelper;
+
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -31,7 +32,7 @@ $this->registerJs(''
         <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/word/post/index', 'action' => 'word-post-list']); ?>"><?= Yii::t('app', Html::encode('Post')); ?></a>
@@ -147,7 +148,7 @@ GridView::widget([
 //        . '&nbsp;&nbsp;'
 //        . Html::dropDownList('PostSerch[year_filtr4]', '', PostSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
 //        . '&nbsp;&nbsp;'
-        . Html::dropDownList('PostSerch[status_filtr2]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft','Trash' => 'Trash'], ['class' => 'form-control save-status'])
+        . Html::dropDownList('PostSerch[status_filtr2]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash'], ['class' => 'form-control save-status'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
         . Html::endTag('div')
@@ -175,45 +176,45 @@ GridView::widget([
             'attribute' => 'title',
             'label' => 'Judul'
         ],
-          [
-                    'attribute' => 'content',
-                    'label' => 'Isi',
-                    'format' => 'raw',
-                    'value' => function($data){
-                        return TextHelper::word_limiter(strip_tags($data->content), 9);
-                    }
-                ],
+        [
+            'attribute' => 'content',
+            'label' => 'Isi',
+            'format' => 'raw',
+            'value' => function ($data) {
+                    return TextHelper::word_limiter(strip_tags($data->content), 9);
+                }
+        ],
         [
             'attribute' => 'other_content',
             'label' => 'Kategori',
             'format' => 'RAW',
-            'value' => function($data){
-                $cat = Json::decode($data->other_content);
-                if(isset($cat['category'])){                   
-                    $item = [];
-                    foreach ($cat['category'] as $v){
-                        $item[] = $v['name'];
+            'value' => function ($data) {
+                    $cat = Json::decode($data->other_content);
+                    if (isset($cat['category'])) {
+                        $item = [];
+                        foreach ($cat['category'] as $v) {
+                            $item[] = $v['name'];
+                        }
+                        return implode(", ", $item);
                     }
-                    return implode(", ", $item);            
+
                 }
-                
-            }
         ],
         [
             'attribute' => 'other_content',
             'label' => 'Tag',
             'format' => 'RAW',
-            'value' => function($data){
-                $cat = Json::decode($data->other_content);
-                if(isset($cat['tag'])){                   
-                    $item = [];
-                    foreach ($cat['tag'] as $v){
-                        $item[] = $v['name'];
+            'value' => function ($data) {
+                    $cat = Json::decode($data->other_content);
+                    if (isset($cat['tag'])) {
+                        $item = [];
+                        foreach ($cat['tag'] as $v) {
+                            $item[] = $v['name'];
+                        }
+                        return implode(", ", $item);
                     }
-                    return implode(", ", $item);            
+
                 }
-                
-            }
         ],
         [
             'attribute' => 'create_et',
@@ -223,7 +224,7 @@ GridView::widget([
             'attribute' => 'update_et',
             'label' => 'Diubah'
         ],
-        
+
         [
             'attribute' => 'status',
             'format' => 'raw',
@@ -245,7 +246,7 @@ GridView::widget([
             'filter' => [
                 'Publish' => 'Publish',
                 'Draft' => 'Draft',
-                'Trash' => 'Trash'               
+                'Trash' => 'Trash'
             ]
         ],
 
@@ -263,16 +264,16 @@ GridView::widget([
                 'update' => function ($url, $data) {
                         return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/word/post/update", 'action' => 'word-post-update', 'id' => $data->id]), [
                             'class' => 'select-tooltip btn btn-primary btn-xs',
-                             'data-toggle'=>"tooltip",
-                            'data-original-title'=>"Perbaharui",
+                            'data-toggle' => "tooltip",
+                            'data-original-title' => "Perbaharui",
                             'title' => Yii::t('yii', 'Perbaharui'),
                         ]);
                     },
                 'delete' => function ($url, $data) {
                         return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/word/post/delete", 'action' => 'word-post-delete', 'id' => $data->id]), [
                             'class' => 'select-tooltip btn btn-danger btn-xs',
-                            'data-toggle'=>"tooltip",
-                            'data-original-title'=>"Hapus",
+                            'data-toggle' => "tooltip",
+                            'data-original-title' => "Hapus",
                             'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
                             'data-method' => 'post',
                             'data-pjax' => 0,
@@ -281,9 +282,9 @@ GridView::widget([
                     },
                 'trash' => function ($url, $data) {
                         return Html::a('<i class="fa  fa-trash-o"></i>', Url::toRoute(['/word/post/trash', 'action' => 'word-post-trash', 'id' => $data->id]), [
-                            'class' => 'select-tooltip btn btn-warning btn-xs', 
-                            'data-toggle'=>"tooltip",
-                            'data-original-title'=>"Tong sampah",
+                            'class' => 'select-tooltip btn btn-warning btn-xs',
+                            'data-toggle' => "tooltip",
+                            'data-original-title' => "Tong sampah",
                             'data-confirm' => 'Apakah Anda yakin ingin membuang ke tong sampah?',
                             'data-method' => 'post',
                             'data-pjax' => 0,

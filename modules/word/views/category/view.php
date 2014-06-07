@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
 use yii\web\View;
+
 /**
  * @var yii\web\View $this
  * @var \app\modules\dao\ar\Taxonomy $model
@@ -20,13 +21,13 @@ $this->registerJs(
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/word/post/index', 'action' => 'word-post-list']); ?>"><?= Yii::t('app', Html::encode('Post')); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute(['/word/category/index','action'=>'word-category-list']); ?>"><?php echo Yii::t('app', Html::encode('Kategori')); ?></a>
+        <a href="<?php echo Url::toRoute(['/word/category/index', 'action' => 'word-category-list']); ?>"><?php echo Yii::t('app', Html::encode('Kategori')); ?></a>
     </li>
     <li class="active">
         <?php echo Yii::t('app', Html::encode($this->title)); ?>
@@ -43,7 +44,7 @@ $this->registerJs(
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Kategori',
-                ]), Url::toRoute(['/word/category/create','action'=>'word-category-create']))
+                ]), Url::toRoute(['/word/category/create', 'action' => 'word-category-create']))
                 ?>
             </h1>
         </div>
@@ -56,7 +57,7 @@ $this->registerJs(
                 <?=
                 DetailView::widget([
                     'model' => $model,
-                    'options' => ['class'=>'table'],
+                    'options' => ['class' => 'table'],
                     'attributes' => [
                         'id',
                         'parent_id',

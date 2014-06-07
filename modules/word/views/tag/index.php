@@ -23,13 +23,13 @@ $this->registerJs(
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/word/post/index', 'action' => 'word-post-list']); ?>"><?= Yii::t('app', Html::encode('Post')); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute(['/word/tag/index','action'=>'word-tag-list']); ?>"><?php echo Yii::t('app', Html::encode('Tag')); ?></a>
+        <a href="<?php echo Url::toRoute(['/word/tag/index', 'action' => 'word-tag-list']); ?>"><?php echo Yii::t('app', Html::encode('Tag')); ?></a>
     </li>
 </ul>
 
@@ -45,14 +45,14 @@ $this->registerJs(
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Tag',
-                ]), Url::toRoute(['/word/tag/create','action'=>'word-tag-create']))
+                ]), Url::toRoute(['/word/tag/create', 'action' => 'word-tag-create']))
                 ?>
             </h1>
         </div>
         <div class="col-xs-4">
             <div class="pull-right">
                 <?php $form = ActiveForm::begin([
-                    'action' => ["/word/tag/index",'action'=>'word-tag-list'],
+                    'action' => ["/word/tag/index", 'action' => 'word-tag-list'],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [
@@ -76,14 +76,14 @@ $this->registerJs(
     <div class="col-sm-12">
         <?php
         $form = ActiveForm::begin([
-            'action' => ['/word/tag/bulk','action'=>'word-tag-bulk']
+            'action' => ['/word/tag/bulk', 'action' => 'word-tag-bulk']
         ]);
         ?>
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            'filterUrl' => ['/word/tag/index','action'=>'word-tag-list'],
+            'filterUrl' => ['/word/tag/index', 'action' => 'word-tag-list'],
             'pager' => ['maxButtonCount' => 3],
             'tableOptions' => ['class' => 'table'],
             'layout' =>
@@ -162,7 +162,7 @@ $this->registerJs(
                 ],
                 [
                     'attribute' => 'description',
-                    'label' => 'Keterangan',                    
+                    'label' => 'Keterangan',
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
@@ -173,24 +173,24 @@ $this->registerJs(
                                 return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/word/tag/view', 'action' => 'word-tag-view', 'id' => $data->id]), [
                                     'class' => 'btn btn-success btn-xs',
                                     'class' => 'select-tooltip btn btn-success btn-xs',
-                                    'data-toggle'=>"tooltip",
-                                    'data-original-title'=>"Lihat Detail",
+                                    'data-toggle' => "tooltip",
+                                    'data-original-title' => "Lihat Detail",
                                     'title' => Yii::t('yii', 'Lihat Detail'),
                                 ]);
                             },
                         'update' => function ($url, $data) {
                                 return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/word/tag/update", 'action' => 'word-tag-update', 'id' => $data->id]), [
-                                     'class' => 'select-tooltip btn btn-primary btn-xs',
-                                    'data-toggle'=>"select-tooltip tooltip",
-                                    'data-original-title'=>"Perbaharui",
+                                    'class' => 'select-tooltip btn btn-primary btn-xs',
+                                    'data-toggle' => "select-tooltip tooltip",
+                                    'data-original-title' => "Perbaharui",
                                     'title' => Yii::t('yii', 'Perbaharui'),
                                 ]);
                             },
                         'delete' => function ($url, $data) {
                                 return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/word/tag/delete", 'action' => 'word-tag-delete', 'id' => $data->id]), [
                                     'class' => 'select-tooltip btn btn-danger btn-xs',
-                                    'data-toggle'=>"tooltip",
-                                    'data-original-title'=>"Hapus",
+                                    'data-toggle' => "tooltip",
+                                    'data-original-title' => "Hapus",
                                     'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
                                     'data-method' => 'post',
                                     'data-pjax' => 0,
