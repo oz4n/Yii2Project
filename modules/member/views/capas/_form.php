@@ -70,7 +70,7 @@ $form = ActiveForm::begin([
                 <?= $form->field($model, 'identity_card_number')->textInput(['rows' => 45]) ?>
                 <?= $form->field($model, 'birth')->textInput(['placeholder' => '02 Agustus 1990', 'id' => 'birth-date', 'maxlength' => 45]) ?>
                 <?= $form->field($model, 'age')->textInput(['maxlength' => 3]) ?>
-                <?= $form->field($model, 'address')->textarea(['style'=>'resize:none','rows' => 6, 'maxlength' => 255]) ?>
+                <?= $form->field($model, 'address')->textarea(['style' => 'resize:none', 'rows' => 6, 'maxlength' => 255]) ?>
                 <?=
                 $form->field($model, 'gender')->dropDownList([
                     'Laki-Laki' => 'Laki-Laki',
@@ -311,7 +311,8 @@ $form = ActiveForm::begin([
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-12">
-                    <div id="preview-front-photo" class="dz-preview dz-image-preview" style="<?php echo $model->front_photo == null ? "display: none;" : ""; ?> border-radius: 0px; width: 284px; margin: 0">
+                    <div id="preview-front-photo" class="dz-preview dz-image-preview"
+                         style="<?php echo $model->front_photo == null ? "display: none;" : ""; ?> border-radius: 0px; width: 284px; margin: 0">
                         <div class="dz-details">
                             <div class="dz-size">
                                 Ukuran Photo: 
@@ -321,13 +322,18 @@ $form = ActiveForm::begin([
                             </div>
                             <div class="dz-thumbnail-wrapper">
                                 <div class="dz-thumbnail" style="width: 265px; height: 170px;">
-                                    <img id="img-target-photo" src="<?php echo $model->front_photo == null ? "" : Yii::getAlias('@web') . "/resources/images/member/frontphoto/" . $model->front_photo; ?>" data-dz-thumbnail="" style="max-height: 202px;">
+                                    <img id="img-target-photo"
+                                         src="<?php echo $model->front_photo == null ? "" : Yii::getAlias('@web') . "/resources/images/member/frontphoto/" . $model->front_photo; ?>"
+                                         data-dz-thumbnail="" style="max-height: 202px;">
                                 </div>
                             </div>
                         </div>
-                        <a id="remove-front-photo" class="select-image dz-remove" href="#" style="border-radius: 0" data-toggle="modal" data-target="#modal-sizes-2">Ganti Photo</a>
+                        <a id="remove-front-photo" class="select-image dz-remove" href="#" style="border-radius: 0"
+                           data-toggle="modal" data-target="#modal-sizes-2">Ganti Photo</a>
                     </div>
-                    <div id="select-front-photo" class="select-image dropzone-box" data-toggle="modal" data-target="#modal-sizes-2" style="<?php echo $model->front_photo == null ? "" : "display: none;"; ?>" >
+                    <div id="select-front-photo" class="select-image dropzone-box" data-toggle="modal"
+                         data-target="#modal-sizes-2"
+                         style="<?php echo $model->front_photo == null ? "" : "display: none;"; ?>">
                         <div class="dz-default dz-message" style="margin-left: -40px">
                             <i class="fa fa-cloud-upload"></i>
                         </div>
@@ -345,7 +351,8 @@ $form = ActiveForm::begin([
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-12">
-                    <div id="preview-front-photo" class="dz-preview dz-image-preview" style="<?php echo $model->side_photo == null ? "display: none;" : ""; ?> border-radius: 0px; width: 284px; margin: 0">
+                    <div id="preview-front-photo" class="dz-preview dz-image-preview"
+                         style="<?php echo $model->side_photo == null ? "display: none;" : ""; ?> border-radius: 0px; width: 284px; margin: 0">
                         <div class="dz-details">
                             <div class="dz-size">
                                 Ukuran Photo: 
@@ -355,13 +362,18 @@ $form = ActiveForm::begin([
                             </div>
                             <div class="dz-thumbnail-wrapper">
                                 <div class="dz-thumbnail" style="width: 265px; height: 170px;">
-                                    <img id="img-target-photo" src="<?php echo $model->side_photo == null ? "" : Yii::getAlias('@web') . "/resources/images/member/sidephoto/" . $model->side_photo; ?>" data-dz-thumbnail="" style="max-height: 202px;">
+                                    <img id="img-target-photo"
+                                         src="<?php echo $model->side_photo == null ? "" : Yii::getAlias('@web') . "/resources/images/member/sidephoto/" . $model->side_photo; ?>"
+                                         data-dz-thumbnail="" style="max-height: 202px;">
                                 </div>
                             </div>
                         </div>
-                        <a id="remove-front-photo" class="select-image dz-remove" href="#" style="border-radius: 0" data-toggle="modal" data-target="#modal-sizes-2">Ganti Photo</a>
+                        <a id="remove-front-photo" class="select-image dz-remove" href="#" style="border-radius: 0"
+                           data-toggle="modal" data-target="#modal-sizes-2">Ganti Photo</a>
                     </div>
-                    <div id="select-front-photo" class="select-image dropzone-box" data-toggle="modal" data-target="#modal-sizes-2" style="<?php echo $model->side_photo == null ? "" : "display: none;"; ?>" >
+                    <div id="select-front-photo" class="select-image dropzone-box" data-toggle="modal"
+                         data-target="#modal-sizes-2"
+                         style="<?php echo $model->side_photo == null ? "" : "display: none;"; ?>">
                         <div class="dz-default dz-message" style="margin-left: -40px">
                             <i class="fa fa-cloud-upload"></i>
                         </div>
@@ -378,7 +390,8 @@ $form = ActiveForm::begin([
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-12">
-                    <div id="preview-front-photo" class="dz-preview dz-image-preview" style="<?php echo $model->identity_card == null ? "display: none;" : ""; ?> border-radius: 0px; width: 284px; margin: 0">
+                    <div id="preview-front-photo" class="dz-preview dz-image-preview"
+                         style="<?php echo $model->identity_card == null ? "display: none;" : ""; ?> border-radius: 0px; width: 284px; margin: 0">
                         <div class="dz-details">
                             <div class="dz-size">
                                 Ukuran Photo: 
@@ -388,13 +401,18 @@ $form = ActiveForm::begin([
                             </div>
                             <div class="dz-thumbnail-wrapper">
                                 <div class="dz-thumbnail" style="width: 265px; height: 170px;">
-                                    <img id="img-target-photo" src="<?php echo $model->identity_card == null ? "" : Yii::getAlias('@web') . "/resources/images/member/identitycard/" . $model->identity_card; ?>" data-dz-thumbnail="" style="max-height: 202px;">
+                                    <img id="img-target-photo"
+                                         src="<?php echo $model->identity_card == null ? "" : Yii::getAlias('@web') . "/resources/images/member/identitycard/" . $model->identity_card; ?>"
+                                         data-dz-thumbnail="" style="max-height: 202px;">
                                 </div>
                             </div>
                         </div>
-                        <a id="remove-front-photo" class="select-image dz-remove" href="#" style="border-radius: 0" data-toggle="modal" data-target="#modal-sizes-2">Ganti Photo</a>
+                        <a id="remove-front-photo" class="select-image dz-remove" href="#" style="border-radius: 0"
+                           data-toggle="modal" data-target="#modal-sizes-2">Ganti Photo</a>
                     </div>
-                    <div id="select-front-photo" class="select-image dropzone-box" data-toggle="modal" data-target="#modal-sizes-2" style="<?php echo $model->identity_card == null ? "" : "display: none;"; ?>" >
+                    <div id="select-front-photo" class="select-image dropzone-box" data-toggle="modal"
+                         data-target="#modal-sizes-2"
+                         style="<?php echo $model->identity_card == null ? "" : "display: none;"; ?>">
                         <div class="dz-default dz-message" style="margin-left: -40px">
                             <i class="fa fa-cloud-upload"></i>
                         </div>
@@ -412,7 +430,8 @@ $form = ActiveForm::begin([
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-12">
-                    <div id="preview-front-photo" class="dz-preview dz-image-preview" style="<?php echo $model->certificate_of_organization == null ? "display: none;" : ""; ?> border-radius: 0px; width: 284px; margin: 0">
+                    <div id="preview-front-photo" class="dz-preview dz-image-preview"
+                         style="<?php echo $model->certificate_of_organization == null ? "display: none;" : ""; ?> border-radius: 0px; width: 284px; margin: 0">
                         <div class="dz-details">
                             <div class="dz-size">
                                 Ukuran Photo: 
@@ -422,13 +441,18 @@ $form = ActiveForm::begin([
                             </div>
                             <div class="dz-thumbnail-wrapper">
                                 <div class="dz-thumbnail" style="width: 265px; height: 170px;">
-                                    <img id="img-target-photo" src="<?php echo $model->certificate_of_organization == null ? "" : Yii::getAlias('@web') . "/resources/images/member/certificate/" . $model->certificate_of_organization; ?>" data-dz-thumbnail="" style="max-height: 202px;">
+                                    <img id="img-target-photo"
+                                         src="<?php echo $model->certificate_of_organization == null ? "" : Yii::getAlias('@web') . "/resources/images/member/certificate/" . $model->certificate_of_organization; ?>"
+                                         data-dz-thumbnail="" style="max-height: 202px;">
                                 </div>
                             </div>
                         </div>
-                        <a id="remove-front-photo" class="select-image dz-remove" href="#" style="border-radius: 0" data-toggle="modal" data-target="#modal-sizes-2">Ganti Photo</a>
+                        <a id="remove-front-photo" class="select-image dz-remove" href="#" style="border-radius: 0"
+                           data-toggle="modal" data-target="#modal-sizes-2">Ganti Photo</a>
                     </div>
-                    <div id="select-front-photo" class="select-image dropzone-box" data-toggle="modal" data-target="#modal-sizes-2" style="<?php echo $model->certificate_of_organization == null ? "" : "display: none;"; ?>" >
+                    <div id="select-front-photo" class="select-image dropzone-box" data-toggle="modal"
+                         data-target="#modal-sizes-2"
+                         style="<?php echo $model->certificate_of_organization == null ? "" : "display: none;"; ?>">
                         <div class="dz-default dz-message" style="margin-left: -40px">
                             <i class="fa fa-cloud-upload"></i>
                         </div>
@@ -447,7 +471,7 @@ $form = ActiveForm::begin([
             <?php //$form->field($model, 'note')->textarea(['rows' => 6, 'maxlength' => 255])->label('')   ?>
             <div class="form-group field-ppimodel-note required">
                 <div class="col-sm-12">
-                    <?= Html::activeTextarea($model, 'note', ['style'=>'resize:none','class' => 'form-control', 'rows' => 6, 'maxlength' => 255]) ?>
+                    <?= Html::activeTextarea($model, 'note', ['style' => 'resize:none', 'class' => 'form-control', 'rows' => 6, 'maxlength' => 255]) ?>
                 </div>
             </div>
         </div>
@@ -480,18 +504,18 @@ $form = ActiveForm::begin([
     </div>
 <?php ActiveForm::end(); ?>
 
-<div class="row" style="display: none">
-    <div class="col-sm-12">
-        <textarea id="redactor"></textarea>
+    <div class="row" style="display: none">
+        <div class="col-sm-12">
+            <textarea id="redactor"></textarea>
+        </div>
     </div>
-</div>
 
 <?php
 $this->registerJs(
-        '$("#redactor").redactor({
-        imageUpload:"'.Url::toRoute(['/filemanager/image/uploadredactorimage']).'",
-        imageGetJson:"'.Url::toRoute(['/filemanager/image/loadredactorimage']).'",
-        albumGetJson:"'.Url::toRoute(['/filemanager/image/loadredactoralbum']).'",
+    '$("#redactor").redactor({
+    imageUpload:"' . Url::toRoute(['/filemanager/image/uploadredactorimage']) . '",
+        imageGetJson:"' . Url::toRoute(['/filemanager/image/loadredactorimage']) . '",
+        albumGetJson:"' . Url::toRoute(['/filemanager/image/loadredactoralbum']) . '",
         buttons:["html"],
         imageUploadErrorCallback:function(data){
             $("html,body").animate({ scrollTop: 0 }, 500);
@@ -501,8 +525,8 @@ $this->registerJs(
             });
         },
         buttons: ["italic"],
-        fileUpload:"'.Url::toRoute(['/filemanager/document/uploaddredactorfile']).'", 
-        fileGetJson:"'.Url::toRoute(['/filemanager/document/loadredactorfile']).'",
+        fileUpload:"' . Url::toRoute(['/filemanager/document/uploaddredactorfile']) . '",
+        fileGetJson:"' . Url::toRoute(['/filemanager/document/loadredactorfile']) . '",
         fileUploadErrorCallback:function(data){           
             $("html,body").animate({ scrollTop: 0 }, 500);
             PixelAdmin.plugins.alerts.add("<strong>Maap!</strong>&nbsp;" + data.error, {
@@ -514,7 +538,7 @@ $this->registerJs(
             "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '",
         },
         lang: "id",
-        imgLoading:"'.Yii::getAlias('@web') . "/PixelAdmin/img/loading.gif".'",        
+        imgLoading:"' . Yii::getAlias('@web') . "/PixelAdmin/img/loading.gif" . '",
         _csrf:"' . Yii::$app->request->getCsrfToken() . '",
         _csrfname:"' . Yii::$app->request->csrfParam . '",
     });

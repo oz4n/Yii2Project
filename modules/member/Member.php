@@ -34,7 +34,6 @@ class Member extends Module implements BootstrapInterface
         $this->setLayoutPath('@app/modules/dashboard/views/layouts');
         $this->layout = 'main';
         parent::init();
-        // custom initialization code goes here
     }
 
     public function beforeAction($action)
@@ -103,7 +102,7 @@ class Member extends Module implements BootstrapInterface
             'dashboard/member/tribe/update/<action:(member-tribe-update)>/<id:.*?>' => '/member/tribe/update',
             'dashboard/member/tribe/delete/<action:(member-tribe-delete)>/<id:.*?>' => '/member/tribe/delete',
             'dashboard/member/tribe/view/<action:(member-tribe-view)>/<id:.*?>' => '/member/tribe/view',
-                ], false);
+        ], false);
         if (!Yii::$app->user->isGuest) {
             $app->getErrorHandler()->errorAction = '/dashboard/dashboard/error';
         }

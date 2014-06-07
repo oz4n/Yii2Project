@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\web\View;
+
 //use app\modules\member\searchs\TribeSerch;
 
 /**
@@ -23,10 +24,10 @@ $this->registerJs(
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute(['/member/tribe/index','action'=>'member-tribe-list']); ?>"><?php echo Yii::t('app', Html::encode('Suku Bangsa')); ?></a>
+        <a href="<?php echo Url::toRoute(['/member/tribe/index', 'action' => 'member-tribe-list']); ?>"><?php echo Yii::t('app', Html::encode('Suku Bangsa')); ?></a>
     </li>
 </ul>
 
@@ -42,14 +43,14 @@ $this->registerJs(
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Suku Bangsa',
-                ]), Url::toRoute(['/member/tribe/create','action'=>'member-tribe-create']))
+                ]), Url::toRoute(['/member/tribe/create', 'action' => 'member-tribe-create']))
                 ?>
             </h1>
         </div>
         <div class="col-xs-4">
             <div class="pull-right">
                 <?php $form = ActiveForm::begin([
-                    'action' => ["/member/tribe/index",'action'=>'member-tribe-list'],
+                    'action' => ["/member/tribe/index", 'action' => 'member-tribe-list'],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [
@@ -73,14 +74,14 @@ $this->registerJs(
     <div class="col-sm-12">
         <?php
         $form = ActiveForm::begin([
-            'action' => ['/member/tribe/bulk','action'=>'member-tribe-bulk']
+            'action' => ['/member/tribe/bulk', 'action' => 'member-tribe-bulk']
         ]);
         ?>
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            'filterUrl' => ['/member/tribe/index','action'=>'member-tribe-list'],
+            'filterUrl' => ['/member/tribe/index', 'action' => 'member-tribe-list'],
             'pager' => ['maxButtonCount' => 3],
             'tableOptions' => ['class' => 'table'],
             'layout' =>
@@ -157,9 +158,9 @@ $this->registerJs(
 //                            }
 //                        }
                 ],
-                        [
+                [
                     'attribute' => 'description',
-                    'label' => 'Keterangan',                   
+                    'label' => 'Keterangan',
                 ],
 //                [
 //                    'attribute' => 'parent_id',

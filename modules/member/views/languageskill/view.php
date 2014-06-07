@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
 use yii\web\View;
+
 /**
  * @var yii\web\View $this
  * @var \app\modules\dao\ar\Taxonomy $model
@@ -20,10 +21,10 @@ $this->registerJs(
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute(['/member/languageskill/index','action'=>'member-languageskill-list']); ?>"><?php echo Yii::t('app', Html::encode('Keterampilan')); ?></a>
+        <a href="<?php echo Url::toRoute(['/member/languageskill/index', 'action' => 'member-languageskill-list']); ?>"><?php echo Yii::t('app', Html::encode('Keterampilan')); ?></a>
     </li>
     <li class="active">
         <?php echo Yii::t('app', Html::encode($this->title)); ?>
@@ -40,7 +41,7 @@ $this->registerJs(
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Keterampilan Bahasa',
-                ]), Url::toRoute(['/member/languageskill/create','action'=>'member-languageskill-create']))
+                ]), Url::toRoute(['/member/languageskill/create', 'action' => 'member-languageskill-create']))
                 ?>
             </h1>
         </div>
@@ -53,7 +54,7 @@ $this->registerJs(
                 <?=
                 DetailView::widget([
                     'model' => $model,
-                    'options' => ['class'=>'table'],
+                    'options' => ['class' => 'table'],
                     'attributes' => [
                         'id',
                         'parent_id',

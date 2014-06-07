@@ -14,15 +14,15 @@ use yii\web\View;
  */
 $this->title = Yii::t('app', 'Sekolah');
 $this->registerJs(
-        "$('ul.navigation > li.mm-dropdown > ul > li#school').parent().parent().addClass('active open');"
-        , View::POS_READY);
+    "$('ul.navigation > li.mm-dropdown > ul > li#school').parent().parent().addClass('active open');"
+    , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?php echo Url::toRoute(['/member/school/index', 'action' => 'member-school-list']); ?>"><?php echo Yii::t('app', Html::encode('Sekolah')); ?></a>
@@ -38,8 +38,8 @@ $this->registerJs(
                 <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
-                            'modelClass' => 'Sekolah',
-                        ]), Url::toRoute(['/member/school/create', 'action' => 'member-school-create']));
+                    'modelClass' => 'Sekolah',
+                ]), Url::toRoute(['/member/school/create', 'action' => 'member-school-create']));
                 ?>
             </h1>
         </div>
@@ -47,12 +47,12 @@ $this->registerJs(
             <div class="pull-right">
                 <?php
                 $form = ActiveForm::begin([
-                            'action' => ['/member/school/index', 'action' => 'member-school-list'],
-                            'method' => 'GET',
-                            'options' => ['role' => 'form', 'id' => 'search'],
-                            'fieldConfig' => [
-                                'template' => "{input}\n{hint}\n{error}"
-                            ]
+                    'action' => ['/member/school/index', 'action' => 'member-school-list'],
+                    'method' => 'GET',
+                    'options' => ['role' => 'form', 'id' => 'search'],
+                    'fieldConfig' => [
+                        'template' => "{input}\n{hint}\n{error}"
+                    ]
                 ]);
                 ?>
 
@@ -72,7 +72,7 @@ $this->registerJs(
     <div class="col-sn-12">
         <?php
         $form = ActiveForm::begin([
-                    'action' => ['/member/school/bulk', 'action' => 'member-school-bulk']
+            'action' => ['/member/school/bulk', 'action' => 'member-school-bulk']
         ]);
         ?>
         <?=
@@ -84,47 +84,47 @@ $this->registerJs(
                 'class' => 'table'
             ],
             'layout' =>
-            Html::beginTag('div', ['class' => 'row'])
-            . Html::beginTag('div', ['class' => 'col-xs-6'])
-            . Html::beginTag('div', ['class' => 'form-inline'])
-            . Html::dropDownList('bulk_action1', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
-            . '&nbsp;&nbsp;'
-            . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
-            . Html::endTag('div')
-            . Html::endTag('div')
-            . Html::beginTag('div', ['class' => 'col-xs-6'])
-            . Html::beginTag('div', ['class' => 'pull-right'])
-            . '{pager}'
-            . Html::endTag('div')
-            . Html::beginTag('div', ['class' => 'pull-right', 'style' => 'padding-right: 10px; margin-top: 6px'])
-            . '{summary}'
-            . Html::endTag('div')
-            . Html::endTag('div')
-            . Html::endTag('div')
-            . Html::beginTag('div', ['class' => 'panel', 'style' => 'margin-bottom: 15px; margin-top: 10px'])
-            . Html::beginTag('div', ['class' => 'panel-body'])
-            . Html::beginTag('div', ['class' => 'table-responsive'])
-            . '{items}'
-            . Html::endTag('div')
-            . Html::endTag('div')
-            . Html::endTag('div')
-            . Html::beginTag('div', ['class' => 'row'])
-            . Html::beginTag('div', ['class' => 'col-xs-6'])
-            . Html::beginTag('div', ['class' => 'form-inline'])
-            . Html::dropDownList('bulk_action2', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
-            . '&nbsp;&nbsp;'
-            . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
-            . Html::endTag('div')
-            . Html::endTag('div')
-            . Html::beginTag('div', ['class' => 'col-xs-6'])
-            . Html::beginTag('div', ['class' => 'pull-right'])
-            . '{pager}'
-            . Html::endTag('div')
-            . Html::beginTag('div', ['class' => 'pull-right', 'style' => 'padding-right: 10px; margin-top: 6px'])
-            . '{summary}'
-            . Html::endTag('div')
-            . Html::endTag('div')
-            . Html::endTag('div'),
+                Html::beginTag('div', ['class' => 'row'])
+                . Html::beginTag('div', ['class' => 'col-xs-6'])
+                . Html::beginTag('div', ['class' => 'form-inline'])
+                . Html::dropDownList('bulk_action1', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
+                . '&nbsp;&nbsp;'
+                . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
+                . Html::endTag('div')
+                . Html::endTag('div')
+                . Html::beginTag('div', ['class' => 'col-xs-6'])
+                . Html::beginTag('div', ['class' => 'pull-right'])
+                . '{pager}'
+                . Html::endTag('div')
+                . Html::beginTag('div', ['class' => 'pull-right', 'style' => 'padding-right: 10px; margin-top: 6px'])
+                . '{summary}'
+                . Html::endTag('div')
+                . Html::endTag('div')
+                . Html::endTag('div')
+                . Html::beginTag('div', ['class' => 'panel', 'style' => 'margin-bottom: 15px; margin-top: 10px'])
+                . Html::beginTag('div', ['class' => 'panel-body'])
+                . Html::beginTag('div', ['class' => 'table-responsive'])
+                . '{items}'
+                . Html::endTag('div')
+                . Html::endTag('div')
+                . Html::endTag('div')
+                . Html::beginTag('div', ['class' => 'row'])
+                . Html::beginTag('div', ['class' => 'col-xs-6'])
+                . Html::beginTag('div', ['class' => 'form-inline'])
+                . Html::dropDownList('bulk_action2', null, ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control'])
+                . '&nbsp;&nbsp;'
+                . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
+                . Html::endTag('div')
+                . Html::endTag('div')
+                . Html::beginTag('div', ['class' => 'col-xs-6'])
+                . Html::beginTag('div', ['class' => 'pull-right'])
+                . '{pager}'
+                . Html::endTag('div')
+                . Html::beginTag('div', ['class' => 'pull-right', 'style' => 'padding-right: 10px; margin-top: 6px'])
+                . '{summary}'
+                . Html::endTag('div')
+                . Html::endTag('div')
+                . Html::endTag('div'),
             'columns' => [
                 [
                     'class' => 'yii\grid\CheckboxColumn'
@@ -134,35 +134,35 @@ $this->registerJs(
                     'label' => 'Daerah',
                     'filter' => SchoolSerch::loadFilterAreas(),
                     'value' => function ($data) {
-                return $data->getAreaName();
-            }
+                            return $data->getAreaName();
+                        }
                 ],
-                
+
                 [
                     'label' => 'Nama skolah',
                     'attribute' => 'name',
-                  
+
                 ],
                 [
                     'label' => 'Instansi',
                     'attribute' => 'type',
-                      'filter' => ['Negeri' => 'Negeri', 'Swasta' => 'Swasta']
+                    'filter' => ['Negeri' => 'Negeri', 'Swasta' => 'Swasta']
                 ],
-                 [
+                [
                     'label' => 'Alamat',
-                    'attribute' => 'address',                    
+                    'attribute' => 'address',
                 ],
-                          [
+                [
                     'label' => 'Alamat email',
-                    'attribute' => 'email',                    
+                    'attribute' => 'email',
                 ],
-                                 [
+                [
                     'label' => 'Kode Post',
-                    'attribute' => 'zip_code',                    
+                    'attribute' => 'zip_code',
                 ],
-                                         [
+                [
                     'label' => 'No Telpon',
-                    'attribute' => 'phone_number',                    
+                    'attribute' => 'phone_number',
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
@@ -170,26 +170,26 @@ $this->registerJs(
                     'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}</div>',
                     'buttons' => [
                         'view' => function ($url, $data) {
-                    return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/member/school/view', 'action' => 'member-school-view', 'id' => $data->id]), [
-                                'class' => 'btn btn-success btn-xs',
-                                'title' => Yii::t('yii', 'Lihat Detail'),
-                    ]);
-                },
+                                return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/member/school/view', 'action' => 'member-school-view', 'id' => $data->id]), [
+                                    'class' => 'btn btn-success btn-xs',
+                                    'title' => Yii::t('yii', 'Lihat Detail'),
+                                ]);
+                            },
                         'update' => function ($url, $data) {
-                    return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/member/school/update", 'action' => 'member-school-update', 'id' => $data->id]), [
-                                'class' => 'btn btn-primary btn-xs',
-                                'title' => Yii::t('yii', 'Memperbarui'),
-                    ]);
-                },
+                                return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/member/school/update", 'action' => 'member-school-update', 'id' => $data->id]), [
+                                    'class' => 'btn btn-primary btn-xs',
+                                    'title' => Yii::t('yii', 'Memperbarui'),
+                                ]);
+                            },
                         'delete' => function ($url, $data) {
-                    return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/member/school/delete", 'action' => 'member-school-delete', 'id' => $data->id]), [
-                                'class' => 'btn btn-danger btn-xs',
-                                'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
-                                'data-method' => 'post',
-                                'data-pjax' => 0,
-                                'title' => Yii::t('yii', 'Hapus'),
-                    ]);
-                },
+                                return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/member/school/delete", 'action' => 'member-school-delete', 'id' => $data->id]), [
+                                    'class' => 'btn btn-danger btn-xs',
+                                    'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
+                                    'data-method' => 'post',
+                                    'data-pjax' => 0,
+                                    'title' => Yii::t('yii', 'Hapus'),
+                                ]);
+                            },
                     ]
                 ],
             ],

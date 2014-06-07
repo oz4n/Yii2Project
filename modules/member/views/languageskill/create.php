@@ -2,13 +2,14 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+
 /**
  * @var yii\web\View $this
  * @var \app\modules\dao\ar\Taxonomy $model
  */
 
 $this->title = Yii::t('app', 'Tambah {modelClass}', [
-  'modelClass' => 'Keterampilan Bahasa',
+    'modelClass' => 'Keterampilan Bahasa',
 ]);
 ?>
 
@@ -17,10 +18,10 @@ $this->title = Yii::t('app', 'Tambah {modelClass}', [
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute(['/member/languageskill/index','action'=>'member-languageskill-list']); ?>"><?php echo Yii::t('app', Html::encode('Keterampilan')); ?></a>
+        <a href="<?php echo Url::toRoute(['/member/languageskill/index', 'action' => 'member-languageskill-list']); ?>"><?php echo Yii::t('app', Html::encode('Keterampilan')); ?></a>
     </li>
     <li class="active">
         <?php echo Yii::t('app', Html::encode($this->title)); ?>

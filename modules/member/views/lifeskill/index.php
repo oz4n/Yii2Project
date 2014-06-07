@@ -23,10 +23,10 @@ $this->registerJs(
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute(['/member/lifeskill/index','action'=>'member-lifeskill-list']); ?>"><?php echo Yii::t('app', Html::encode('Keterampilan')); ?></a>
+        <a href="<?php echo Url::toRoute(['/member/lifeskill/index', 'action' => 'member-lifeskill-list']); ?>"><?php echo Yii::t('app', Html::encode('Keterampilan')); ?></a>
     </li>
 </ul>
 
@@ -42,14 +42,14 @@ $this->registerJs(
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
                     'modelClass' => 'Keterampilan',
-                ]), Url::toRoute(['/member/lifeskill/create','action'=>'member-lifeskill-create']))
+                ]), Url::toRoute(['/member/lifeskill/create', 'action' => 'member-lifeskill-create']))
                 ?>
             </h1>
         </div>
         <div class="col-xs-4">
             <div class="pull-right">
                 <?php $form = ActiveForm::begin([
-                    'action' => ["/member/lifeskill/index",'action'=>'member-lifeskill-list'],
+                    'action' => ["/member/lifeskill/index", 'action' => 'member-lifeskill-list'],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [
@@ -73,14 +73,14 @@ $this->registerJs(
     <div class="col-sm-12">
         <?php
         $form = ActiveForm::begin([
-            'action' => ['/member/lifeskill/bulk','action'=>'member-lifeskill-bulk']
+            'action' => ['/member/lifeskill/bulk', 'action' => 'member-lifeskill-bulk']
         ]);
         ?>
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
-            'filterUrl' => ['/member/lifeskill/index','action'=>'member-lifeskill-list'],
+            'filterUrl' => ['/member/lifeskill/index', 'action' => 'member-lifeskill-list'],
             'pager' => ['maxButtonCount' => 3],
             'tableOptions' => ['class' => 'table'],
             'layout' =>
@@ -166,33 +166,33 @@ $this->registerJs(
                         }
                 ],
                 [
-            'class' => 'yii\grid\ActionColumn',
-            'header' => '<div class="text-center">Aksi</div>',
-            'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}</div>',
-            'buttons' => [
-                'view' => function ($url, $data) {
-                        return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/member/lifeskill/view', 'action' => 'member-lifeskill-view', 'id' => $data->id]), [
-                            'class' => 'btn btn-success btn-xs',
-                            'title' => Yii::t('yii', 'Lihat Detail'),
-                        ]);
-                    },
-                'update' => function ($url, $data) {
-                        return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/member/lifeskill/update", 'action' => 'member-lifeskill-update', 'id' => $data->id]), [
-                            'class' => 'btn btn-primary btn-xs',
-                            'title' => Yii::t('yii', 'Memperbarui'),
-                        ]);
-                    },
-                'delete' => function ($url, $data) {
-                        return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/member/lifeskill/delete", 'action' => 'member-lifeskill-delete', 'id' => $data->id]), [
-                            'class' => 'btn btn-danger btn-xs',
-                            'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
-                            'data-method' => 'post',
-                            'data-pjax' => 0,
-                            'title' => Yii::t('yii', 'Hapus'),
-                        ]);
-                    },
-            ]
-        ],
+                    'class' => 'yii\grid\ActionColumn',
+                    'header' => '<div class="text-center">Aksi</div>',
+                    'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}</div>',
+                    'buttons' => [
+                        'view' => function ($url, $data) {
+                                return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/member/lifeskill/view', 'action' => 'member-lifeskill-view', 'id' => $data->id]), [
+                                    'class' => 'btn btn-success btn-xs',
+                                    'title' => Yii::t('yii', 'Lihat Detail'),
+                                ]);
+                            },
+                        'update' => function ($url, $data) {
+                                return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/member/lifeskill/update", 'action' => 'member-lifeskill-update', 'id' => $data->id]), [
+                                    'class' => 'btn btn-primary btn-xs',
+                                    'title' => Yii::t('yii', 'Memperbarui'),
+                                ]);
+                            },
+                        'delete' => function ($url, $data) {
+                                return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/member/lifeskill/delete", 'action' => 'member-lifeskill-delete', 'id' => $data->id]), [
+                                    'class' => 'btn btn-danger btn-xs',
+                                    'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
+                                    'data-method' => 'post',
+                                    'data-pjax' => 0,
+                                    'title' => Yii::t('yii', 'Hapus'),
+                                ]);
+                            },
+                    ]
+                ],
             ],
         ]);
         ?>

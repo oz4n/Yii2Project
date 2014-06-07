@@ -72,7 +72,7 @@ $this->registerJs(
         <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?= Yii::t('app', 'Beranda') ?></a>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?= Yii::t('app', 'Beranda') ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/member/paskibra/index', 'action' => 'member-paskibra-list']); ?>"><?= Yii::t('app', Html::encode('Anggota Paskibra')) ?></a>

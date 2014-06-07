@@ -25,7 +25,7 @@ $this->registerJs(
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?php echo Url::toRoute(['/member/languageskill/index','action'=>'member-languageskill-list']); ?>"><?php echo Yii::t('app', Html::encode('Keterampilan')); ?></a>

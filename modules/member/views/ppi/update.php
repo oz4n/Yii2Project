@@ -45,22 +45,22 @@ $this->registerJs(
     . 'ignore: ".ignore",'
     . 'focusInvalid: true,'
     . 'rules:{'
-        . '"PpiModel[email]":{required: true,email: true},'
-        . '"PpiModel[save_status]":{required: true},'
-        . '"PpiModel[note]":{required: true, maxlength: 255},'
-        . '"PpiModel[birth]":{required: true},'
-        . '"PpiModel[year]":{required: true},'
-        . '"PpiModel[taxonomy_id]":{required: true},'
-        . '"PpiModel[school_id]":{required: true},'
+    . '"PpiModel[email]":{required: true,email: true},'
+    . '"PpiModel[save_status]":{required: true},'
+    . '"PpiModel[note]":{required: true, maxlength: 255},'
+    . '"PpiModel[birth]":{required: true},'
+    . '"PpiModel[year]":{required: true},'
+    . '"PpiModel[taxonomy_id]":{required: true},'
+    . '"PpiModel[school_id]":{required: true},'
     . '},'
     . 'messages: {'
-        . '"PpiModel[school_id]":"Tidak boleh kosong.",'
-        . '"PpiModel[taxonomy_id]":"Tidak boleh kosong.",'
-        . '"PpiModel[year]":"Tidak boleh kosong.",'
-        . '"PpiModel[birth]":"Tidak boleh kosong.",'
-        . '"PpiModel[note]":"Tidak boleh kosong.",'
-        . '"PpiModel[save_status]": "Tidak boleh kosong.",'
-        . '"PpiModel[email]":"Tidak boleh kosong dan masukkan alamat email yang valid."'
+    . '"PpiModel[school_id]":"Tidak boleh kosong.",'
+    . '"PpiModel[taxonomy_id]":"Tidak boleh kosong.",'
+    . '"PpiModel[year]":"Tidak boleh kosong.",'
+    . '"PpiModel[birth]":"Tidak boleh kosong.",'
+    . '"PpiModel[note]":"Tidak boleh kosong.",'
+    . '"PpiModel[save_status]": "Tidak boleh kosong.",'
+    . '"PpiModel[email]":"Tidak boleh kosong dan masukkan alamat email yang valid."'
     . '}'
     . '});'
 
@@ -72,7 +72,7 @@ $this->registerJs(
         <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?= Yii::t('app', 'Beranda') ?></a>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?= Yii::t('app', 'Beranda') ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/member/ppi/index', 'action' => 'member-ppi-list']); ?>"><?= Yii::t('app', Html::encode('Anggota PPI')) ?></a>

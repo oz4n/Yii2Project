@@ -32,7 +32,7 @@ $this->registerJs(
         <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/member/capas/index', 'action' => 'member-capas-list']); ?>"><?= Yii::t('app', Html::encode('Anggota Capas')); ?></a>

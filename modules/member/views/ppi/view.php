@@ -12,8 +12,8 @@ use yii\web\View;
 $this->title = $model->name;
 $this->registerJsFile('PixelAdmin/js/jquery.2.0.3.min.js', [], ['position' => View::POS_HEAD]);
 $this->registerJs(
-        "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#ppi').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
-        , View::POS_READY);
+    "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#ppi').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
+    , View::POS_READY);
 ?>
 
 <ul class="breadcrumb breadcrumb-page">
@@ -21,7 +21,7 @@ $this->registerJs(
         <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/member/ppi/index', 'action' => 'member-ppi-list']); ?>"><?= Yii::t('app', Html::encode('Anggota')); ?></a>
@@ -40,8 +40,8 @@ $this->registerJs(
                 <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
-                            'modelClass' => 'Anggota',
-                        ]), Url::toRoute(['/member/ppi/create', 'action' => 'member-ppi-create']))
+                    'modelClass' => 'Anggota',
+                ]), Url::toRoute(['/member/ppi/create', 'action' => 'member-ppi-create']))
                 ?>
             </h1>
         </div>
@@ -196,7 +196,6 @@ $this->registerJs(
                             <span><?= $model->organizational_experience ?></span>
                         </div>
                     </div>
-
 
 
                     <div class="profile-info-row">

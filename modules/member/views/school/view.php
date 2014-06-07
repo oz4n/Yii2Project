@@ -11,15 +11,15 @@ use yii\web\View;
  */
 $this->title = $model->name;
 $this->registerJs(
-        "$('ul.navigation > li.mm-dropdown > ul > li#school').addClass('active').parent().parent().addClass('active open');"
-        , View::POS_READY);
+    "$('ul.navigation > li.mm-dropdown > ul > li#school').addClass('active').parent().parent().addClass('active open');"
+    , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?php echo Url::toRoute(['/member/school/index', 'action' => 'member-school-list']); ?>"><?php echo Yii::t('app', Html::encode('Sekolah')); ?></a>
@@ -38,8 +38,8 @@ $this->registerJs(
                 <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
-                            'modelClass' => 'Sekolah',
-                        ]), Url::toRoute(['/member/school/create', 'action' => 'member-school-create']));
+                    'modelClass' => 'Sekolah',
+                ]), Url::toRoute(['/member/school/create', 'action' => 'member-school-create']));
                 ?>
             </h1>
         </div>

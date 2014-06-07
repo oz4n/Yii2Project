@@ -2,13 +2,14 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+
 /**
  * @var yii\web\View $this
  * @var \app\modules\dao\ar\School $model
  */
 
 $this->title = Yii::t('app', 'Perbaharui {modelClass} ', [
-  'modelClass' => 'Sekolah',
+    'modelClass' => 'Sekolah',
 ]);
 ?>
 <ul class="breadcrumb breadcrumb-page">
@@ -16,13 +17,13 @@ $this->title = Yii::t('app', 'Perbaharui {modelClass} ', [
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?php echo Url::toRoute(['/member/school/index', 'action' => 'member-school-list']); ?>"><?php echo Yii::t('app', Html::encode('Sekolah')); ?></a>
     </li>
     <li class="active">
-        <?= Yii::t('app','Perbaharui Sekolah'); ?>
+        <?= Yii::t('app', 'Perbaharui Sekolah'); ?>
     </li>
 </ul>
 <div class="page-header">
@@ -33,10 +34,10 @@ $this->title = Yii::t('app', 'Perbaharui {modelClass} ', [
                 &nbsp;
                 <?= Html::encode('Perbaharui Sekolah') ?>
                 <?= Yii::t('app', '/'); ?>
-                 <?=
+                <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
-                            'modelClass' => 'Sekolah',
-                        ]), Url::toRoute(['/member/school/create', 'action' => 'member-school-create']));
+                    'modelClass' => 'Sekolah',
+                ]), Url::toRoute(['/member/school/create', 'action' => 'member-school-create']));
                 ?>
             </h1>
         </div>

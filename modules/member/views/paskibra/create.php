@@ -81,7 +81,7 @@ $this->registerJs(
     . '$(s).attr("value","");'
     . 's.parent().find("div.jquery-validate-error").remove();'
     . 's.parent().append("<div class=\'jquery-validate-error help-block\' style=\'color:#a94442\'>Tidak boleh Kosong.</div>");'
-    .       '});'
+    . '});'
     . '});'
 
     . '$("#side-photo-file-input").change(function(){'
@@ -117,7 +117,7 @@ $this->registerJs(
         <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/member/paskibra/index', 'action' => 'member-paskibra-list']); ?>"><?= Yii::t('app', Html::encode('Anggota Paskibra')); ?></a>

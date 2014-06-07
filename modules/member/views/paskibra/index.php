@@ -18,7 +18,7 @@ $this->title = Yii::t('app', 'Anggota');
 
 $this->registerJs(
     '$("td").css({"padding-top": "20px"});'
-    ."$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#paskibra').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
+    . "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#paskibra').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
     . '$("td > select").select2({ allowClear: true, placeholder: "Filter item"});'
     . '$("select.select-year").select2({ allowClear: true, placeholder: "Tahun"});'
     . '$("select.opsi").select2({ allowClear: true, placeholder: "Tahun"});'
@@ -32,7 +32,7 @@ $this->registerJs(
         <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/member/paskibra/index', 'action' => 'member-paskibra-list']); ?>"><?= Yii::t('app', Html::encode('Anggota Paskbra')); ?></a>
@@ -106,7 +106,7 @@ GridView::widget([
         . '&nbsp;&nbsp;'
         . Html::dropDownList('PpiSerch[year_filtr2]', '', PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[status_filtr1]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash','Pending'=>'Pending'], ['class' => 'form-control save-status'])
+        . Html::dropDownList('PpiSerch[status_filtr1]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash', 'Pending' => 'Pending'], ['class' => 'form-control save-status'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
         . Html::endTag('div')
@@ -145,7 +145,7 @@ GridView::widget([
         . '&nbsp;&nbsp;'
         . Html::dropDownList('PpiSerch[year_filtr4]', '', PpiSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('PpiSerch[status_filtr2]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft','Trash' => 'Trash','Pending'=>'Pending'], ['class' => 'form-control save-status'])
+        . Html::dropDownList('PpiSerch[status_filtr2]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash', 'Pending' => 'Pending'], ['class' => 'form-control save-status'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
         . Html::endTag('div')
@@ -168,12 +168,12 @@ GridView::widget([
             'class' => 'yii\grid\CheckboxColumn'
         ],
         [
-            'attribute'=>'front_photo',
+            'attribute' => 'front_photo',
             'label' => '',
             'format' => 'raw',
-            'value' => function($data){
-                      return Html::tag('div' ,Html::img(Yii::getAlias('@web') . "/resources/images/member/frontphoto/42x42/" . $data->front_photo, ['class'=>'member-avatar']),['class'=>'member','style'=>"margin-top: -10px"]);
-            }
+            'value' => function ($data) {
+                    return Html::tag('div', Html::img(Yii::getAlias('@web') . "/resources/images/member/frontphoto/42x42/" . $data->front_photo, ['class' => 'member-avatar']), ['class' => 'member', 'style' => "margin-top: -10px"]);
+                }
         ],
         'name',
         'nickname',
@@ -343,7 +343,7 @@ GridView::widget([
                 'Publish' => 'Publish',
                 'Draft' => 'Draft',
                 'Trash' => 'Trash',
-                'Pending'=>'Pending'
+                'Pending' => 'Pending'
             ]
         ],
 
