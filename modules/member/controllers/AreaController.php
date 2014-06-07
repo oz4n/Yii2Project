@@ -39,8 +39,8 @@ class AreaController extends Controller
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
             return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -56,7 +56,7 @@ class AreaController extends Controller
     {
         if (Yii::$app->user->can('areaview')) {
             return $this->render('view', [
-                        'model' => $this->findModel($id),
+                'model' => $this->findModel($id),
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -79,7 +79,7 @@ class AreaController extends Controller
                 return $this->redirect(['view', 'action' => 'member-area-view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
@@ -102,7 +102,7 @@ class AreaController extends Controller
                 return $this->redirect(['view', 'action' => 'member-area-view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {

@@ -63,8 +63,8 @@ class CapasController extends Controller
                 $this->trashAll(Yii::$app->request->get('selection'));
             }
             return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -80,7 +80,7 @@ class CapasController extends Controller
     {
         if (Yii::$app->user->can('capasview')) {
             return $this->render('view', [
-                        'model' => $this->findModel($id),
+                'model' => $this->findModel($id),
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -157,7 +157,7 @@ class CapasController extends Controller
             } else {
 
                 return $this->render('create', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
@@ -238,7 +238,6 @@ class CapasController extends Controller
             }
 
 
-
             //save database
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
@@ -266,7 +265,7 @@ class CapasController extends Controller
                 return $this->redirect(['view', 'action' => 'member-ppi-view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                            'model' => $model
+                    'model' => $model
                 ]);
             }
         } else {

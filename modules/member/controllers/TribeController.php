@@ -39,8 +39,8 @@ class TribeController extends Controller
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
             return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -56,7 +56,7 @@ class TribeController extends Controller
     {
         if (Yii::$app->user->can('tribeview')) {
             return $this->render('view', [
-                        'model' => $this->findModel($id),
+                'model' => $this->findModel($id),
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -80,7 +80,7 @@ class TribeController extends Controller
                 return $this->redirect(['view', 'action' => 'member-tribe-view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
@@ -103,7 +103,7 @@ class TribeController extends Controller
                 return $this->redirect(['view', 'action' => 'member-tribe-view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
