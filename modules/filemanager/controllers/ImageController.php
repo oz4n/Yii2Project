@@ -67,14 +67,14 @@ class ImageController extends Controller
                 $per_page = 8;
                 if ($param["FormSearch"]['page'] == 0) {
                     $data = $images->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
-                                    ->orFilterWhere(['like', 'name', $key])
-                                    ->orFilterWhere(['like', 'orginal_name', $key])
-                                    ->orFilterWhere(['like', 'unique_name', $key])
-                                    ->orFilterWhere(['like', 'description', $key])
-                                    ->orderBy(['create_at' => SORT_DESC])
-                                    ->limit(8)
-                                    ->offset(0)
-                                    ->asArray()->all();
+                        ->orFilterWhere(['like', 'name', $key])
+                        ->orFilterWhere(['like', 'orginal_name', $key])
+                        ->orFilterWhere(['like', 'unique_name', $key])
+                        ->orFilterWhere(['like', 'description', $key])
+                        ->orderBy(['create_at' => SORT_DESC])
+                        ->limit(8)
+                        ->offset(0)
+                        ->asArray()->all();
                     echo Json::encode([
                         'page' => 1,
                         'data' => $data,
@@ -85,14 +85,14 @@ class ImageController extends Controller
                     $page = $param["FormSearch"]['page'];
                     $position = ($page * $per_page);
                     $data = $images->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
-                                    ->orFilterWhere(['like', 'name', $key])
-                                    ->orFilterWhere(['like', 'orginal_name', $key])
-                                    ->orFilterWhere(['like', 'unique_name', $key])
-                                    ->orFilterWhere(['like', 'description', $key])
-                                    ->orderBy(['create_at' => SORT_DESC])
-                                    ->limit($per_page)
-                                    ->offset($position)
-                                    ->asArray()->all();
+                        ->orFilterWhere(['like', 'name', $key])
+                        ->orFilterWhere(['like', 'orginal_name', $key])
+                        ->orFilterWhere(['like', 'unique_name', $key])
+                        ->orFilterWhere(['like', 'description', $key])
+                        ->orderBy(['create_at' => SORT_DESC])
+                        ->limit($per_page)
+                        ->offset($position)
+                        ->asArray()->all();
                     echo Json::encode([
                         'page' => ($page + 1),
                         'data' => $data,
@@ -142,7 +142,7 @@ class ImageController extends Controller
                     echo Json::encode([
                         'error' => 'Ukuran file yang anda unggah terlalu besar! Maksimum ' . ini_get('upload_max_filesize')
                     ]);
-                } else if (($file->type == "image/jpeg" || $file->type == "image/png") || ($file->type == "image/gif" || $file->type == "image/jpg" )) {
+                } else if (($file->type == "image/jpeg" || $file->type == "image/png") || ($file->type == "image/gif" || $file->type == "image/jpg")) {
                     $unique_name = preg_replace('/\s+/', '-', date("YmdHis") . '-' . rand(0, 999999999) . '-' . $file->name);
 
                     $file->saveAs($this->original . $unique_name);
@@ -236,14 +236,14 @@ class ImageController extends Controller
                 } else {
                     $images = ImageModel::find();
                     $query = $images->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
-                            ->orFilterWhere(['like', 'name', $key])
-                            ->orFilterWhere(['like', 'orginal_name', $key])
-                            ->orFilterWhere(['like', 'unique_name', $key])
-                            ->orFilterWhere(['like', 'description', $key])
-                            ->orderBy(['create_at' => SORT_DESC])
-                            ->limit($per_page)
-                            ->offset($position)
-                            ->all();
+                        ->orFilterWhere(['like', 'name', $key])
+                        ->orFilterWhere(['like', 'orginal_name', $key])
+                        ->orFilterWhere(['like', 'unique_name', $key])
+                        ->orFilterWhere(['like', 'description', $key])
+                        ->orderBy(['create_at' => SORT_DESC])
+                        ->limit($per_page)
+                        ->offset($position)
+                        ->all();
 
                     /** @var File $v */
                     foreach ($query as $v) {
@@ -376,22 +376,22 @@ class ImageController extends Controller
                 if ((isset($param['album_id']) && $param['album_id'] != 0) && $key == null) {
                     $data = $model->getImageByAlbumId($param['album_id'], $per_page, 0);
                     return $this->render('index', [
-                                'model' => $data,
-                                'album_id' => $param['album_id'],
-                                'album' => $model->getAllAlbums(),
-                                'album_name' => $model->getAlbumNameById($param['album_id']),
-                                'searchModel' => $searchModel,
-                                'keyword' => $key
+                        'model' => $data,
+                        'album_id' => $param['album_id'],
+                        'album' => $model->getAllAlbums(),
+                        'album_name' => $model->getAlbumNameById($param['album_id']),
+                        'searchModel' => $searchModel,
+                        'keyword' => $key
                     ]);
                 } else {
 
                     $data = $model->getAllImages($per_page, 0, $key);
                     return $this->render('index', [
-                                'model' => $data,
-                                'album_id' => 0,
-                                'album' => $model->getAllAlbums(),
-                                'searchModel' => $searchModel,
-                                'keyword' => $key
+                        'model' => $data,
+                        'album_id' => 0,
+                        'album' => $model->getAllAlbums(),
+                        'searchModel' => $searchModel,
+                        'keyword' => $key
                     ]);
                 }
             }
@@ -409,34 +409,13 @@ class ImageController extends Controller
     {
         if (Yii::$app->user->can('imageview')) {
             return $this->render('view', [
-                        'model' => $this->findModel($id),
+                'model' => $this->findModel($id),
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
-    /**
-     * Creates a new File model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        if (Yii::$app->user->can('imagecreate')) {
-            $model = new File;
-
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('create', [
-                            'model' => $model,
-                ]);
-            }
-        } else {
-            throw new HttpException(403, 'You are not allowed to access this page', 0);
-        }
-    }
 
     /**
      * Updates an existing File model.
@@ -453,7 +432,7 @@ class ImageController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
@@ -469,7 +448,7 @@ class ImageController extends Controller
      */
     public function actionDelete()
     {
-        if (Yii::$app->user->can('imageupdate')) {
+        if (Yii::$app->user->can('imagedelete')) {
             if (Yii::$app->request->isAjax) {
                 $system = new Filesystem();
                 $param = Yii::$app->request->post();

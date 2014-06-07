@@ -47,7 +47,6 @@ class DocumentController extends Controller
 
     public function actionUploaddredactorfile()
     {
-//        echo date('Ym',strtotime("2009-05-23 01:25:08"));
         if (Yii::$app->user->can('documentuploaddredactorfile')) {
             $file = UploadedFile::getInstanceByName('file');
             if ($file->size === 0) {
@@ -70,7 +69,7 @@ class DocumentController extends Controller
                 $model->orginal_name = $file->name;
                 $model->unique_name = $unique_name;
                 $model->type = FileManager::FILE_TYPE_DOCUMENT;
-                $model->size = "$file->size";
+                $model->size = "$this->bytes($file->size)";
                 $model->file_type = $file->type;
                 $model->description = "Dokumen " . $file->name;
                 $model->create_at = date("Y-m-d H:i:s");
@@ -102,14 +101,14 @@ class DocumentController extends Controller
                 $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : "";
                 $position = ($page * $per_page);
                 $query = $file->onCondition(['type' => FileManager::FILE_TYPE_DOCUMENT])
-                        ->orFilterWhere(['like', 'name', $key])
-                        ->orFilterWhere(['like', 'orginal_name', $key])
-                        ->orFilterWhere(['like', 'unique_name', $key])
-                        ->orFilterWhere(['like', 'description', $key])
-                        ->orderBy(['create_at' => SORT_DESC])
-                        ->limit($per_page)
-                        ->offset($position)
-                        ->all();
+                    ->orFilterWhere(['like', 'name', $key])
+                    ->orFilterWhere(['like', 'orginal_name', $key])
+                    ->orFilterWhere(['like', 'unique_name', $key])
+                    ->orFilterWhere(['like', 'description', $key])
+                    ->orderBy(['create_at' => SORT_DESC])
+                    ->limit($per_page)
+                    ->offset($position)
+                    ->all();
                 /** @var File $v */
                 foreach ($query as $v) {
                     $data[] = [
@@ -142,8 +141,8 @@ class DocumentController extends Controller
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
             return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -159,7 +158,7 @@ class DocumentController extends Controller
     {
         if (Yii::$app->user->can('documentview')) {
             return $this->render('view', [
-                        'model' => $this->findModel($id),
+                'model' => $this->findModel($id),
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -180,7 +179,7 @@ class DocumentController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
@@ -203,7 +202,7 @@ class DocumentController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                            'model' => $model,
+                    'model' => $model,
                 ]);
             }
         } else {
@@ -250,14 +249,13 @@ class DocumentController extends Controller
         $last = strtolower($val[strlen($val) - 1]);
         switch ($last) {
             // The 'G' modifier is available since PHP 5.1.0
-            case 'g':
+            case 'GB':
                 $val *= 1024;
-            case 'm':
+            case 'MB':
                 $val *= 1024;
-            case 'k':
+            case 'KB':
                 $val *= 1024;
         }
-
         return $val;
     }
 
