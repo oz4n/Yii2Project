@@ -1,6 +1,8 @@
 <?php
 use app\modules\dashboard\helpers\Navigation;
 use Yii;
+use yii\helpers\Url;
+use yii\web\View;
 /**
  * @var \yii\web\View $this
  */
@@ -27,16 +29,7 @@ use Yii;
         </div> <!-- / .navbar-header -->
 
         <div id="main-navbar-collapse" class="collapse navbar-collapse main-navbar-collapse">
-            <div>              
-                <ul class="nav navbar-nav">
-                    <li>
-                        <form class="navbar-form navbar-left" role="search">
-                            <div class="form-group">
-                                <input type="text" class="form-control col-sm-10" placeholder="Search" style="width: 500px">
-                            </div>                    
-                        </form>
-                    </li>
-                </ul>
+            <div>   
                 <div class="right clearfix">
                     <ul class="nav navbar-nav pull-right right-navbar-nav">
 
@@ -97,132 +90,45 @@ use Yii;
                                 </div> <!-- / .notification -->
 
                             </div> <!-- / .notifications-list -->
-                            <a href="pages-blank.html#" class="notifications-link">MORE NOTIFICATIONS</a>
+                            <a href="pages-blank.html#" class="notifications-link">INFO SELENGKAPNYA</a>
                         </div> <!-- / .dropdown-menu -->
                     </li>
+                    
                     <li class="nav-icon-btn nav-icon-btn-success dropdown">
-                        <a href="pages-blank.html#messages" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="label">10</span>
-                            <i class="nav-icon fa fa-envelope"></i>
-                            <span class="small-screen-text">Income messages</span>
-                        </a>
-
-                        <!-- MESSAGES -->
-
-                        <!-- Javascript -->
-                        <script>
-                            init.push(function() {
-                                $('#main-navbar-messages').slimScroll({height: 250});
-                            });
-                        </script>
-                        <!-- / Javascript -->
-
-                        <div class="dropdown-menu widget-messages-alt no-padding" style="width: 300px;">
-                            <div class="messages-list" id="main-navbar-messages">
-
-                                <div class="message">
-                                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/2.jpg" alt="" class="message-avatar">
-                                    <a href="pages-blank.html#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a>
-                                    <div class="message-description">
-                                        from <a href="pages-blank.html#">Robert Jang</a>
-                                        &nbsp;&nbsp;·&nbsp;&nbsp;
-                                        2h ago
-                                    </div>
-                                </div> <!-- / .message -->
-
-                                <div class="message">
-                                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/3.jpg" alt="" class="message-avatar">
-                                    <a href="pages-blank.html#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
-                                    <div class="message-description">
-                                        from <a href="pages-blank.html#">Michelle Bortz</a>
-                                        &nbsp;&nbsp;·&nbsp;&nbsp;
-                                        2h ago
-                                    </div>
-                                </div> <!-- / .message -->
-
-                                <div class="message">
-                                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/4.jpg" alt="" class="message-avatar">
-                                    <a href="pages-blank.html#" class="message-subject">Lorem ipsum dolor sit amet.</a>
-                                    <div class="message-description">
-                                        from <a href="pages-blank.html#">Timothy Owens</a>
-                                        &nbsp;&nbsp;·&nbsp;&nbsp;
-                                        2h ago
-                                    </div>
-                                </div> <!-- / .message -->
-
-                                <div class="message">
-                                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/5.jpg" alt="" class="message-avatar">
-                                    <a href="pages-blank.html#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
-                                    <div class="message-description">
-                                        from <a href="pages-blank.html#">Denise Steiner</a>
-                                        &nbsp;&nbsp;·&nbsp;&nbsp;
-                                        2h ago
-                                    </div>
-                                </div> <!-- / .message -->
-
-                                <div class="message">
-                                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/1.jpg" alt="" class="message-avatar">
-                                    <a href="pages-blank.html#" class="message-subject">Lorem ipsum dolor sit amet.</a>
-                                    <div class="message-description">
-                                        from <a href="pages-blank.html#">Robert Jang</a>
-                                        &nbsp;&nbsp;·&nbsp;&nbsp;
-                                        2h ago
-                                    </div>
-                                </div> <!-- / .message -->
-
-                                <div class="message">
-                                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/2.jpg" alt="" class="message-avatar">
-                                    <a href="pages-blank.html#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a>
-                                    <div class="message-description">
-                                        from <a href="pages-blank.html#">Robert Jang</a>
-                                        &nbsp;&nbsp;·&nbsp;&nbsp;
-                                        2h ago
-                                    </div>
-                                </div> <!-- / .message -->
-
-                                <div class="message">
-                                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/3.jpg" alt="" class="message-avatar">
-                                    <a href="pages-blank.html#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
-                                    <div class="message-description">
-                                        from <a href="pages-blank.html#">Michelle Bortz</a>
-                                        &nbsp;&nbsp;·&nbsp;&nbsp;
-                                        2h ago
-                                    </div>
-                                </div> <!-- / .message -->
-
-                                <div class="message">
-                                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/4.jpg" alt="" class="message-avatar">
-                                    <a href="pages-blank.html#" class="message-subject">Lorem ipsum dolor sit amet.</a>
-                                    <div class="message-description">
-                                        from <a href="pages-blank.html#">Timothy Owens</a>
-                                        &nbsp;&nbsp;·&nbsp;&nbsp;
-                                        2h ago
-                                    </div>
-                                </div> <!-- / .message -->
-
-                                <div class="message">
-                                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/2.jpg" alt="" class="message-avatar">
-                                    <a href="pages-blank.html#" class="message-subject">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
-                                    <div class="message-description">
-                                        from <a href="pages-blank.html#">Denise Steiner</a>
-                                        &nbsp;&nbsp;·&nbsp;&nbsp;
-                                        2h ago
-                                    </div>
-                                </div> <!-- / .message -->
-
-                                <div class="message">
-                                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/1.jpg" alt="" class="message-avatar">
-                                    <a href="pages-blank.html#" class="message-subject">Lorem ipsum dolor sit amet.</a>
-                                    <div class="message-description">
-                                        from <a href="pages-blank.html#">Robert Jang</a>
-                                        &nbsp;&nbsp;·&nbsp;&nbsp;
-                                        2h ago
-                                    </div>
-                                </div> <!-- / .message -->
-
-                            </div> <!-- / .messages-list -->
-                            <a href="pages-blank.html#" class="messages-link">MORE MESSAGES</a>
-                        </div> <!-- / .dropdown-menu -->
+                       
+                        <?php
+                        $this->registerJs('init.push(function() {
+                                $("#main-navbar-messages").slimScroll({
+                                    height: 300
+                                }).bind("slimscroll", function(e, pos) {
+                                    if (pos === "bottom") {                                            
+                                        $("#img-messages-loading").css({"display":"block"});
+                                        var pagedata = $("#main-navbar-messages").attr("page-data");
+                                        $.ajax({
+                                            url: "'.Url::toRoute(['/dashboard/dashboard/loadmessage']).'",
+                                            type: "get",
+                                            data: {"page_id":pagedata},
+                                            dataType: "json",
+                                            success: function(response) {
+                                                for(var i = 0; i < response.length; i++){
+                                                    $("#main-navbar-messages").attr("page-data",response[i].pagedata);
+                                                    if($("#main-navbar-messages").find(\'a[message-id="message-\'+response[i].dataid+\'"]\').length === 0){
+                                                        if(response[i].status === "Unconfirmed"){
+                                                            $("#main-navbar-messages").append(\'<a href="\'+response[i].url+\'" message-id="message-\'+response[i].dataid+\'"><div id="main-navbar-messages" class="messages-list" style="border-bottom: 1px solid; border-bottom-color:#ccc; background:#F3F2F2"><div class="message"> \' +response[i].img+ \'<span class="message-subject">\' +response[i].subject+ \'</span><div class="message-description"><span style="border-radius: 2px; padding-right:5px; padding-bottom:2px; padding-left:5px; background: #5bc0de; color:#fff">baru</span>&nbsp;dari &nbsp;\'+response[i].name+\'&nbsp;·&nbsp;\'+response[i].date+\'</div></div></div></a>\')
+                                                        }else{
+                                                            $("#main-navbar-messages").append(\'<a href="\'+response[i].url+\'" message-id="message-\'+response[i].dataid+\'"><div id="main-navbar-messages" class="messages-list" style="border-bottom: 1px solid; border-bottom-color:#ccc"><div class="message"> \' +response[i].img+ \'<span class="message-subject">\' +response[i].subject+ \'</span><div class="message-description">dari &nbsp;\'+response[i].name+\'&nbsp;·&nbsp;\'+response[i].date+\'</div></div></div></a>\')
+                                                        }
+                                                    }                                                    
+                                                }
+                                                $("#img-messages-loading").css({"display":"none"});
+                                            }
+                                        });
+                                    }
+                                });
+                            });'
+                        , View::POS_READY);
+                        ?>
+                        <?= app\modules\dashboard\helpers\Message::widget() ?>
                     </li>
                     <!-- /3. $END_NAVBAR_ICON_BUTTONS -->
 

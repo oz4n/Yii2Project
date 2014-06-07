@@ -11,7 +11,7 @@ use Yii;
                                     <div>
                                         <div class="text-bg"><span class="text-semibold">ozan rock</span></div>
                         
-                                        <img src="<?php //echo Yii::getAlias('@web');             ?>/PixelAdmin/img/avatars/1.jpg" alt="" class="">
+                                        <img src="<?php //echo Yii::getAlias('@web');              ?>/PixelAdmin/img/avatars/1.jpg" alt="" class="">
                                         <div class="btn-group">                    
                                             <a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-user"></i></a>
                                             <a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-cog"></i></a>
@@ -157,25 +157,10 @@ use Yii;
                 ],
                 [
                     'label' => 'Halaman',
-                    'url' => ['#'],
+                    'url' => ['/page/page/index', 'action' => 'page-list'],
                     'icon' => 'menu-icon fa fa-files-o',
-                    'items' => [
-                        [
-                            'label' => 'Semua Halaman',
-                            'url' => ['/page/page/index','action'=>'page-list'],
-                            'icon' => 'menu-icon fa fa-angle-double-right',
-                            'options' => [
-                                'id' => 'pages'
-                            ]
-                        ],
-                        [
-                            'label' => 'Tambah Baru',
-                             'url' => ['/page/page/create','action'=>'page-create'],
-                            'icon' => 'menu-icon fa fa-angle-double-right',
-                            'options' => [
-                                'id' => 'create-pages'
-                            ]
-                        ]
+                    'options' => [
+                        'id' => 'pages'
                     ]
                 ],
                 [
@@ -208,7 +193,7 @@ use Yii;
                     'items' => [
                         [
                             'label' => 'Umum',
-                            'url' => ['/appearance/general/index','action'=>'appearance-general-list'],
+                            'url' => ['/appearance/general/index', 'action' => 'appearance-general-list'],
                             'icon' => 'menu-icon fa fa-angle-double-right',
                             'options' => [
                                 'id' => 'general'
@@ -216,7 +201,7 @@ use Yii;
                         ],
                         [
                             'label' => 'Menu',
-                            'url' => ['/appearance/menu/index','action'=>'appearance-menu-list'],
+                            'url' => ['/appearance/menu/index', 'action' => 'appearance-menu-list'],
                             'icon' => 'menu-icon fa fa-angle-double-right',
                             'options' => [
                                 'id' => 'menu'
@@ -224,14 +209,17 @@ use Yii;
                         ],
                         [
                             'label' => 'Widget',
-                            'url' => '#',
-                            'icon' => 'menu-icon fa fa-angle-double-right'
+                            'url' => ['/appearance/widget/index', 'action' => 'appearance-widget-list'],
+                            'icon' => 'menu-icon fa fa-angle-double-right',
+                            'options' => [
+                                'id' => 'widget'
+                            ]
                         ]
                     ]
                 ],
                 [
                     'label' => 'Buku Tamu',
-                    'url' => ['/guestbook/default/index', 'action' => 'guestbook-list'],
+                    'url' => ['/guestbook/guestbook/index', 'action' => 'guestbook-list'],
                     'icon' => 'menu-icon fa   fa-comments-o'
                 ],
                 [
