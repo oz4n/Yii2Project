@@ -17,8 +17,33 @@ $this->registerJs(
         , View::POS_READY);
 
 $this->registerJs(
-       '$("#select-term-menu").select2({ allowClear: true, placeholder: "Menu"});'
+       '$("#select-term-menu").select2({ allowClear: true, placeholder: "Menu"});'.
+       '$("#select-term-position").select2({ allowClear: true, placeholder: "position"});'
         , View::POS_READY);
+
+//delete Menu Term
+$this->registerJs(        
+        '$("#menu-delete-btn").on("click",function(){'
+        . 'var data_id = $(this).attr("data-id");'        
+        . '$("#menu-panel-item").remove();'
+        . '$.ajax({
+                url: "' . Url::toRoute(['/appearance/menu/deletemenuterm', 'action' => 'appearance-menu-deleteterm']) . '",                              
+                type:"post",
+                data:{
+                    "dataid":data_id,
+                    "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '"
+                },
+                dataType:"json",
+                success:function(response){
+                    if(response.status == true){
+                                                
+                    }else{
+                    }
+                }
+            });'
+            . 'return false;'
+        . '});'
+, View::POS_READY);
 
 //delte menu item
 $this->registerJs(
@@ -91,8 +116,7 @@ $this->registerJs(
         . '$.ajax({
                 url: url,               
                 data: $(this).serialize(),
-                type:"post",
-                cache: false,
+                type:"post",              
                 dataType:"json",
                 success:function(response){
                     if(response.status == true){
@@ -124,13 +148,9 @@ $this->registerJs(
         };
         var updateOutput = function(e)
         {
-            var list = e.length ? e : $(e.target),
-                    output = list.data("output");
-            if (window.JSON) {
-                output.val(window.JSON.stringify(list.nestable("serialize")));
-                menu_updatesort(window.JSON.stringify(list.nestable("serialize")));
-            } else {
-                output.val("JSON browser support required for this demo.");
+            var listdata = $("#nestable .dd-list").find("li");
+            for(var i = 0; i < listdata.length; i++){
+                $(listdata[i]).attr("data-position",i);
             }
         };
 
@@ -139,11 +159,25 @@ $this->registerJs(
             $(".dd-handle a").on("mousedown", function(e){
                     e.stopPropagation();
             });
-            updateOutput($("#nestable").data("output", $("#nestableMenu-output")));
         };
         menuBuilder();
+        $("body").on("click",".menu-edit-btn",function(){
+            var e = $("#nestable").data("output", $("#nestableMenu-output"));
+            var list = e.length ? e : $(e.target);           
+            menu_updatesort(window.JSON.stringify(list.nestable("serialize")));
+        });
         '
         , View::POS_READY);
+
+//for menu on off
+$this->registerJs(
+        'init.push(function () { '
+        . '$("#menu-status").switcher({'
+        . 'theme: "square",'
+        . '});'
+        . '});'
+        , View::POS_READY);
+
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
@@ -181,19 +215,8 @@ $this->registerJs(
         
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-12">
-        <ul class="nav nav-tabs nav-tabs-xs">
-            <li class="active">
-                <a href="<?= Url::toRoute(['/appearance/menu/index', 'action' => 'appearance-menu-list'])?>" >Perbaharui Menu</a>
-            </li>
-            <li class="">
-                <a href="<?= Url::toRoute(['/appearance/menu/location', 'action' => 'appearance-menu-location'])?>" >Perbaharui Lokasi</a>
-            </li>         
-        </ul>
-    </div>
-</div>
-<div class="space-10"></div>
+
+<!--<div class="space-10"></div>-->
 <div class="row">
     <div class="col-sm-12" >
         <div class="panel">  
@@ -246,14 +269,21 @@ $this->registerJs(
         </div>
         
         <div class="panel colourable">
-            <?php $form = ActiveForm::begin(['id'=>'form-link','action' => ['/appearance/menu/addlinktomenu', 'action' => 'appearance-menu-linktomenu']]); ?>
+            <?php $formlink = ActiveForm::begin(['id'=>'form-link','action' => ['/appearance/menu/addlinktomenu', 'action' => 'appearance-menu-linktomenu']]); ?>
             <div class="panel-heading">
                 <span class="panel-title">Tautan</span>
             </div>
             <div class="panel-body">
                 <?= Html::activeHiddenInput($model, 'id') ?>
-                <?= $form->field($model, "slug")->textinput(['placeholder'=>'http://','value'=>''])->label("Tautan")?>
-                <?= $form->field($model, "name")->textinput(['value'=>''])->label("Text Tautan")?>
+                <div class="form-group field-menumodel-slug">
+                    <label class="control-label" for="menumodel-slug">Tautan</label>
+                <?= Html::activeTextInput($model, "slug", ['value'=>"http://",'placeholder'=>'http://','class'=>'form-control','id'=>'menumodel-slug']) ?>
+                </div>
+                <div class="form-group field-menumodel-name required">
+                    <label class="control-label" for="menumodel-name">Text Tautan</label>
+                        <?= Html::activeTextInput($model, "name", ['value'=>"",'placeholder'=>'Name','class'=>'form-control','id'=>'menumodel-name']) ?>
+                    <p class="help-block"></p>
+                </div>                
             </div>
             <div class="panel-footer">               
                 <?= Html::button("<i class='fa fa-plus'></i>&nbsp; Tambahkan ke menu", ['id'=>'cat-btn-to-menu','class'=>'btn btn-primary btn-xs'])?>               
@@ -265,13 +295,13 @@ $this->registerJs(
 
     </div>
     <div class="col-sm-8">
-        <div class="panel">  
+        <div class="panel" id="menu-panel-item">  
             <?php $form = ActiveForm::begin(['action' => ['/appearance/menu/update', 'action' => 'appearance-menu-update', 'id' => $model->id]]); ?>
             <?php if ($model->id != null): ?>
                 <div class="panel-heading">
                     <span class="panel-title"><?= $model->name ?></span>                 
                     <div class="panel-heading-controls">                     
-                        <button id="menu-edit-btn" type="submit" class="btn btn-primary btn-xs" data-id="<?= $model->id ?>"><i class="fa fa-check"></i>&nbsp; Simpan</button>
+                        <button id="menu-edit-btn" type="submit" class="menu-edit-btn btn btn-primary btn-xs" data-id="<?= $model->id ?>"><i class="fa fa-check"></i>&nbsp; Simpan</button>
                     </div>                
                 </div>
             <?php endif; ?>
@@ -279,6 +309,18 @@ $this->registerJs(
             <div class="panel-body">  
                 <?php if ($model->id != null): ?>
                     <?= $form->field($model, 'name')->textInput()->label('Nama Menu') ?>
+                    <?= 
+                        $form->field($model, 'term_id')->dropDownList([
+                        18 => 'Menu Pertama (Header)',
+                        19 => 'Menu Kedua (Footer)',                       
+                        ],['id'=>'select-term-position'])->label('Posisi Menu')                        
+                    ?>
+                     
+                    <div class="form-group">     
+                        <label class="control-label">Status</label>
+                        <div class="checkbox-inline">
+                                <?= Html::activeCheckbox($model, 'status', ['value' => 'Publish', 'id' => 'menu-status']) ?>                     </div>
+                        </div>
                     <div class="form-group">                     
                         <label class="control-label">Item Menu</label>
                     <?php endif; ?>
@@ -298,8 +340,9 @@ $this->registerJs(
             <?php if ($model->id != null): ?>
                 <div class="panel-footer">  
                     <button id="menu-delete-btn" type="button" class="btn btn-danger btn-xs" data-id="<?= $model->id ?>"><i class="fa fa-trash-o"></i>&nbsp; Hapus</button>
+                    <button id="test-data" type="button" class="btn btn-xs" ><i class="fa fa-trash-o"></i>&nbsp;tes</button>
                     <div class="panel-heading-controls">                     
-                        <button id="menu-edit-btn" type="submit" class="btn btn-primary btn-xs" data-id="<?= $model->id ?>"><i class="fa fa-check"></i>&nbsp; Simpan</button>
+                        <button id="menu-edit-btn" type="submit" class="menu-edit-btn btn btn-primary btn-xs" data-id="<?= $model->id ?>"><i class="fa fa-check"></i>&nbsp; Simpan</button>
                     </div>
                 </div>
             <?php endif; ?>

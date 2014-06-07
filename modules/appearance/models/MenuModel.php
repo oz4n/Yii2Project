@@ -38,11 +38,18 @@ class MenuModel extends Taxonomy
 //        ];
 //    }
     
+    public static function findAllMenuByTaxMenu($taxmenu)
+    {
+        $model = self::find();
+        return $model->onCondition(['taxmenu' => $taxmenu])->all();
+    }
+
     public function getTermMenus()
     {
         $models = self::find();
         $models->onCondition(['term_id' => Appearance::APPEARANCE_MENU_TERM]);
         $data = ArrayHelper::map($models->asArray()->all(), 'id', 'name');
+        
         return $data;
     }
     
@@ -58,7 +65,10 @@ class MenuModel extends Taxonomy
     public function dataMenuTreeStore($taxmenu)
     {
         $model = self::find();
-        $query = $model->onCondition(['taxmenu' => $taxmenu])
+        $query = $model->onCondition([
+            'taxmenu' => $taxmenu,
+            'term_id' => Appearance::APPEARANCE_MENU_TERM_ITEM
+                ])
                         ->orderBy(['position' => SORT_ASC])->all();
         return $this->generateMenuTree($query);
     }
@@ -74,7 +84,7 @@ class MenuModel extends Taxonomy
                     $level++;
                 }
                 echo '<li class="dd-item" data-id="' . $model->id . '" data-position="' . $model->position . '" data-parent="' . $model->parent_id . '">';
-                echo '<div class="dd-handle">' . $model->name .'<div class="pull-right action-buttons"><a  class="menu-edit select-tooltip" data-id="'.$model->id.'" data-toggle="tooltip" data-original-title="Perbaharui"  href="javascript:undefined;"><i class="fa fa-pencil"></i></a>&nbsp;<a class="menu-delete select-tooltip" data-id="'.$model->id.'"  data-toggle="tooltip" data-original-title="Hapus" href="javascript:undefined;"><i class="fa fa-trash-o"></i></a></div>'.'</div>';
+                echo '<div class="dd-handle">' . $model->name .'<div class="pull-right action-buttons"><a style="color: #a94442 " class="menu-delete select-tooltip" data-id="'.$model->id.'"  data-toggle="tooltip" data-original-title="Hapus" href="javascript:undefined;"><i class="fa fa-trash-o"></i></a></div>'.'</div>';
                 $this->generateMenuTree($array, $model->id, $level);
                 echo '</li>';
             }
