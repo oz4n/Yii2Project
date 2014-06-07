@@ -4,6 +4,9 @@ return [
     'gii' => [
         'class' => 'yii\gii\Module',
     ],
+    'userrbac' => [
+        'class' => 'app\modules\userrbac\UserRbac',
+    ],
     'dashboard' => [
         'class' => 'app\modules\dashboard\Dashboard',
     ],
