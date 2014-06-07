@@ -18,16 +18,16 @@ $this->registerJs(
 <div class="school-model-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    <?= $form->field($model, 'name')->textInput(['maxlength' => 45]) ?>
-    <?= $form->field($model, 'taxonomy_id')->dropDownList(SchoolSerch::getAreas()) ?>
-    <?= $form->field($model, 'type')->dropDownList(['Negeri' => 'Negeri', 'Swasta' => 'Swasta'], ['maxlength' => 45]) ?>
-    <?= $form->field($model, 'address')->textInput(['maxlength' => 255]) ?>
-    <?= $form->field($model, 'email')->textInput(['maxlength' => 45]) ?>
-    <?= $form->field($model, 'zip_code')->textInput(['maxlength' => 45]) ?>
-    <?= $form->field($model, 'phone_number')->textInput(['maxlength' => 15]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => 45])->label('Nama Skolah') ?>
+    <?= $form->field($model, 'taxonomy_id')->dropDownList(SchoolSerch::getAreas())->Label('Daerah') ?>
+    <?= $form->field($model, 'type')->dropDownList(['Negeri' => 'Negeri', 'Swasta' => 'Swasta'], ['maxlength' => 45])->label("Instansi") ?>
+    <?= $form->field($model, 'address')->textarea(['style'=>'resize:none','rows'=>6,'maxlength' => 255])->label("Alamat")?>
+    <?= $form->field($model, 'email')->textInput(['maxlength' => 45])->label('Alamat Email') ?>
+    <?= $form->field($model, 'zip_code')->textInput(['maxlength' => 45])->label('Kode Post') ?>
+    <?= $form->field($model, 'phone_number')->textInput(['maxlength' => 15])->label('No Telpon') ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton(Html::tag('i', '', ['class' => 'fa  fa-check']) . '&nbsp; ' . Yii::t('app', 'Simpan'), ['id'=>'save-page','class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>                   
     </div>
 
     <?php ActiveForm::end(); ?>

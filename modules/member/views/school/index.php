@@ -57,7 +57,7 @@ $this->registerJs(
                 ?>
 
                 <div class="input-group input-group-sm">
-                        <?= Html::activeTextInput($searchModel, 'keyword', ['class' => 'form-control', 'placeholder' => 'Cari', 'maxlength' => 255]) ?>
+                    <?= Html::activeTextInput($searchModel, 'keyword', ['class' => 'form-control', 'placeholder' => 'Cari', 'maxlength' => 255]) ?>
                     <span class="input-group-btn">
                         <?= Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'btn btn-primary']) ?>
                     </span>
@@ -103,7 +103,9 @@ $this->registerJs(
             . Html::endTag('div')
             . Html::beginTag('div', ['class' => 'panel', 'style' => 'margin-bottom: 15px; margin-top: 10px'])
             . Html::beginTag('div', ['class' => 'panel-body'])
+            . Html::beginTag('div', ['class' => 'table-responsive'])
             . '{items}'
+            . Html::endTag('div')
             . Html::endTag('div')
             . Html::endTag('div')
             . Html::beginTag('div', ['class' => 'row'])
@@ -129,50 +131,67 @@ $this->registerJs(
                 ],
                 [
                     'attribute' => 'taxonomy_id',
+                    'label' => 'Daerah',
                     'filter' => SchoolSerch::loadFilterAreas(),
                     'value' => function ($data) {
                 return $data->getAreaName();
             }
                 ],
-                'name',
+                
                 [
-                    'attribute' => 'type',
-                    'filter' => ['Negrei' => 'Negrei', 'Swasta' => 'Swasta']
+                    'label' => 'Nama skolah',
+                    'attribute' => 'name',
+                  
                 ],
-//                'address',
-//                'email:email',
-//                'zip_code',
-//                'phone_number',
-//                'create_et',
-//                'update_et',
                 [
-            'class' => 'yii\grid\ActionColumn',
-            'header' => '<div class="text-center">Aksi</div>',
-            'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}</div>',
-            'buttons' => [
-                'view' => function ($url, $data) {
-                        return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/member/school/view', 'action' => 'member-school-view', 'id' => $data->id]), [
-                            'class' => 'btn btn-success btn-xs',
-                            'title' => Yii::t('yii', 'Lihat Detail'),
-                        ]);
-                    },
-                'update' => function ($url, $data) {
-                        return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/member/school/update", 'action' => 'member-school-update', 'id' => $data->id]), [
-                            'class' => 'btn btn-primary btn-xs',
-                            'title' => Yii::t('yii', 'Memperbarui'),
-                        ]);
-                    },
-                'delete' => function ($url, $data) {
-                        return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/member/school/delete", 'action' => 'member-school-delete', 'id' => $data->id]), [
-                            'class' => 'btn btn-danger btn-xs',
-                            'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
-                            'data-method' => 'post',
-                            'data-pjax' => 0,
-                            'title' => Yii::t('yii', 'Hapus'),
-                        ]);
-                    },
-            ]
-        ],
+                    'label' => 'Instansi',
+                    'attribute' => 'type',
+                      'filter' => ['Negeri' => 'Negeri', 'Swasta' => 'Swasta']
+                ],
+                 [
+                    'label' => 'Alamat',
+                    'attribute' => 'address',                    
+                ],
+                          [
+                    'label' => 'Alamat email',
+                    'attribute' => 'email',                    
+                ],
+                                 [
+                    'label' => 'Kode Post',
+                    'attribute' => 'zip_code',                    
+                ],
+                                         [
+                    'label' => 'No Telpon',
+                    'attribute' => 'phone_number',                    
+                ],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'header' => '<div class="text-center">Aksi</div>',
+                    'template' => '<div class="text-center">{view}&nbsp;{update}&nbsp{delete}</div>',
+                    'buttons' => [
+                        'view' => function ($url, $data) {
+                    return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/member/school/view', 'action' => 'member-school-view', 'id' => $data->id]), [
+                                'class' => 'btn btn-success btn-xs',
+                                'title' => Yii::t('yii', 'Lihat Detail'),
+                    ]);
+                },
+                        'update' => function ($url, $data) {
+                    return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/member/school/update", 'action' => 'member-school-update', 'id' => $data->id]), [
+                                'class' => 'btn btn-primary btn-xs',
+                                'title' => Yii::t('yii', 'Memperbarui'),
+                    ]);
+                },
+                        'delete' => function ($url, $data) {
+                    return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/member/school/delete", 'action' => 'member-school-delete', 'id' => $data->id]), [
+                                'class' => 'btn btn-danger btn-xs',
+                                'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
+                                'data-method' => 'post',
+                                'data-pjax' => 0,
+                                'title' => Yii::t('yii', 'Hapus'),
+                    ]);
+                },
+                    ]
+                ],
             ],
         ]);
         ?>

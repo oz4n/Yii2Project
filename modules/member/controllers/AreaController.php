@@ -7,6 +7,7 @@ use app\modules\member\models\AreaModel;
 use app\modules\member\searchs\AreaSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\HttpException;
 use yii\filters\VerbFilter;
 
 /**
@@ -33,13 +34,17 @@ class AreaController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AreaSerch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        if (Yii::$app->user->can('areaindex')) {
+            $searchModel = new AreaSerch;
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
-        ]);
+            return $this->render('index', [
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -49,9 +54,13 @@ class AreaController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-                    'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->user->can('areaview')) {
+            return $this->render('view', [
+                        'model' => $this->findModel($id),
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -61,16 +70,20 @@ class AreaController extends Controller
      */
     public function actionCreate()
     {
-        $model = new AreaModel;
-        $model->setAttribute('term_id', MEMBER_AREA);
-        $model->setAttribute('create_et', date("Y-m-d H:i:s"));
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'action' => 'member-area-view', 'id' => $model->id]);
+        if (Yii::$app->user->can('areacreate')) {
+            $model = new AreaModel;
+            $model->setAttribute('term_id', MEMBER_AREA);
+            $model->setAttribute('create_et', date("Y-m-d H:i:s"));
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'action' => 'member-area-view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                            'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('create', [
-                        'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -82,24 +95,32 @@ class AreaController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'action' => 'member-area-view', 'id' => $model->id]);
+        if (Yii::$app->user->can('areaupdate')) {
+            $model = $this->findModel($id);
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'action' => 'member-area-view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                            'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('update', [
-                        'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
     public function actionBulk()
     {
-        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
-            $this->deleteAll(Yii::$app->request->post('selection'));
-            return $this->redirect(['index', 'action' => 'member-area-list']);
+        if (Yii::$app->user->can('areabulk')) {
+            if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+                $this->deleteAll(Yii::$app->request->post('selection'));
+                return $this->redirect(['index', 'action' => 'member-area-list']);
+            } else {
+                return $this->redirect(['index', 'action' => 'member-area-list']);
+            }
         } else {
-            return $this->redirect(['index', 'action' => 'member-area-list']);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -111,9 +132,13 @@ class AreaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (Yii::$app->user->can('areadelete')) {
+            $this->findModel($id)->delete();
 
-        return $this->redirect(['index', 'action' => 'member-area-list']);
+            return $this->redirect(['index', 'action' => 'member-area-list']);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**

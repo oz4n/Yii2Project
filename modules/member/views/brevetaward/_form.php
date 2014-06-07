@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\web\View;
-use app\modules\member\searchs\BrevetAwardSerch;
+//use app\modules\member\searchs\BrevetAwardSerch;
 
 /**
  * @var yii\web\View $this
@@ -17,10 +17,10 @@ $this->registerJs(
 
 <?php $form = ActiveForm::begin(); ?>
 <?= $form->field($model, 'name')->textInput(['maxlength' => 255])->label('Nama Brevet Penghargaan') ?>
-<?= $form->field($model, 'parent_id')->dropDownList(BrevetAwardSerch::getParents())->label('Induk') ?>
+<?php //$form->field($model, 'parent_id')->dropDownList(BrevetAwardSerch::getParents())->label('Induk') ?>
 <?= $form->field($model, 'description')->textarea(['rows' => 6, 'maxlength' => 255]) ?>
 <div class="form-group">
-    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <?= Html::submitButton(Html::tag('i', '', ['class' => 'fa  fa-check']) . '&nbsp; ' . Yii::t('app', 'Simpan'), ['id'=>'save-page','class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>                   
 </div>
 
 <?php ActiveForm::end(); ?>

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\web\View;
 use yii\bootstrap\ActiveForm;
 use app\modules\member\searchs\PaskibraSerch;
-
+use yii\helpers\Url;
 /**
  * @var yii\web\View $this
  * @var app\modules\dao\ar\Member $model
@@ -69,7 +69,7 @@ $form = ActiveForm::begin([
                 <?= $form->field($model, 'identity_card_number')->textInput(['rows' => 45]) ?>
                 <?= $form->field($model, 'birth')->textInput(['placeholder' => '02 Agustus 1990', 'id' => 'birth-date', 'maxlength' => 45]) ?>
                 <?= $form->field($model, 'age')->textInput(['maxlength' => 3]) ?>
-                <?= $form->field($model, 'address')->textarea(['rows' => 6, 'maxlength' => 255]) ?>
+                <?= $form->field($model, 'address')->textarea(['style'=>'resize:none','rows' => 6, 'maxlength' => 255]) ?>
                 <?=
                 $form->field($model, 'gender')->dropDownList([
                     'Laki-Laki' => 'Laki-Laki',
@@ -446,7 +446,7 @@ $form = ActiveForm::begin([
             <?php //$form->field($model, 'note')->textarea(['rows' => 6, 'maxlength' => 255])->label('')   ?>
             <div class="form-group field-ppimodel-note required">
                 <div class="col-sm-12">
-                    <?= Html::activeTextarea($model, 'note', ['class' => 'form-control', 'rows' => 6, 'maxlength' => 255]) ?>
+                    <?= Html::activeTextarea($model, 'note', ['style'=>'resize:none','class' => 'form-control', 'rows' => 6, 'maxlength' => 255]) ?>
                 </div>
             </div>
         </div>
@@ -478,4 +478,44 @@ $form = ActiveForm::begin([
     </div>
     </div>
 <?php ActiveForm::end(); ?>
-<?= $this->render('../membermodal/imagemodal') ?>
+<div class="row" style="display: none">
+    <div class="col-sm-12">
+        <textarea id="redactor"></textarea>
+    </div>
+</div>
+
+<?php
+$this->registerJs(
+        '$("#redactor").redactor({
+        imageUpload:"'.Url::toRoute(['/filemanager/image/uploadredactorimage']).'",
+        imageGetJson:"'.Url::toRoute(['/filemanager/image/loadredactorimage']).'",
+        albumGetJson:"'.Url::toRoute(['/filemanager/image/loadredactoralbum']).'",
+        buttons:["html"],
+        imageUploadErrorCallback:function(data){
+            $("html,body").animate({ scrollTop: 0 }, 500);
+            PixelAdmin.plugins.alerts.add("<strong>Maap!</strong>&nbsp;" + data.error, {
+                type:"danger",
+                auto_close:9
+            });
+        },
+        buttons: ["italic"],
+        fileUpload:"'.Url::toRoute(['/filemanager/document/uploaddredactorfile']).'", 
+        fileGetJson:"'.Url::toRoute(['/filemanager/document/loadredactorfile']).'",
+        fileUploadErrorCallback:function(data){           
+            $("html,body").animate({ scrollTop: 0 }, 500);
+            PixelAdmin.plugins.alerts.add("<strong>Maap!</strong>&nbsp;" + data.error, {
+                type:"danger",
+                auto_close:9
+            });
+        },
+        uploadFields:{
+            "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '",
+        },
+        lang: "id",
+        imgLoading:"'.Yii::getAlias('@web') . "/PixelAdmin/img/loading.gif".'",        
+        _csrf:"' . Yii::$app->request->getCsrfToken() . '",
+        _csrfname:"' . Yii::$app->request->csrfParam . '",
+    });
+    $(".redactor_box").css({"display":"none"});
+', View::POS_READY);
+?>

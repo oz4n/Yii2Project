@@ -8,13 +8,14 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\member\models\LanguageSkillModel;
 use app\modules\member\searchs\LanguageSkillSerch;
-
+use yii\web\HttpException;
 
 /**
  * LanguageskillController implements the CRUD actions for LanguageSkillModel model.
  */
 class LanguageskillController extends Controller
 {
+
     public function behaviors()
     {
         return [
@@ -33,13 +34,17 @@ class LanguageskillController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new LanguageSkillSerch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        if (Yii::$app->user->can('languageskillindex')) {
+            $searchModel = new LanguageSkillSerch;
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-        ]);
+            return $this->render('index', [
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -49,9 +54,13 @@ class LanguageskillController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->user->can('languageskillview')) {
+            return $this->render('view', [
+                        'model' => $this->findModel($id),
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -61,16 +70,20 @@ class LanguageskillController extends Controller
      */
     public function actionCreate()
     {
-        $model = new LanguageSkillModel;
-        $model->setAttribute('term_id', MEMBER_LANG_SKILL);
-        $model->setAttribute('create_et', date("Y-m-d H:i:s"));
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'action' => 'member-languageskill-view', 'id' => $model->id]);
+        if (Yii::$app->user->can('languageskillcreate')) {
+            $model = new LanguageSkillModel;
+            $model->setAttribute('term_id', MEMBER_LANG_SKILL);
+            $model->setAttribute('create_et', date("Y-m-d H:i:s"));
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'action' => 'member-languageskill-view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                            'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -82,26 +95,33 @@ class LanguageskillController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'action' => 'member-languageskill-view', 'id' => $model->id]);
+        if (Yii::$app->user->can('languageskillupdate')) {
+            $model = $this->findModel($id);
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'action' => 'member-languageskill-view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                            'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
     public function actionBulk()
     {
-        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
-            $this->deleteAll(Yii::$app->request->post('selection'));
-            return $this->redirect(['index', 'action' => 'member-languageskill-list']);
+        if (Yii::$app->user->can('languageskillbulk')) {
+            if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+                $this->deleteAll(Yii::$app->request->post('selection'));
+                return $this->redirect(['index', 'action' => 'member-languageskill-list']);
+            } else {
+                return $this->redirect(['index', 'action' => 'member-languageskill-list']);
+            }
         } else {
-            return $this->redirect(['index', 'action' => 'member-languageskill-list']);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
-
     }
 
     /**
@@ -112,9 +132,13 @@ class LanguageskillController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (Yii::$app->user->can('languageskilldelete')) {
+            $this->findModel($id)->delete();
 
-        return $this->redirect(['index', 'action' => 'member-languageskill-list']);
+            return $this->redirect(['index', 'action' => 'member-languageskill-list']);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -147,4 +171,5 @@ class LanguageskillController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

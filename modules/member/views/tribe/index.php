@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\web\View;
-use app\modules\member\searchs\TribeSerch;
+//use app\modules\member\searchs\TribeSerch;
 
 /**
  * @var yii\web\View $this
@@ -144,27 +144,31 @@ $this->registerJs(
                     'attribute' => 'name',
                     'label' => 'Nama Suku Bangsa',
                     'format' => 'RAW',
-                    'filter' => TribeSerch::getFilterNames(),
-                    'value' => function ($data) {
-                            $line = '';
-                            if ($data->level == 1) {
-                                return $data->name;
-                            } else {
-                                for ($i = 0; $i < $data->level; $i++) {
-                                    $line .= "&HorizontalLine;";
-                                }
-                                return $line . '&nbsp;' . $data->name;
-                            }
-                        }
+//                    'filter' => TribeSerch::getFilterNames(),
+//                    'value' => function ($data) {
+//                            $line = '';
+//                            if ($data->level == 1) {
+//                                return $data->name;
+//                            } else {
+//                                for ($i = 0; $i < $data->level; $i++) {
+//                                    $line .= "&HorizontalLine;";
+//                                }
+//                                return $line . '&nbsp;' . $data->name;
+//                            }
+//                        }
                 ],
-                [
-                    'attribute' => 'parent_id',
-                    'label' => 'Induk',
-                    'filter' => TribeSerch::getFilterParens(),
-                    'value' => function ($data) {
-                            return $data->getParentName();
-                        }
+                        [
+                    'attribute' => 'description',
+                    'label' => 'Keterangan',                   
                 ],
+//                [
+//                    'attribute' => 'parent_id',
+//                    'label' => 'Induk',
+//                    'filter' => TribeSerch::getFilterParens(),
+//                    'value' => function ($data) {
+//                            return $data->getParentName();
+//                        }
+//                ],
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'header' => '<div class="text-center">Aksi</div>',

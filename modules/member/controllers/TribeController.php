@@ -8,12 +8,14 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\member\searchs\TribeSerch;
 use app\modules\member\models\TribeModel;
+use yii\web\HttpException;
 
 /**
  * TribeController implements the CRUD actions for Taxonomy model.
  */
 class TribeController extends Controller
 {
+
     public function behaviors()
     {
         return [
@@ -32,13 +34,17 @@ class TribeController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new TribeSerch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        if (Yii::$app->user->can('tribeindex')) {
+            $searchModel = new TribeSerch;
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-        ]);
+            return $this->render('index', [
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -48,9 +54,13 @@ class TribeController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        if (Yii::$app->user->can('tribeview')) {
+            return $this->render('view', [
+                        'model' => $this->findModel($id),
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -60,17 +70,21 @@ class TribeController extends Controller
      */
     public function actionCreate()
     {
-        $model = new TribeModel;
+        if (Yii::$app->user->can('tribecreate')) {
+            $model = new TribeModel;
 
-        $model->setAttribute('term_id', MEMBER_TRIBE);
-        $model->setAttribute('create_et', date("Y-m-d H:i:s"));
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'action' => 'member-tribe-view', 'id' => $model->id]);
+            $model->setAttribute('term_id', MEMBER_TRIBE);
+            $model->setAttribute('create_et', date("Y-m-d H:i:s"));
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'action' => 'member-tribe-view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                            'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -82,24 +96,32 @@ class TribeController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'action' => 'member-tribe-view', 'id' => $model->id]);
+        if (Yii::$app->user->can('tribeupdate')) {
+            $model = $this->findModel($id);
+            $model->setAttribute('update_et', date("Y-m-d H:i:s"));
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'action' => 'member-tribe-view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                            'model' => $model,
+                ]);
+            }
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
     public function actionBulk()
     {
-        if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
-            $this->deleteAll(Yii::$app->request->post('selection'));
-            return $this->redirect(['index', 'action' => 'member-tribe-list']);
+        if (Yii::$app->user->can('tribebulk')) {
+            if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+                $this->deleteAll(Yii::$app->request->post('selection'));
+                return $this->redirect(['index', 'action' => 'member-tribe-list']);
+            } else {
+                return $this->redirect(['index', 'action' => 'member-tribe-list']);
+            }
         } else {
-            return $this->redirect(['index', 'action' => 'member-tribe-list']);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -111,9 +133,13 @@ class TribeController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (Yii::$app->user->can('tribedelete')) {
+            $this->findModel($id)->delete();
 
-        return $this->redirect(['index', 'action' => 'member-tribe-list']);
+            return $this->redirect(['index', 'action' => 'member-tribe-list']);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -146,4 +172,5 @@ class TribeController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

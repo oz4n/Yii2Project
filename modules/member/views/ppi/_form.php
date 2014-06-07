@@ -72,7 +72,7 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'identity_card_number')->textInput(['rows' => 45]) ?>
             <?= $form->field($model, 'birth')->textInput(['placeholder' => '02 Agustus 1990', 'id' => 'birth-date', 'maxlength' => 45]) ?>
             <?= $form->field($model, 'age')->textInput(['maxlength' => 3]) ?>
-            <?= $form->field($model, 'address')->textarea(['rows' => 6, 'maxlength' => 255]) ?>
+            <?= $form->field($model, 'address')->textarea(['style'=>'resize:none','rows' => 6, 'maxlength' => 255]) ?>
             <?=
             $form->field($model, 'gender')->dropDownList([
                 'Laki-Laki' => 'Laki-Laki',
@@ -449,7 +449,7 @@ $form = ActiveForm::begin([
             <?php //$form->field($model, 'note')->textarea(['rows' => 6, 'maxlength' => 255])->label('')   ?>
             <div class="form-group field-ppimodel-note required">
                 <div class="col-sm-12">
-                    <?= Html::activeTextarea($model, 'note', ['class' => 'form-control', 'rows' => 6, 'maxlength' => 255]) ?>
+                    <?= Html::activeTextarea($model, 'note', ['style'=>'resize:none','class' => 'form-control', 'rows' => 6, 'maxlength' => 255]) ?>
                 </div>
             </div>
         </div>
@@ -481,7 +481,7 @@ $form = ActiveForm::begin([
     </div>
 </div>
 <?php ActiveForm::end(); ?>
-<?php //$this->render('../membermodal/imagemodal') ?>
+
 <div class="row" style="display: none">
     <div class="col-sm-12">
         <textarea id="redactor"></textarea>
@@ -493,6 +493,8 @@ $this->registerJs(
         '$("#redactor").redactor({
         imageUpload:"'.Url::toRoute(['/filemanager/image/uploadredactorimage']).'",
         imageGetJson:"'.Url::toRoute(['/filemanager/image/loadredactorimage']).'",
+        albumGetJson:"'.Url::toRoute(['/filemanager/image/loadredactoralbum']).'",
+        buttons:["html"],
         imageUploadErrorCallback:function(data){
             $("html,body").animate({ scrollTop: 0 }, 500);
             PixelAdmin.plugins.alerts.add("<strong>Maap!</strong>&nbsp;" + data.error, {

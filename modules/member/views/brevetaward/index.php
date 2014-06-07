@@ -133,27 +133,31 @@ $this->registerJs(
                     'attribute' => 'name',
                     'format' => 'RAW',
                     'label' => 'Nama Brevet Penghargaan',
-                    'filter' => BrevetAwardSerch::getFilterNames(),
-                    'value' => function ($data) {
-                $line = '';
-                if ($data->level == 1) {
-                    return $data->name;
-                } else {
-                    for ($i = 0; $i < $data->level; $i++) {
-                        $line .= "&HorizontalLine;";
-                    }
-                    return $line . '&nbsp;' . $data->name;
-                }
-            }
+//                    'filter' => BrevetAwardSerch::getFilterNames(),
+//                    'value' => function ($data) {
+//                $line = '';
+//                if ($data->level == 1) {
+//                    return $data->name;
+//                } else {
+//                    for ($i = 0; $i < $data->level; $i++) {
+//                        $line .= "&HorizontalLine;";
+//                    }
+//                    return $line . '&nbsp;' . $data->name;
+//                }
+//            }
                 ],
                 [
-                    'attribute' => 'parent_id',
-                    'label' => 'Induk',
-                    'filter' => BrevetAwardSerch::getFilterParens(),
-                    'value' => function ($data) {
-                return $data->getParentName();
-            }
+                    'attribute' => 'description',
+                    'label' => 'Keterangan'
                 ],
+//                [
+//                    'attribute' => 'parent_id',
+//                    'label' => 'Induk',
+//                    'filter' => BrevetAwardSerch::getFilterParens(),
+//                    'value' => function ($data) {
+//                return $data->getParentName();
+//            }
+//                ],
                 [
             'class' => 'yii\grid\ActionColumn',
             'header' => '<div class="text-center">Aksi</div>',

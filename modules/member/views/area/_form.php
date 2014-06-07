@@ -17,11 +17,11 @@ $this->registerJs(
 
 
 <?php $form = ActiveForm::begin(); ?>
-<?= $form->field($model, 'name')->textInput(['maxlength' => 255]) ?>
-<?= $form->field($model, 'parent_id')->dropDownList(AreaSerch::getParents()) ?>
-<?= $form->field($model, 'description')->textarea(['rows' => 6, 'maxlength' => 255]) ?>
+<?= $form->field($model, 'name')->textInput(['maxlength' => 255])->label('Nama Daerah')  ?>
+<?= $form->field($model, 'parent_id')->dropDownList(AreaSerch::getParents())->label('Induk')  ?>
+<?= $form->field($model, 'description')->textarea(['style'=>'resize:none','rows' => 6, 'maxlength' => 255])->label('Keterangan')  ?>
 <div class="form-group">
-    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    <?= Html::submitButton(Html::tag('i', '', ['class' => 'fa  fa-check']) . '&nbsp; ' . Yii::t('app', 'Simpan'), ['id'=>'save-page','class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>                   
 </div>
 
 <?php ActiveForm::end(); ?>
