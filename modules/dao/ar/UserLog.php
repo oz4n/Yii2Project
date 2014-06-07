@@ -49,13 +49,13 @@ class UserLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'integer'],
-            [['user_ip', 'title', 'absolute_url', 'user_agent', 'action_method', 'platform', 'contry', 'region', 'city', 'browser', 'browser_version', 'latitude', 'longitude', 'time_zone', 'create_at', 'update_et'], 'required'],
-            [['content', 'absolute_url', 'user_agent'], 'string'],
-            [['create_at', 'update_et'], 'safe'],
-            [['user_ip', 'title', 'platform', 'contry', 'region', 'city', 'browser', 'time_zone'], 'string', 'max' => 255],
-            [['action_method', 'zip_code', 'browser_version', 'latitude', 'longitude'], 'string', 'max' => 45],
-            [['country_code'], 'string', 'max' => 5]
+//            [['user_id'], 'integer'],
+//            [['user_ip', 'title', 'absolute_url', 'user_agent', 'action_method', 'platform', 'contry', 'region', 'city', 'browser', 'browser_version', 'latitude', 'longitude', 'time_zone', 'create_at', 'update_et'], 'required'],
+//            [['content', 'absolute_url', 'user_agent'], 'string'],
+//            [['create_at', 'update_et'], 'safe'],
+//            [['user_ip', 'title', 'platform', 'contry', 'region', 'city', 'browser', 'time_zone'], 'string', 'max' => 255],
+//            [['action_method', 'zip_code', 'browser_version', 'latitude', 'longitude'], 'string', 'max' => 45],
+//            [['country_code'], 'string', 'max' => 5]
         ];
     }
 

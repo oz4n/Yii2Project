@@ -17,7 +17,7 @@ use Yii;
  * @property integer $count
  * @property string $slug
  * @property string $status
- * @property integer $position
+ * @property string $position
  * @property integer $lft
  * @property integer $rgt
  * @property integer $root
@@ -30,10 +30,10 @@ use Yii;
  * @property Taxfilerelations $taxfilerelations
  * @property File[] $files
  * @property Taxmemberrelations $taxmemberrelations
+ * @property Taxonomy $taxmenu0
+ * @property Taxonomy[] $taxonomies
  * @property Terminologi $term
  * @property Taxonomy $parent
- * @property Taxonomy[] $taxonomies
- * @property Taxonomy $taxmenu
  * @property Taxpostrelations $taxpostrelations
  * @property Post[] $posts
  * @property Taxuserlogrelations $taxuserlogrelations
@@ -55,8 +55,8 @@ class Taxonomy extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['parent_id', 'taxmenu', 'term_id', 'count', 'position', 'lft', 'rgt', 'root', 'level'], 'integer'],
-            [['name', 'create_et', 'update_et'], 'required','message'=>'Tidak boleh kosong'],
+            [['parent_id', 'taxmenu', 'term_id', 'count', 'lft', 'rgt', 'root', 'level'], 'integer'],
+            [['name', 'create_et', 'update_et'], 'required'],
             [['create_et', 'update_et'], 'safe'],
             [['name', 'description', 'slug'], 'string', 'max' => 255],
             [['type', 'status'], 'string', 'max' => 45]
@@ -132,6 +132,22 @@ class Taxonomy extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getTaxmenu0()
+    {
+        return $this->hasOne(Taxonomy::className(), ['id' => 'taxmenu']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaxonomies()
+    {
+        return $this->hasMany(Taxonomy::className(), ['parent_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getTerm()
     {
         return $this->hasOne(Terminologi::className(), ['id' => 'term_id']);
@@ -143,22 +159,6 @@ class Taxonomy extends \yii\db\ActiveRecord
     public function getParent()
     {
         return $this->hasOne(Taxonomy::className(), ['id' => 'parent_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTaxonomies()
-    {
-        return $this->hasMany(Taxonomy::className(), ['taxmenu' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTaxmenu()
-    {
-        return $this->hasOne(Taxonomy::className(), ['id' => 'taxmenu']);
     }
 
     /**
