@@ -15,5 +15,5 @@ use app\modules\dao\ar\File;
  */
 class DocumentModel extends File
 {
-    //put your code here
+     public $keyword;
 }

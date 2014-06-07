@@ -21,7 +21,7 @@ use app\modules\filemanager\models\ImageModel;
  */
 class AlbumModel extends Taxonomy
 {
-
+   
     public function behaviors()
     {
         return [
