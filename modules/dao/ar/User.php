@@ -3,6 +3,7 @@
 namespace app\modules\dao\ar;
 
 use Yii;
+use dektrium\user\models\User as BaseUser;
 
 /**
  * This is the model class for table "user".
@@ -23,26 +24,39 @@ use Yii;
  * @property integer $registered_from
  * @property integer $logged_in_from
  * @property integer $logged_in_at
+ * @property string $slug
  * @property integer $created_at
  * @property integer $updated_at
  *
+ * @property AuthAssignment $authAssignment
+ * @property AuthItem[] $itemNames
  * @property Comment[] $comments
  * @property File[] $files
  * @property GuestBook[] $guestBooks
  * @property Member[] $members
  * @property Message $message
  * @property Post[] $posts
- * @property Taxuser[] $taxusers
+ * @property Profile $profile
  * @property UserLog[] $userLogs
  */
-class User extends \yii\db\ActiveRecord
+class User extends BaseUser
 {
+    public $captcha;
+
+
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 'user';
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['register'][] = 'captcha';
+        return $scenarios;
     }
 
     /**
@@ -53,10 +67,12 @@ class User extends \yii\db\ActiveRecord
         return [
             [['username', 'email', 'password_hash', 'auth_key', 'created_at', 'updated_at'], 'required'],
             [['confirmation_sent_at', 'confirmed_at', 'recovery_sent_at', 'blocked_at', 'registered_from', 'logged_in_from', 'logged_in_at', 'created_at', 'updated_at'], 'integer'],
+            [['slug'], 'string'],
             [['username'], 'string', 'max' => 25],
             [['email', 'unconfirmed_email', 'role'], 'string', 'max' => 255],
             [['password_hash'], 'string', 'max' => 60],
             [['auth_key', 'confirmation_token', 'recovery_token'], 'string', 'max' => 32]
+
         ];
     }
 
@@ -82,9 +98,26 @@ class User extends \yii\db\ActiveRecord
             'registered_from' => Yii::t('app', 'Registered From'),
             'logged_in_from' => Yii::t('app', 'Logged In From'),
             'logged_in_at' => Yii::t('app', 'Logged In At'),
+            'slug' => Yii::t('app', 'Slug'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuthAssignment()
+    {
+        return $this->hasOne(AuthAssignment::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getItemNames()
+    {
+        return $this->hasMany(AuthItem::className(), ['name' => 'item_name'])->viaTable('auth_assignment', ['user_id' => 'id']);
     }
 
     /**
@@ -138,9 +171,9 @@ class User extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTaxusers()
+    public function getProfile()
     {
-        return $this->hasMany(Taxuser::className(), ['user_id' => 'id']);
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
 
     /**
