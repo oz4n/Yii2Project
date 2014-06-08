@@ -5,6 +5,7 @@ namespace app\modules\member;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Module;
+use yii\web\NotFoundHttpException;
 
 define('MEMBER_SKILL', 1);
 define('MEMBER_LANG_SKILL', 2);
@@ -31,8 +32,7 @@ class Member extends Module implements BootstrapInterface
 
     public function init()
     {
-        $this->setLayoutPath('@app/modules/dashboard/views/layouts');
-        $this->layout = 'main';
+
         parent::init();
     }
 

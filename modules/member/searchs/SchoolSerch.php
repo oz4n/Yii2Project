@@ -94,7 +94,7 @@ class SchoolSerch extends SchoolModel
     {
 
         $models = AreaModel::find();
-        $models->where(['term_id' => MEMBER_AREA]);
+        $models->onCondition(['term_id' => MEMBER_AREA]);
 
 //        $models->orderBy([
 //            'root' => SORT_ASC,

@@ -72,21 +72,21 @@ class TestController extends Controller
 
     public function actionAddadministrator()
     {
-        $auth = Yii::$app->authManager;
-        $rule = new \app\modules\users\rules\UserGroupRule();
-        $auth->add($rule);
-
-        $admin = $auth->createRole('admin');
-        $admin->ruleName = $rule->name;
-        $admin->description = "Admin default user";
-        $auth->add($admin);
-        $auth->addChild($admin, $auth->getRole('adminppe'));
-
-        $administrator = $auth->createRole('administrator');
-        $administrator->ruleName = $rule->name;
-        $administrator->description = "Administrator default user";
-        $auth->add($administrator);
-        $auth->addChild($administrator, $admin);
+//        $auth = Yii::$app->authManager;
+//        $rule = new \app\modules\users\rules\UserGroupRule();
+//        $auth->add($rule);
+//
+//        $admin = $auth->createRole('admin');
+//        $admin->ruleName = $rule->name;
+//        $admin->description = "Admin default user";
+//        $auth->add($admin);
+//        $auth->addChild($admin, $auth->getRole('adminppe'));
+//
+//        $administrator = $auth->createRole('administrator');
+//        $administrator->ruleName = $rule->name;
+//        $administrator->description = "Administrator default user";
+//        $auth->add($administrator);
+//        $auth->addChild($administrator, $admin);
     }
 
     public function actionAddmemberrule()
@@ -376,23 +376,23 @@ class TestController extends Controller
     {
         $auth = Yii::$app->authManager;
 
-        $auth->add($subadminppe);
-        $auth->addChild($subadminppe, $ppiindex);
-        $auth->addChild($subadminppe, $ppiview);
-        $auth->addChild($subadminppe, $ppicreate);
-        $auth->addChild($subadminppe, $ppiupdate);
-        $auth->addChild($subadminppe, $ppitrash);
-        $auth->addChild($subadminppe, $ppidelete);
-
-
-        $adminppe = $auth->createRole('adminppe');
-        $adminppe->description = 'Admin PPE';
-        $auth->add($adminppe);
-        $auth->addChild($adminppe, $ppiupdate);
-        $auth->addChild($adminppe, $subadminppe);
-
-        $auth->assign($adminppe, 2);
-        $auth->assign($subadminppe, 3);
+//        $auth->add($subadminppe);
+//        $auth->addChild($subadminppe, $ppiindex);
+//        $auth->addChild($subadminppe, $ppiview);
+//        $auth->addChild($subadminppe, $ppicreate);
+//        $auth->addChild($subadminppe, $ppiupdate);
+//        $auth->addChild($subadminppe, $ppitrash);
+//        $auth->addChild($subadminppe, $ppidelete);
+//
+//
+//        $adminppe = $auth->createRole('adminppe');
+//        $adminppe->description = 'Admin PPE';
+//        $auth->add($adminppe);
+//        $auth->addChild($adminppe, $ppiupdate);
+//        $auth->addChild($adminppe, $subadminppe);
+//
+//        $auth->assign($adminppe, 2);
+//        $auth->assign($subadminppe, 3);
     }
 
 
