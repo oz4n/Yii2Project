@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\HttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * WidgetController implements the CRUD actions for Widget model.
@@ -35,12 +36,11 @@ class WidgetController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->can('widgetindex')) {
-            $searchModel = new WidgetSearc;
-            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
+            $model = new WidgetSearc;
             return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
+                        'defaultwidget' => $model->loadAllDefaultWidget(),
+                        'sidebarwidget' => $model->loadAllSidebarWidget(),
+                        'footerwidget' => $model->loadAllFooterWidget()
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -105,6 +105,26 @@ class WidgetController extends Controller
             }
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
+    }
+
+    public function actionUpdateposition()
+    {
+        if (Yii::$app->request->isAjax) {
+            $param = Yii::$app->request->post();
+            $data = Json::decode($param['data']);
+
+            foreach ($data as $k => $v) {
+                $model = $this->findModel($v['id']);
+                $model->position = $k;
+                $model->layoute_position = $v['layoute'];
+                $model->save();
+            }
+            echo Json::encode([
+                'text' => 'Posisi berhasil diperbaharui.'
+            ]);
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 

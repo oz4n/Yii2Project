@@ -12,7 +12,10 @@ class Appearance extends \yii\base\Module
     const APPEARANCE_MENU_TERM_TYPE_LINK = 'menulink';
     const APPEARANCE_MENU_TERM_TYPE_HELPER = 'menuhelper';
     const APPEARANCE_MENU_TERM_TYPE_PAGE = 'menupage';
-    
+    const APPEARANCE_WIDGET_DEFAULT = 'DefaultWidget';
+    const APPEARANCE_WIDGET_SIDEBAR_POSITION = 'sidebar';
+    const APPEARANCE_WIDGET_FOOTER_POSITION = 'footer';
+
     const WORD_CATEGORY = 13;
     const WORD_TAG = 14;
     const POST_TYPE_INFO = 'info';
@@ -23,8 +26,6 @@ class Appearance extends \yii\base\Module
 
     public function init()
     {
-        $this->setLayoutPath('@app/modules/dashboard/views/layouts');
-        $this->layout = 'main';
         parent::init();
 
         // custom initialization code goes here

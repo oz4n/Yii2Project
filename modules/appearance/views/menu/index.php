@@ -12,6 +12,7 @@ use yii\helpers\Url;
 
 $this->title = Yii::t('app', 'Taxonomies');
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerCssFile(Yii::getAlias('@web').'/jnestable/nestable.css');
 $this->registerJs(
         "$('ul.navigation > li.mm-dropdown > ul > li#menu').addClass('active').parent().parent().addClass('active open');"
         , View::POS_READY);
@@ -80,7 +81,7 @@ $this->registerJs(
                 dataType:"json",
                 success:function(response){
                     if(response.status == true){
-                         location.reload();                         
+                         location.reload();
                     }else{
                     }
                 }
@@ -100,7 +101,7 @@ $this->registerJs(
                 dataType:"json",
                 success:function(response){
                     if(response.status == true){
-                         location.reload();                         
+                         location.reload();
                     }else{
                     }
                 }
@@ -120,7 +121,7 @@ $this->registerJs(
                 dataType:"json",
                 success:function(response){
                     if(response.status == true){
-                         location.reload();                         
+                         location.reload();
                     }else{
                     }
                 }
@@ -132,18 +133,21 @@ $this->registerJs(
 //edit position menu
 $this->registerJs(
         'var menu_updatesort = function(jsonstring) {
-            $.ajax({
-                url: "'.Url::toRoute(['/appearance/menu/updateposition', 'action' => 'appearance-menu-updateposition']).'",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    data: jsonstring,
-                    "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '",
-                },
-                succses: function() {
-
-                }
-
+             $.ajax({
+                    url: "' . Url::toRoute(['/appearance/menu/updateposition', 'action' => 'appearance-menu-updateposition']) . '",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        data: jsonstring,
+                        "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '",
+                    },
+                    success: function(response) {
+//                       $("html,body").animate({ scrollTop: 0 }, 500);
+//                        PixelAdmin.plugins.alerts.add("<strong>Sukses!</strong>&nbsp;" + response.text, {
+//                            type:"success",
+//                            auto_close:9
+//                       });
+                    }
             });
         };
         var updateOutput = function(e)
@@ -163,7 +167,7 @@ $this->registerJs(
         menuBuilder();
         $("body").on("click",".menu-edit-btn",function(){
             var e = $("#nestable").data("output", $("#nestableMenu-output"));
-            var list = e.length ? e : $(e.target);           
+            var list = e.length ? e : $(e.target);
             menu_updatesort(window.JSON.stringify(list.nestable("serialize")));
         });
         '
@@ -296,7 +300,7 @@ $this->registerJs(
     </div>
     <div class="col-sm-8">
         <div class="panel" id="menu-panel-item">  
-            <?php $form = ActiveForm::begin(['action' => ['/appearance/menu/update', 'action' => 'appearance-menu-update', 'id' => $model->id]]); ?>
+            <?php $form = ActiveForm::begin(['id'=>'form-menu-update','action' => ['/appearance/menu/update', 'action' => 'appearance-menu-update', 'id' => $model->id]]); ?>
             <?php if ($model->id != null): ?>
                 <div class="panel-heading">
                     <span class="panel-title"><?= $model->name ?></span>                 
@@ -340,7 +344,6 @@ $this->registerJs(
             <?php if ($model->id != null): ?>
                 <div class="panel-footer">  
                     <button id="menu-delete-btn" type="button" class="btn btn-danger btn-xs" data-id="<?= $model->id ?>"><i class="fa fa-trash-o"></i>&nbsp; Hapus</button>
-                    <button id="test-data" type="button" class="btn btn-xs" ><i class="fa fa-trash-o"></i>&nbsp;tes</button>
                     <div class="panel-heading-controls">                     
                         <button id="menu-edit-btn" type="submit" class="menu-edit-btn btn btn-primary btn-xs" data-id="<?= $model->id ?>"><i class="fa fa-check"></i>&nbsp; Simpan</button>
                     </div>

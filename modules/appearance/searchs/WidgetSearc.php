@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\dao\ar\Widget;
+use app\modules\appearance\Appearance;
 
 /**
  * WidgetSearc represents the model behind the search form about `app\modules\dao\ar\Widget`.
@@ -28,7 +29,7 @@ class WidgetSearc extends Widget
 
     public function search($params)
     {
-        $query = Widget::find();
+        $query = self::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -51,5 +52,26 @@ class WidgetSearc extends Widget
             ->andFilterWhere(['like', 'type', $this->type]);
 
         return $dataProvider;
+    }
+
+    public function loadAllDefaultWidget()
+    {
+        $model = self::find();
+        $query = $model->onCondition(['status' => Appearance::APPEARANCE_WIDGET_DEFAULT]);
+        return $query->all();
+    }
+
+    public function loadAllSidebarWidget()
+    {
+        $model = self::find();
+        $query = $model->onCondition(['layoute_position' => Appearance::APPEARANCE_WIDGET_SIDEBAR_POSITION]);
+        return $query->orderBy(['position' => SORT_ASC])->all();
+    }
+
+    public function loadAllFooterWidget()
+    {
+        $model = self::find();
+        $query = $model->onCondition(['layoute_position' => Appearance::APPEARANCE_WIDGET_FOOTER_POSITION]);
+        return $query->orderBy(['position' => SORT_ASC])->all();
     }
 }

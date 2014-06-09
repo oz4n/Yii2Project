@@ -226,24 +226,15 @@ class MenuController extends Controller
             if (Yii::$app->request->isAjax) {
                 $param = Yii::$app->request->post();
                 $data = Json::decode($param['data']);
-//            print_r($data);
-//             foreach ($data as $v) {  
-//               $model = $this->findModel($v['id']);
-//                $model->parent_id = $v['parent'];
-//                $model->position = $v['position'];
-//                $model->save();
-////                 echo $v['id'];
-////                $model = $this->findModel($v['id']);
-////                $model->parent_id = $v['parent'];
-////                $model->position = "$key";
-////                $model->save();
-//            }
                 foreach ($this->parseJsonArray($data) as $v) {
                     $model = $this->findModel($v['id']);
                     $model->parent_id = $v['parent'] != null ? $v['parent'] : NULL;
                     $model->position = $v['position'];
                     $model->save();
                 }
+                echo Json::encode([
+                    'text' => 'Posisi berhasil diperbaharui.'
+                ]);
             } else {
                 throw new NotFoundHttpException('The requested page does not exist.');
             }
