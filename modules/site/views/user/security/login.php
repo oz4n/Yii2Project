@@ -20,35 +20,63 @@ use dektrium\user\widgets\Connect;
  */
 
 $this->title = Yii::t('user', 'Sign in');
-$this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="breadcrumbs">
+    <div class="container">
+        <h1 class="pull-left">Login</h1>
+        <ul class="pull-right breadcrumb">
+            <li><a href="index.html">Home</a></li>
+            <li class="active">Login</li>
+        </ul>
+    </div>
+    <!--/container-->
+</div><!--/breadcrumbs-->
 <div class="row">
-    <div class="col-md-4 col-md-offset-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
-                <?php $form = ActiveForm::begin([
-                    'id' => 'login-form',
-                ]) ?>
 
+
+
+    <div class="container content">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+                <?php
+                $form = \yii\bootstrap\ActiveForm::begin([
+                    'id' => 'login-form',
+                    'options' => ['class' => 'reg-page']
+                ])
+                ?>
+                <div class="reg-header">
+                    <h2>Login to your account</h2>
+                </div>
                 <?= $form->field($model, 'login') ?>
 
-                <?= $form->field($model, 'password')->passwordInput()->label(Yii::t('user', 'Password') . ' (' . Html::a(Yii::t('user', 'Forgot password?'), ['/user/recovery/request']) . ')') ?>
+                <?= $form->field($model, 'password')->passwordInput()->label(Yii::t('user', 'Password')) ?>
 
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
-                <?= Html::submitButton(Yii::t('user', 'Sign in'), ['class' => 'btn btn-primary btn-block']) ?>
 
-                <?php ActiveForm::end(); ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="checkbox">
+                            <?= Html::activeCheckbox($model, 'rememberMe') ?>
+                            Stay signed in
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <?= Html::submitButton(Yii::t('user', 'Sign in'), ['class' => 'btn-u pull-right']) ?>
+                    </div>
+                </div>
+                <hr>
+                <h4><?= Html::a(Yii::t('user', 'Forgot your password?'), ['/user/recovery/request']) ?></h4>
+
+                <p><?= Html::a(Yii::t('user', 'Didn\'t receive confirmation message?'), ['/user/registration/resend']) ?></p>
+                <?php \yii\bootstrap\ActiveForm::end(); ?>
+
+                <?=
+                Connect::widget([
+                    'baseAuthUrl' => ['/user/security/auth']
+                ])
+                ?>
+
             </div>
         </div>
-        <p class="text-center">
-            <?= Html::a(Yii::t('user', 'Didn\'t receive confirmation message?'), ['/user/registration/resend']) ?>
-        </p>
-        <?= Connect::widget([
-            'baseAuthUrl' => ['/user/security/auth']
-        ]) ?>
     </div>
 </div>

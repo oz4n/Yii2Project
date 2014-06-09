@@ -25,7 +25,7 @@ $this->title = $name;
     <!--Error Block-->
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="error-v1">                
+            <div class="error-v1">
                 <span><?= Html::encode($this->title) ?></span>
                 <p><?= nl2br(Html::encode($message)) ?></p>
                 <a href="<?= Url::toRoute(['/site/site/index']) ?>">Kembali ke Beranda</a>

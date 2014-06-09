@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ListView;
+use app\modules\site\widgets\RenderWidget;
+
 ?>
 
 <!--=== Breadcrumbs ===-->
@@ -10,14 +12,14 @@ use yii\widgets\ListView;
     <div class="container">
         <h1 class="pull-left"><?= ucwords($tax) ?></h1>
         <ul class="pull-right breadcrumb">
-            <li><a href="<?= Url::toRoute(['/site/site/index']) ?>">Beranda</a></li>              
+            <li><a href="<?= Url::toRoute(['/site/site/index']) ?>">Beranda</a></li>
             <li class="active"><?= ucwords($tax) ?></li>
         </ul>
     </div>
 </div>
 <!--/breadcrumbs-->
 <div class="container content">
-    <div class="row">     
+    <div class="row">
         <?php
         echo ListView::widget([
 
@@ -32,36 +34,23 @@ use yii\widgets\ListView;
             ],
             'itemOptions' => ['class' => 'funny-boxes funny-boxes-left-green'],
             'itemView' => function ($data, $key, $index, $widget) {
-        $param = Yii::$app->request->getQueryParams();
-        return $this->render('_taxpost_view', [
-                    'data' => $data,
-                    'index' => $index,
-                    'tax' => $param['tax']
-        ]);
-    },
+                    $param = Yii::$app->request->getQueryParams();
+                    return $this->render('_taxpost_view', [
+                        'data' => $data,
+                        'index' => $index,
+                        'tax' => $param['tax']
+                    ]);
+                },
         ]);
         ?>
 
         <!-- End Bordered Funny Boxes -->
-        <div class="col-md-4 magazine-page">        
-            <?php
-            foreach (\app\modules\dao\ar\Widget::find()->orderBy(['position' => SORT_ASC])->all() as $value) {
-                switch ($value->type) {
-                    case "PostSerch":
-                        echo \app\modules\site\widgets\PostSerch::widget([
-                            'action' => ['/site/site/tax', 'tax' => $param['tax']],
-                        ]);
-                        break;
-                    case "RecentPosts";
-                        echo \app\modules\site\widgets\RecentPosts::widget([
-                            'title' => $value->name
-                        ]);
-                        break;
-                    case "HTML";
-                        break;
-                }
-            }
-            ?>
+        <div class="col-md-4 magazine-page">
+            <div class="row">
+                <?=
+                RenderWidget::widget(['colClass'=>'col-sm-12 margin-bottom-20 ','layoute_position' => 'sidebar', 'tax' => $param['tax']]);
+                ?>
+            </div>
         </div>
-    </div>    
+    </div>
 </div>

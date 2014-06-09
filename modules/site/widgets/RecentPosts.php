@@ -38,7 +38,7 @@ class RecentPosts extends Widget
 
     public function renderItem()
     {
-        echo Html::beginTag('div', ['class' => 'posts margin-bottom-40']);
+        echo Html::beginTag('div', ['class' => 'posts']);
         echo Html::tag('div', Html::tag('H2', $this->title), ['class' => 'headline headline-md']);
         foreach ($this->findAllpost() as $value) {
             $tag = Json::decode($value->other_content);

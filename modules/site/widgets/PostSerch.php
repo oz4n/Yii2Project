@@ -37,7 +37,7 @@ class PostSerch extends Widget
     protected function createForm()
     {
         echo Html::beginForm(\yii\helpers\Url::toRoute($this->action), $this->method);
-        echo Html::beginTag('div', ['class' => 'input-group margin-bottom-40']);
+        echo Html::beginTag('div', ['class' => 'input-group']);
         echo Html::textInput('keyword',null, ['class' => 'form-control', 'placeholder' => $this->placeholder]);
         echo Html::beginTag('span', ['class' => 'input-group-btn']);
         echo Html::button('Cari', ['class'=>'btn-u']);

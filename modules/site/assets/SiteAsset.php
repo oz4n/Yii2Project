@@ -39,6 +39,7 @@ class SiteAsset extends AssetBundle
         'unify-v1.4/css/pages/blog.css',
         'unify-v1.4/css/pages/feature_timeline2.css',
         'unify-v1.4/css/pages/page_404_error.css',
+        'unify-v1.4/css/pages/page_log_reg_v1.css',
         /**
          * CSS Theme
          */        

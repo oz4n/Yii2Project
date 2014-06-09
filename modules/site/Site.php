@@ -9,7 +9,7 @@ use yii\base\Module;
 
 
 /**
- * @property Application $app 
+ * @property Application $app
  */
 class Site extends Module implements BootstrapInterface
 {
@@ -54,9 +54,11 @@ class Site extends Module implements BootstrapInterface
             'paskibra' => '/site/member/paskibra',
             'ppi' => '/site/member/ppi',
             'capas' => '/site/member/capas',
-                ], false);
+        ], false);
         if (Yii::$app->user->isGuest) {
             $app->getErrorHandler()->errorAction = '/site/site/error';
+        } else {
+            $app->getErrorHandler()->errorAction = '/dashboard/error/error';
         }
     }
 
