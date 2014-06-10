@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\web\View;
 use yii\helpers\Url;
 use Yii;
+
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -13,31 +14,31 @@ use Yii;
 $this->title = Yii::t('app', 'Files');
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerJs(
-        "$('ul.navigation > li.mm-dropdown > ul > li#images').addClass('active').parent().parent().addClass('active open');"
-        , View::POS_READY);
+    "$('ul.navigation > li.mm-dropdown > ul > li#images').addClass('active').parent().parent().addClass('active open');"
+    , View::POS_READY);
 
 //image delte
 $this->registerJs(
-        '$("body").on("click",".image-delete",function(){'
-            . '$($(this).parent().parent()).remove();'
-            . '$.ajax({'
-                . 'url:"'.Url::toRoute(['/filemanager/image/delete', 'action' => 'filemager-image-delete']) .'",'
-                .'dataType: "json",'
-                .'autoUpload: true,'
-                .'type:"POST",'
-                .'data:{"'.Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken().'","id":$(this).attr("data-id")},'
-            . '});'
-        . '});'
-        , View::POS_READY);
+    '$("body").on("click",".image-delete",function(){'
+    . '$($(this).parent().parent()).remove();'
+    . '$.ajax({'
+    . 'url:"' . Url::toRoute(['/filemanager/image/delete', 'action' => 'filemager-image-delete']) . '",'
+    . 'dataType: "json",'
+    . 'autoUpload: true,'
+    . 'type:"POST",'
+    . 'data:{"' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '","id":$(this).attr("data-id")},'
+    . '});'
+    . '});'
+    , View::POS_READY);
 
 $this->registerJs(
-        '$("body").on("click",".image-edit",function(){'
-        . '$("#test-popover").popover();'
-        . '});'
-        , View::POS_READY);
+    '$("body").on("click",".image-edit",function(){'
+    . '$("#test-popover").popover();'
+    . '});'
+    , View::POS_READY);
 $this->registerJs(
-        '$(".select-tooltip").tooltip();'      
-        . '$(window).scroll(function() {
+    '$(".select-tooltip").tooltip();'
+    . '$(window).scroll(function() {
             if (document.documentElement.clientHeight + $(document).scrollTop() >= document.body.offsetHeight ){
                 var scrl = $("#img-thumbnails");
                 var pages = scrl.attr("page-data");
@@ -65,7 +66,7 @@ $this->registerJs(
                });
             }
         });'
-        , View::POS_READY);
+    , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
@@ -73,19 +74,19 @@ $this->registerJs(
     </div>
     <li>
         <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
-    </li>    
+    </li>
     <li>
         <a href="<?php echo Url::toRoute(['/filemanager/image/index', 'action' => 'filemanager-image-list']); ?>"><?php echo Yii::t('app', Html::encode('Foto')); ?></a>
-    </li>  
-    <?php if($album_id != 0): ?>
-    <li class="active">
-        Album : <?=  $album_name; ?>
     </li>
+    <?php if ($album_id != 0): ?>
+        <li class="active">
+            Album : <?= $album_name; ?>
+        </li>
     <?php endif; ?>
 </ul>
 <div class="page-header">
     <div class="row">
-        <div class="col-xs-8">           
+        <div class="col-xs-8">
             <h1 class="text-center text-left-sm">
                 <i class="fa  fa-picture-o  page-header-icon"> </i>
                 &nbsp;
@@ -102,7 +103,7 @@ $this->registerJs(
             <div class="pull-right">
                 <?php
                 $form = ActiveForm::begin([
-                    'action' => ['/filemanager/image/index','action'=>'filemanager-image-list','album_id'=>$album_id],
+                    'action' => ['/filemanager/image/index', 'action' => 'filemanager-image-list', 'album_id' => $album_id],
                     'method' => 'GET',
                     'options' => ['role' => 'form', 'id' => 'search'],
                     'fieldConfig' => [
@@ -123,60 +124,66 @@ $this->registerJs(
         </div>
     </div>
 </div>
-<div class="row">    
+<div class="row">
     <div class="col-sm-4 col-sm-push-8">
-        <?php
-//        echo "<pre>";
-//        print_r(\app\modules\filemanager\models\AlbumModel::getAllAlbums());
-//        echo "</pre>";
-        ?>
-        <div>
-            <ul id="album-select-list" style="border-top: 1px solid; border-bottom: 1px solid; border-color:  #ddd">    
-                <?php foreach ($album as $data): ?>
-                    <li class="clearfix">
-                        <a href="<?= Url::toRoute(['/filemanager/image/index','action'=>'filemanager-image-list','album_id'=>$data->id]) ?>"><span class="<?= $data->id == $album_id ? "active" : ""?>"><?= $data->name; ?></span></a>
-                    </li>     
-                <?php endforeach; ?>
-            </ul>
+
+        <div class="panel">
+            <div class="panel-body text-center">
+                <h3>
+                    Album List
+                </h3>
+            </div>
         </div>
-        <div id="album-select" class="open"></div>
+        <div class="list-group">
+            <?php foreach ($album as $data): ?>
+                <?= Html::a('<span class="badge badge-info">'.$data->getImageLengthByAlbum($data->id).'</span>' . $data->name, ['/filemanager/image/index', 'action' => 'filemanager-image-list', 'album_id' => $data->id], ['class' => $data->id == $album_id ? "list-group-item  active" : "list-group-item"]) ?>
+            <?php endforeach; ?>
+        </div>
     </div>
-    <div class="col-sm-8 col-sm-pull-4"> 
-        
-        <div class="ace-thumbnails" id="img-thumbnails" style="margin-top: -5px;" page-data="1">             
-            <div id="add-image" class="thumbnails-child" style="width: 160px; height: 160px; border: 2px dashed #ddd;">            
+    <div class="col-sm-8 col-sm-pull-4">
+
+        <div class="ace-thumbnails" id="img-thumbnails" style="margin-top: -5px;" page-data="1">
+            <div id="add-image" class="thumbnails-child" style="width: 160px; height: 160px; border: 2px dashed #ddd;">
                 <div class="text-center">
-                    <i class="fa fa-plus" style="color:#C0C0C0; font-size: 34px; margin-top: 40%; margin-bottom: 50%"></i>
+                    <i class="fa fa-plus"
+                       style="color:#C0C0C0; font-size: 34px; margin-top: 40%; margin-bottom: 50%"></i>
                     <input id="fileupload" accept="image/*" placeholder="Pilih file" type="file" name="file" multiple>
                 </div>
-            </div>   
-             
+            </div>
+
             <?php
             /** @var app\modules\dao\ar\File $v */
             foreach ($model as $v):
-                ?>            
-            <div class="thumbnails-child" style="width: 160px; height: 160px;">
+                ?>
+                <div class="thumbnails-child" style="width: 160px; height: 160px;">
                     <div>
-                        <img width="150" data-original="<?= Yii::getAlias('@web') . "/resources/images/original/" . $v->unique_name ?>" alt="<?= $v->name ?>" src="<?= Yii::getAlias('@web') . "/resources/images/thumbnail/145x145/" . $v->unique_name ?>" data-unique-name="<?= $v->unique_name ?>" />                                            
+                        <img width="150"
+                             data-original="<?= Yii::getAlias('@web') . "/resources/images/original/" . $v->unique_name ?>"
+                             alt="<?= $v->name ?>"
+                             src="<?= Yii::getAlias('@web') . "/resources/images/thumbnail/145x145/" . $v->unique_name ?>"
+                             data-unique-name="<?= $v->unique_name ?>"/>
                     </div>
-                    <div class="tools tools-bottom"> 
-                        <a href="javascript:undefined;" class="image-zoom select-tooltip" data-id="<?= $v->id ?>" data-toggle="tooltip" data-placement="top" data-original-title="Perbesar">
+                    <div class="tools tools-bottom">
+                        <a href="javascript:undefined;" class="image-zoom select-tooltip" data-id="<?= $v->id ?>"
+                           data-toggle="tooltip" data-placement="top" data-original-title="Perbesar">
                             <i class="fa fa-search-plus"></i>
                         </a>
-                        <a href="javascript:undefined;" class="image-delete select-tooltip" data-id="<?= $v->id ?>" data-toggle="tooltip" data-placement="top" data-original-title="Hapus">
+                        <a href="javascript:undefined;" class="image-delete select-tooltip" data-id="<?= $v->id ?>"
+                           data-toggle="tooltip" data-placement="top" data-original-title="Hapus">
                             <i class="fa fa-times" style="color:#d15b47"></i>
                         </a>
-                        <a href="javascript:undefined;" class="image-edit select-tooltip" data-id="<?= $v->id ?>" data-toggle="tooltip" data-placement="top" data-original-title="Edit">
-                            <i class="fa fa-pencil"></i>                            
-                        </a>                        
-                    </div>                    
-                </div>                
+                        <a href="javascript:undefined;" class="image-edit select-tooltip" data-id="<?= $v->id ?>"
+                           data-toggle="tooltip" data-placement="top" data-original-title="Edit">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                    </div>
+                </div>
             <?php endforeach; ?>
-        </div>       
+        </div>
 
         <div class="row">
             <div class="col-sm-12">
-                <div class="text-center" id="loading" style="display: none">             
+                <div class="text-center" id="loading" style="display: none">
                     <img src="<?= Yii::getAlias('@web') . "/PixelAdmin/img/loading-3.gif" ?>"/>
                 </div>
             </div>
@@ -199,7 +206,7 @@ $this->registerJs(
     })();   
     var uid = guid();
     $('#fileupload').fileupload({
-        url: '".Url::toRoute(['/filemanager/image/upload'])."',       
+        url: '" . Url::toRoute(['/filemanager/image/upload']) . "',
         dataType: 'json',
         autoUpload: true,
         formData:{'" . Yii::$app->request->csrfParam . "' : '" . Yii::$app->request->getCsrfToken() . "','album_id':$album_id},
@@ -217,7 +224,7 @@ $this->registerJs(
             file = data.files[index];            
         if (file.preview) {           
             $('#add-image').after('<div  style=\"width: 160px; height: 160px;\" id=\"new-image-'+uid+'\" class=\"thumbnails-child\"><div id=\"progress\" class=\"progress progress-striped active\" style=\"margin-top: 0; margin-bottom: 0\"><div class=\"progress-bar\" ></div></div></div>');
-            data.context  = $('#new-image-'+uid).prepend('<div><img width=\"150\" height=\"137\" src=\" ". Yii::getAlias('@web') . "/resources/images/thumbnail/145x145/blank.png"."\" /></div>');
+            data.context  = $('#new-image-'+uid).prepend('<div><img width=\"150\" height=\"137\" src=\" " . Yii::getAlias('@web') . "/resources/images/thumbnail/145x145/blank.png" . "\" /></div>');
         }
 //        if (file.error) {
 //            node
@@ -264,7 +271,7 @@ $this->registerJs(
         });
     }).prop('disabled', !$.support.fileInput)
         .parent().addClass($.support.fileInput ? undefined : 'disabled');"
-        , View::POS_READY);
+    , View::POS_READY);
 ?>
 <?php
 //GridView::widget([
