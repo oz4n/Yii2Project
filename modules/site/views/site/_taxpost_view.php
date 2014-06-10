@@ -16,8 +16,8 @@ $imgname = $img[count($img) - 1];
             <li><i class="fa fa-bullhorn"></i>&nbsp;<?= $data->findTaxNameBySLug($tax) ?></li>
         </ul>
     </div>
-    <div class="col-md-8">                        
-        <h2><?= Html::a($data->title, Url::toRoute(['/site/site/view', 'tax' => $tax, 'slug' => $data->slug])); ?></h2>           
+    <div class="col-md-8">
+        <h2><?= Html::a($data->title, Url::toRoute(['/site/site/view', 'tax' => $tax, 'slug' => $data->slug])); ?></h2>
         <p>
             <?= TextHelper::word_limiter(strip_tags($data->content), 45) ?>
         </p>

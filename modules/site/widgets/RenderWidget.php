@@ -11,6 +11,7 @@ namespace app\modules\site\widgets;
 use yii\base\Widget;
 use app\modules\site\models\WidgetModel;
 use yii\helpers\Html;
+use yii\helpers\Json;
 
 class RenderWidget extends Widget
 {
@@ -29,7 +30,17 @@ class RenderWidget extends Widget
     {
         foreach ($this->findAllWidget() as $value) {
             switch ($value->type) {
-                case "PostSerch":
+                case "RecentPostsHome";
+                    $param = Json::decode($value->content);
+                    echo Html::beginTag('div', ['class' => $this->colClass]);
+                    echo \app\modules\site\widgets\RecentPostsHome::widget([
+                        'title' => $value->name,
+                        'limit' => $param['limit'],
+                        'category' => $param['category']
+                    ]);
+                    echo Html::endTag('div');
+                    break;
+                case "PostSerch";
                     echo Html::beginTag('div', ['class' => $this->colClass]);
                     echo \app\modules\site\widgets\PostSerch::widget([
                         'action' => ['/site/site/tax', 'tax' => $this->tax],
@@ -37,16 +48,35 @@ class RenderWidget extends Widget
                     echo Html::endTag('div');
                     break;
                 case "RecentPosts";
+                    $param = Json::decode($value->content);
                     echo Html::beginTag('div', ['class' => $this->colClass]);
                     echo \app\modules\site\widgets\RecentPosts::widget([
-                        'title' => $value->name
+                        'title' => $value->name,
+                        'limit' => $param['limit'],
+                        'category' => $param['category']
+                    ]);
+                    echo Html::endTag('div');
+                    break;
+                case "Contact";
+                    echo Html::beginTag('div', ['class' => $this->colClass]);
+                    echo \app\modules\site\widgets\Contact::widget([
+                        'title' => $value->name,
+                        'param' => Json::decode($value->content)
+                    ]);
+                    echo Html::endTag('div');
+                    break;
+                case "SosialNetwork";
+                    echo Html::beginTag('div', ['class' => $this->colClass]);
+                    echo \app\modules\site\widgets\SosialNetwork::widget([
+                        'title' => $value->name,
+                        'param' => Json::decode($value->content)
                     ]);
                     echo Html::endTag('div');
                     break;
                 case "HTML";
                     echo Html::beginTag('div', ['class' => $this->colClass]);
                     echo Html::beginTag('div', ['class' => 'magazine-sb-categories']);
-                    echo Html::tag('div', Html::tag('H2', $value->name), ['class' => 'headline headline-md']);
+                    echo Html::tag('div', Html::tag('H2', $value->name), ['class' => 'headline']);
                     echo Html::tag('div', $value->content);
                     echo Html::endTag('div');
                     echo Html::endTag('div');

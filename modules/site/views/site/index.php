@@ -1,4 +1,6 @@
 <?php
+use app\modules\site\widgets\RenderWidget;
+
 /* Slider */
 echo $this->render('slider');
 ?>
@@ -22,85 +24,15 @@ echo $this->render('slider');
         <div class="col-md-9">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="posts">
-                        <div class="headline"><h2>Pengumuman</h2></div>  
-                        <dl class="dl-horizontal">
-                            <dt><a href="#"><img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/elastislide/1.jpg" alt="" /></a></dt>
-                            <dd>
-                                <b>Anim moon officia Unify is an incredibly beautiful</b>
-                                <p> responsive Bootstrap Template nim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</p> 
-                            </dd>
-                        </dl>
-                        <dl class="dl-horizontal">
-                            <dt><a href="#"><img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/elastislide/2.jpg" alt="" /></a></dt>
-                            <dd>
-                                <b>Anim moon officia Unify is an incredibly beautiful</b>
-                                <p>responsive Bootstrap Template nim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</p> 
-                            </dd>
-                        </dl>
-                        <dl class="dl-horizontal">
-                            <dt><a href="#"><img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/elastislide/6.jpg" alt="" /></a></dt>
-                            <dd>
-                                <b>Anim moon officia Unify is an incredibly beautiful</b>
-                                <p> responsive Bootstrap Template nim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</p> 
-                            </dd>
-                        </dl>
-                        <dl class="dl-horizontal">
-                            <dt><a href="#"><img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/elastislide/7.jpg" alt="" /></a></dt>
-                            <dd>
-                                <b>Anim moon officia Unify is an incredibly beautiful</b>
-                                <p>Bootstrap Template nim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</p> 
-                            </dd>
-                        </dl>
-                        <dl class="dl-horizontal">
-                            <dt><a href="#"><img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/elastislide/5.jpg" alt="" /></a></dt>
-                            <dd>
-                                <b>Anim moon officia Unify is an incredibly beautiful</b>
-                                <p>responsive Bootstrap Templatenim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</p> 
-                            </dd>
-                        </dl>                       
-                    </div>
+                    <?=
+                    RenderWidget::widget(['colClass'=>'col-sm-12 margin-bottom-20 ','layoute_position' => 'homeleft']);
+                    ?>
                 </div>
                 <!--Info Block-->
                 <div class="col-md-6">
-                    <div class="posts">
-                        <div class="headline"><h2>Berita</h2></div>  
-                        <dl class="dl-horizontal">
-                            <dt><a href="#"><img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/elastislide/11.jpg" alt="" /></a></dt>
-                            <dd>
-                                <b>Anim moon officia Unify is an incredibly beautiful</b>
-                                <p>responsive Bootstrap Template nim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</p> 
-                            </dd>
-                        </dl>
-                        <dl class="dl-horizontal">
-                            <dt><a href="#"><img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/elastislide/10.jpg" alt="" /></a></dt>
-                            <dd>
-                                <b>Anim moon officia Unify is an incredibly beautiful</b>
-                                <p> responsive Bootstrap Template nim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</p> 
-                            </dd>
-                        </dl>
-                        <dl class="dl-horizontal">
-                            <dt><a href="#"><img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/elastislide/8.jpg" alt="" /></a></dt>
-                            <dd>
-                                <b>Anim moon officia Unify is an incredibly beautiful</b>
-                                <p>responsive Bootstrap Template nim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</p> 
-                            </dd>
-                        </dl>
-                        <dl class="dl-horizontal">
-                            <dt><a href="#"><img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/elastislide/9.jpg" alt="" /></a></dt>
-                            <dd>
-                                <b>Anim moon officia Unify is an incredibly beautiful</b>
-                                <p>responsive Bootstrap Template nim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</p> 
-                            </dd>
-                        </dl>
-                        <dl class="dl-horizontal">
-                            <dt><a href="#"><img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/elastislide/11.jpg" alt="" /></a></dt>
-                            <dd>
-                                <b>Anim moon officia Unify is an incredibly beautiful</b>
-                                <p>responsive Bootstrap Templatenim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</p> 
-                            </dd>
-                        </dl>                        
-                    </div>
+                    <?=
+                    RenderWidget::widget(['colClass'=>'col-sm-12 margin-bottom-20 ','layoute_position' => 'homeright']);
+                    ?>
                 </div>
                 <!--End Info Block-->
             </div>
