@@ -5,13 +5,14 @@ namespace app\modules\appearance\searchs;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\dao\ar\Widget;
 use app\modules\appearance\Appearance;
+use app\modules\appearance\models\WidgetModel;
+
 
 /**
  * WidgetSearc represents the model behind the search form about `app\modules\dao\ar\Widget`.
  */
-class WidgetSearc extends Widget
+class WidgetSearc extends WidgetModel
 {
     public function rules()
     {
@@ -74,4 +75,6 @@ class WidgetSearc extends Widget
         $query = $model->onCondition(['layoute_position' => Appearance::APPEARANCE_WIDGET_FOOTER_POSITION]);
         return $query->orderBy(['position' => SORT_ASC])->all();
     }
+
+
 }

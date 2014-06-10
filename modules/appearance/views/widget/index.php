@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 use yii\web\View;
 use yii\helpers\Url;
 
@@ -15,6 +14,31 @@ $this->registerJs(
     "$('ul.navigation > li.mm-dropdown > ul > li#widget').addClass('active').parent().parent().addClass('active open');"
     , View::POS_READY);
 $this->registerCssFile(Yii::getAlias('@web') . '/jnestable/widgetnestable.css');
+//delte menu item
+$this->registerJs(
+    '$("body").on("click",".widget-delete",function(){'
+    . 'console.log(this);'
+    . 'var data_id = $(this).attr("data-id");'
+    . '$(this).parent().parent().parent().remove();'
+    . '$.ajax({
+                url: "' . Url::toRoute(['/appearance/widget/deletewidgetitem', 'action' => 'appearance-widget-deleteitem']) . '",
+                type:"post",
+                data:{
+                    "dataid":data_id,
+                    "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '"
+                },
+                dataType:"json",
+                success:function(response){
+                    $("html,body").animate({ scrollTop: 0 }, 500);
+                        PixelAdmin.plugins.alerts.add("<strong>Sukses!</strong>&nbsp;" + response.text, {
+                            type:"success",
+                            auto_close:9
+                       });
+                }
+            });'
+    . 'return false;'
+    . '});'
+    , View::POS_READY);
 $this->registerJs(
     'var nestable_updatesort = function(jsonstring) {
             $.ajax({
@@ -58,6 +82,9 @@ $this->registerJs(
                 expandBtnHTML : "",
                 collapseBtnHTML : ""
             }).on("change", function(){updateOutput(id);});
+            $(".dd-handle a").on("mousedown", function(e){
+                    e.stopPropagation();
+            });
         };
         nestableBuilder("#nestable-sidebar");
         nestableBuilder("#nestable-footer");
@@ -112,7 +139,7 @@ $this->registerJs(
                     <div class="follower">
                         <div class="body">
                             <div class="follower-controls">
-                                <?= Html::a('<i class="fa fa-plus"></i><span>&nbsp;&nbsp;Tambahkan</span>', '#', ['class' => 'btn btn-xs btn-primary']) ?>
+                                <?= Html::a('<i class="fa fa-plus"></i><span>&nbsp;&nbsp;Tambahkan</span>', ['/appearance/widget/create','action'=>'appearance-widget-crete','id'=>$value->id], ['class' => 'btn btn-xs btn-primary']) ?>
                             </div>
                             <p>
                                 <span class="follower-name"><?= $value->name ?></span><br>
@@ -137,7 +164,11 @@ $this->registerJs(
                             <li class="dd-item" data-id="<?= $sidebar->id ?>" data-position="<?= $sidebar->position ?>" data-layoute="<?= $sidebar->layoute_position ?>">
                                 <div class="dd-handle"><?= $sidebar->name ?>
                                     <div class="pull-right action-buttons">
-                                        <a style="color: #a94442 " class="menu-delete select-tooltip" data-id="128"
+                                        <a class="select-tooltip" data-id="<?= $sidebar->id ?>"
+                                           data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/appearance/widget/update','action'=>'appearance-widget-update','id'=>$sidebar->id])?>">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                        <a style="color: #a94442 " class="widget-delete select-tooltip" data-id="<?= $sidebar->id ?>"
                                            data-toggle="tooltip" data-original-title="Hapus" href="javascript:undefined;">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
@@ -166,7 +197,11 @@ $this->registerJs(
                             <li class="dd-item" data-id="<?= $footer->id ?>" data-position="<?= $footer->position ?>" data-layoute="<?= $footer->layoute_position ?>">
                             <div class="dd-handle"><?= $footer->name ?>
                                 <div class="pull-right action-buttons">
-                                    <a style="color: #a94442 " class="menu-delete select-tooltip" data-id="128"
+                                    <a class="select-tooltip" data-id="<?= $footer->id ?>"
+                                       data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/appearance/widget/update','action'=>'appearance-widget-update','id'=>$footer->id])?>">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a style="color: #a94442 " class="widget-delete select-tooltip" data-id="<?= $footer->id ?>"
                                        data-toggle="tooltip" data-original-title="Hapus" href="javascript:undefined;">
                                         <i class="fa fa-trash-o"></i>
                                     </a>
