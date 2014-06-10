@@ -3,17 +3,18 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
+
 /**
  * @var yii\web\View $this
  * @var app\modules\dao\ar\Post $model
  */
 
 $this->title = Yii::t('app', 'Perbaharui {modelClass}: ', [
-    'modelClass' => 'Halaman',
-]) . ' ' . $model->title;
+        'modelClass' => 'Halaman',
+    ]) . ' ' . $model->title;
 $this->registerJs(
-        "$('ul.navigation > li#pages').addClass('active');"       
-        , View::POS_READY);
+    "$('ul.navigation > li#pages').addClass('active');"
+    , View::POS_READY);
 ?>
 
 <ul class="breadcrumb breadcrumb-page">
@@ -21,10 +22,10 @@ $this->registerJs(
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index','action'=>'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
-        <a href="<?php echo Url::toRoute(['/page/page/index','action'=>'page-list']); ?>"><?php echo Yii::t('app', Html::encode('Halaman')); ?></a>
+        <a href="<?php echo Url::toRoute(['/page/page/index', 'action' => 'page-list']); ?>"><?php echo Yii::t('app', Html::encode('Halaman')); ?></a>
     </li>
     <li class="active">
         <?php echo Yii::t('app', Html::encode($this->title)); ?>
@@ -49,10 +50,21 @@ $this->registerJs(
 </div>
 <div class="row">
 
-    <?=
-    $this->render('_form', [
-        'model' => $model,
-        'other' => $other
-    ])
+    <?php
+    switch ($model->content) {
+        case "pagehome";
+            echo $this->render('static/_page_home_form', [
+                'widgetleft' => $widgetleft,
+                'widgetright' => $widgetright,
+                'model' => $model,
+                'other' => $other
+            ]);
+            break;
+        default;
+            echo $this->render('_form', [
+                'model' => $model,
+                'other' => $other
+            ]);
+    }
     ?>
 </div>

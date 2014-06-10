@@ -4,6 +4,7 @@ namespace app\modules\page\controllers;
 
 define("DS", DIRECTORY_SEPARATOR);
 
+use app\modules\page\models\WidgetModel;
 use Yii;
 use app\modules\page\models\PageModel;
 use app\modules\page\searchs\PageSerch;
@@ -52,8 +53,8 @@ class PageController extends Controller
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
             return $this->render('index', [
-                        'dataProvider' => $dataProvider,
-                        'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -69,7 +70,7 @@ class PageController extends Controller
     {
         if (Yii::$app->user->can('pageview')) {
             return $this->render('view', [
-                        'model' => $this->findModel($id),
+                'model' => $this->findModel($id),
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -108,8 +109,8 @@ class PageController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
-                            'model' => $model,
-                            'other' => ['imgsliderstatus' => 'Disable']
+                    'model' => $model,
+                    'other' => ['imgsliderstatus' => 'Disable']
                 ]);
             }
         } else {
@@ -155,9 +156,13 @@ class PageController extends Controller
                 $model->save();
                 return $this->redirect(['update', 'action' => 'page-update', 'id' => $model->id]);
             } else {
+                $widget = new WidgetModel;
+
                 return $this->render('update', [
-                            'model' => $model,
-                            'other' => Json::decode($model->other_content)
+                    'widgetleft' => $widget->loadAllLeftWidget(),
+                    'widgetright' => $widget->loadAllRightWidget(),
+                    'model' => $model,
+                    'other' => Json::decode($model->other_content)
                 ]);
             }
         } else {
