@@ -38,39 +38,9 @@ echo $this->render('slider');
             </div>
         </div>
         <div class="col-md-3">
-            <!-- Blog Twitter -->
-            <div class="blog-twitter">
-                <div class="headline headline-md"><h2>Buku Tamu</h2></div>
-                <div class="blog-twitter-inner">
-                    <i class="fa fa-comment-o"></i>
-                    <a href="blog_large.html#">@htmlstream</a> 
-                    At vero eos et accusamus et iusto odio dignissimos. 
-                    <a href="blog_large.html#">http://t.co/sBav7dm</a> 
-                    <span>5 hours ago</span>
-                </div>
-                <div class="blog-twitter-inner">
-                    <i class="fa fa-comment-o"></i>
-                    <a href="blog_large.html#">@htmlstream</a> 
-                    At vero eos et accusamus et iusto odio dignissimos. 
-                    <a href="blog_large.html#">http://t.co/sBav7dm</a> 
-                    <span>5 hours ago</span>
-                </div>
-                <div class="blog-twitter-inner">
-                    <i class="fa fa-comment-o"></i>
-                    <a href="blog_large.html#">@htmlstream</a> 
-                    At vero eos et accusamus et iusto odio dignissimos. 
-                    <a href="blog_large.html#">http://t.co/sBav7dm</a> 
-                    <span>5 hours ago</span>
-                </div>
-                <div class="blog-twitter-inner">
-                    <i class="fa fa-comment-o"></i>
-                    <a href="blog_large.html#">@htmlstream</a> 
-                    At vero eos et accusamus et iusto odio dignissimos. 
-                    <a href="blog_large.html#">http://t.co/sBav7dm</a> 
-                    <span>5 hours ago</span>
-                </div>
-            </div>
-            <!-- End Blog Twitter -->
+            <?=
+            RenderWidget::widget(['colClass'=>'col-sm-12 margin-bottom-20 ','layoute_position' => 'homesidebar']);
+            ?>
         </div>
     </div>
 </div>
