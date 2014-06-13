@@ -161,6 +161,10 @@ class PageController extends Controller
                 return $this->render('update', [
                     'widgetleft' => $widget->loadAllLeftWidget(),
                     'widgetright' => $widget->loadAllRightWidget(),
+                    'widgetsidebar' => $widget->loadAllSidebarWidget(),
+                    'defaultwidget' => $widget->loadAllDefaultWidget(),
+                    'page' => $id,
+                    'pagename' => $model->title,
                     'model' => $model,
                     'other' => Json::decode($model->other_content)
                 ]);

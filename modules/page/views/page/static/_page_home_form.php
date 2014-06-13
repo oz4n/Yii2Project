@@ -13,42 +13,66 @@ use yii\helpers\Url;
  */
 $this->registerCssFile(Yii::getAlias('@web') . '/jnestable/widgetnestable.css');
 $this->registerJs(
-    '$("#select-tag").select2({ allowClear: true, placeholder: "Tag ..."}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
-    . '$("#select-status").select2({ allowClear: true, placeholder: "Tag ..."}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
-    , View::POS_READY);
+        '$("#select-tag").select2({ allowClear: true, placeholder: "Tag ..."}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
+        . '$("#select-status").select2({ allowClear: true, placeholder: "Tag ..."}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
+        , View::POS_READY);
 
 //fost form validation
 $this->registerJs(
-    'init.push(function () { '
-    . '$("body").on("click",".switcher-state-on",function(){'
-    . '$("#img-slider").fadeOut();'
-    . '});'
-    . '$("body").on("click",".switcher-state-off",function(){'
-    . '$("#img-slider").fadeIn();'
-    . '});'
-    . '$("#imgsliderstatus-id").switcher({'
-    . 'theme: "square",'
-    . '});'
-    . 'var page_form = $("#page-form");'
-    . 'page_form.validate({'
-    . 'ignore: ".ignore",'
-    . 'focusInvalid: true,'
-    . 'rules:{'
-    . '"PageModel[title]":{required: true, maxlength: 128},'
-    . '"PageModel[status]":{required: true},'
-    . '},'
-    . 'messages: {'
-    . '"PageModel[title]" : "Tidak boleh Kosong.",'
-    . '"PageModel[status]" : "Tidak boleh Kosong.",'
-    . '}'
-    . '});'
+        'init.push(function () { '
+        . '$("body").on("click",".switcher-state-on",function(){'
+        . '$("#img-slider").fadeOut();'
+        . '});'
+        . '$("body").on("click",".switcher-state-off",function(){'
+        . '$("#img-slider").fadeIn();'
+        . '});'
+        . '$("#imgsliderstatus-id").switcher({'
+        . 'theme: "square",'
+        . '});'
+        . 'var page_form = $("#page-form");'
+        . 'page_form.validate({'
+        . 'ignore: ".ignore",'
+        . 'focusInvalid: true,'
+        . 'rules:{'
+        . '"PageModel[title]":{required: true, maxlength: 128},'
+        . '"PageModel[status]":{required: true},'
+        . '},'
+        . 'messages: {'
+        . '"PageModel[title]" : "Tidak boleh Kosong.",'
+        . '"PageModel[status]" : "Tidak boleh Kosong.",'
+        . '}'
+        . '});'
+        . '});'
+        , View::POS_READY);
+//delte menu item
+$this->registerJs(
+    '$("body").on("click",".widget-delete",function(){'
+    . 'console.log(this);'
+    . 'var data_id = $(this).attr("data-id");'
+    . '$(this).parent().parent().parent().remove();'
+    . '$.ajax({
+                url: "' . Url::toRoute(['/page/widget/deletewidgetitem', 'action' => 'appearance-widget-deleteitem']) . '",
+                type:"post",
+                data:{
+                    "dataid":data_id,
+                    "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '"
+                },
+                dataType:"json",
+                success:function(response){
+                    $("html,body").animate({ scrollTop: 0 }, 500);
+                        PixelAdmin.plugins.alerts.add("<strong>Sukses!</strong>&nbsp;" + response.text, {
+                            type:"success",
+                            auto_close:9
+                       });
+                }
+            });'
+    . 'return false;'
     . '});'
     , View::POS_READY);
-
 $this->registerJs(
-    'var nestable_updatesort = function(jsonstring) {
+        'var nestable_updatesort = function(jsonstring) {
             $.ajax({
-                    url: "' . Url::toRoute(['/appearance/widget/updateposition', 'action' => 'appearance-widget-updateposition']) . '",
+                    url: "' . Url::toRoute(['/page/widget/updateposition', 'action' => 'page-widget-updateposition']) . '",
                     type: "POST",
                     dataType: "json",
                     data: {
@@ -64,6 +88,7 @@ $this->registerJs(
                     }
             });
         };
+        
         var updateOutput = function(id)
         {
             var listdata = $(id + " .dd-list").find("li");
@@ -106,7 +131,7 @@ $this->registerJs(
             nestable_updatesort(window.JSON.stringify(list.nestable("serialize")));
         });
         '
-    , View::POS_READY);
+        , View::POS_READY);
 ?>
 <?php $form = ActiveForm::begin(['id' => 'page-form']); ?>
 <div class="col-sm-8">
@@ -115,104 +140,128 @@ $this->registerJs(
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div class="panel">
+            <div class="panel widget-followers">
+                <div class="panel-heading">
+                    <span class="panel-title">Widget yang tersedia</span>
+                </div>
                 <div class="panel-body">
-                    <div class="form-inline">
-                        <input type="hidden" name="action" value="appearance-menu-list">
-                        <div class="form-group">
-                            <span>Tambahkan Widget:</span>
-                            <a href="" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> &nbsp; Tambahkan</a>
+                    <?php foreach ($defaultwidget as $value): ?>
+                        <div class="follower">
+                            <div class="body">
+                                <div class="follower-controls">
+                                    <?= Html::a('<i class="fa fa-plus"></i><span>&nbsp;&nbsp;Tambahkan</span>', ['/page/widget/create', 'action' => 'page-widget-crete', 'id' => $value->id,'page' => $page, 'pagename' => $pagename], ['class' => 'btn btn-xs btn-primary']) ?>
+                                </div>
+                                <p>
+                                    <span class="follower-name"><?= $value->name ?></span><br>
+                                    <span class="follower-username"><?= $value->content ?></span>
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="panel">
-                <div class="panel-heading">
-                    <span class="panel-title">Widget Posisi Kiri</span>
-                </div>
-                <div class="panel-body padding-sm" >
-                    <div class="dd" id="nestable-left">
-                        <ol class="dd-list">
-                            <?php foreach ($widgetleft as $left): ?>
-                                <li class="dd-item" data-id="<?= $left->id ?>" data-position="<?= $left->position ?>" data-layoute="<?= $left->layoute_position ?>">
-                                    <div class="dd-handle"><?= $left->name ?>
-                                        <div class="pull-right action-buttons">
-                                            <a class="select-tooltip" data-id="<?= $left->id ?>"
-                                               data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update','action'=>'page-widget-update','id'=>$left->id])?>">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                            <a style="color: #a94442 " class="widget-delete select-tooltip" data-id="<?= $left->id ?>"
-                                               data-toggle="tooltip" data-original-title="Hapus" href="javascript:undefined;">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
-                            <?php endforeach; ?>
-                        </ol>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <button type="button" class="btn btn-xs btn-primary" id="btn-left-save"><i class="fa fa-check"></i>&nbsp; Simpan</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="panel">
-                <div class="panel-heading">
-                    <span class="panel-title">Widget Posisi Kanan</span>
-                </div>
-                <div class="panel-body padding-sm" >
-                    <div class="dd" id="nestable-right">
-                        <ol class="dd-list">
-                            <?php foreach ($widgetright as $right): ?>
-                                <li class="dd-item" data-id="<?= $right->id ?>" data-position="<?= $right->position ?>" data-layoute="<?= $right->layoute_position ?>">
-                                    <div class="dd-handle"><?= $right->name ?>
-                                        <div class="pull-right action-buttons">
-                                            <a class="select-tooltip" data-id="<?= $right->id ?>"
-                                               data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update','action'=>'page-widget-update','id'=>$right->id])?>">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                            <a style="color: #a94442 " class="widget-delete select-tooltip" data-id="<?= $right->id ?>"
-                                               data-toggle="tooltip" data-original-title="Hapus" href="javascript:undefined;">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
-                            <?php endforeach; ?>
-                        </ol>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <button type="button" class="btn btn-xs btn-primary" id="btn-right-save"><i class="fa fa-check"></i>&nbsp; Simpan</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 <div class="col-sm-4">
+    
+    <!--posisikanan-->
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-title">Widget Posisi Kanan</span>
+        </div>
+        <div class="panel-body padding-sm" >
+            <div class="dd" id="nestable-right">
+                <ol class="dd-list">
+                    <?php foreach ($widgetright as $right): ?>
+                        <li class="dd-item" data-id="<?= $right->id ?>" data-position="<?= $right->position ?>" data-layoute="<?= $right->layoute_position ?>">
+                            <div class="dd-handle"><?= $right->name ?>
+                                <div class="pull-right action-buttons">
+                                    <a class="select-tooltip" data-id="<?= $right->id ?>"
+                                       data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update', 'action' => 'page-widget-update', 'id' => $right->id,'page' => $page, 'pagename' => $pagename]) ?>">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a style="color: #a94442 " class="widget-delete select-tooltip" data-id="<?= $right->id ?>"
+                                       data-toggle="tooltip" data-original-title="Hapus" href="javascript:undefined;">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ol>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button type="button" class="btn btn-xs btn-primary" id="btn-right-save"><i class="fa fa-check"></i>&nbsp; Simpan</button>
+        </div>
+    </div>
 
+    <!--start posisi kiri-->
+    <div class="panel">
+        <div class="panel-heading">
+            <span class="panel-title">Widget Posisi Kiri</span>
+        </div>
+        <div class="panel-body padding-sm" >
+            <div class="dd" id="nestable-left">
+                <ol class="dd-list">
+                    <?php foreach ($widgetleft as $left): ?>
+                        <li class="dd-item" data-id="<?= $left->id ?>" data-position="<?= $left->position ?>" data-layoute="<?= $left->layoute_position ?>">
+                            <div class="dd-handle"><?= $left->name ?>
+                                <div class="pull-right action-buttons">
+                                    <a class="select-tooltip" data-id="<?= $left->id ?>"
+                                       data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update', 'action' => 'page-widget-update', 'id' => $left->id,'page' => $page, 'pagename' => $pagename]) ?>">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a style="color: #a94442 " class="widget-delete select-tooltip" data-id="<?= $left->id ?>"
+                                       data-toggle="tooltip" data-original-title="Hapus" href="javascript:undefined;">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ol>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button type="button" class="btn btn-xs btn-primary" id="btn-left-save"><i class="fa fa-check"></i>&nbsp; Simpan</button>
+        </div>
+    </div>
+
+    <!--start sidebar-->
     <div class="panel">
         <div class="panel-heading">
             <span class="panel-title">Sidebar</span>
         </div>
         <div class="panel-body">
-            <div class="form-group">
-
+            <div class="dd" id="nestable-sidebar">
+                <ol class="dd-list">
+                    <?php foreach ($widgetsidebar as $sidebar): ?>
+                        <li class="dd-item" data-id="<?= $sidebar->id ?>" data-position="<?= $sidebar->position ?>" data-layoute="<?= $sidebar->layoute_position ?>">
+                            <div class="dd-handle"><?= $sidebar->name ?>
+                                <div class="pull-right action-buttons">
+                                    <a class="select-tooltip" data-id="<?= $sidebar->id ?>"
+                                       data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update', 'action' => 'page-widget-update', 'id' => $sidebar->id,'page' => $page, 'pagename' => $pagename]) ?>">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    <a style="color: #a94442 " class="widget-delete select-tooltip" data-id="<?= $sidebar->id ?>"
+                                       data-toggle="tooltip" data-original-title="Hapus" href="javascript:undefined;">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ol>
             </div>
         </div>
         <div class="panel-footer">
             <button class="btn btn-xs btn-primary" id="btn-sidebar-save"><i class="fa fa-check"></i>&nbsp; Simpan</button>
         </div>
     </div>
-
-
     <div class="panel">
         <div class="panel-heading">
             <span class="panel-title">Aksi</span>
@@ -224,7 +273,7 @@ $this->registerJs(
                 'Publish' => 'Publish',
                 'Draft' => 'Draft',
                 'Trash' => 'Trash'
-            ], ['id' => 'select-status', 'maxlength' => 15]);
+                    ], ['id' => 'select-status', 'maxlength' => 15]);
             ?>
         </div>
         <div class="panel-footer">

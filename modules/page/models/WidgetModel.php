@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: root
@@ -8,12 +9,12 @@
 
 namespace app\modules\page\models;
 
-
 use app\modules\dao\ar\Widget;
 use app\modules\page\Page;
 
 class WidgetModel extends Widget
 {
+
     public function loadAllLeftWidget()
     {
         $model = self::find();
@@ -34,4 +35,58 @@ class WidgetModel extends Widget
         $query = $model->onCondition(['layoute_position' => Page::WIDGET_HOME_SIDEBAR_POSITION]);
         return $query->orderBy(['position' => SORT_ASC])->all();
     }
-} 
+
+    public function loadAllDefaultWidget()
+    {
+        $model = self::find();
+        $query = $model->onCondition(['status' => Page::WIDGET_DEFAULT_HOME]);
+        return $query->orderBy(['position' => SORT_ASC])->all();
+    }
+
+    public function setPostAttr($model, $param)
+    {
+        if ($param['category'] !== null) {
+            $data = [
+                'category' => $param['category'],
+                'limit' => $param['limit']
+            ];
+            return $model->setAttribute('content', Json::encode($data));
+        } else {
+            $data = ['category' => null, 'limit' => $param['limit']];
+            ;
+            return $model->setAttribute('content', Json::encode($data));
+        }
+    }
+
+    public function setContactAttr($model, $param)
+    {
+
+        $data = [
+            'city' => $param['city'],
+            'address' => $param['address'],
+            'email' => $param['email'],
+            'phone' => $param['phone']
+        ];
+        return $model->setAttribute('content', Json::encode($data));
+    }
+
+    public function setSosialNetworkAttr($model, $param)
+    {
+
+        $data = [
+            'google_link' => $param['google_link'],
+            'facebook_link' => $param['facebook_link'],
+            'twiter_link' => $param['twiter_link']
+        ];
+        return $model->setAttribute('content', Json::encode($data));
+    }
+
+    public function setGuestBookAttr($model, $param)
+    {
+        $data = [
+            'limit' => $param['limit']
+        ];
+        return $model->setAttribute('content', Json::encode($data));
+    }
+
+}

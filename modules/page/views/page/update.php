@@ -26,7 +26,7 @@ $this->registerJs(
     </li>
     <li>
         <a href="<?php echo Url::toRoute(['/page/page/index', 'action' => 'page-list']); ?>"><?php echo Yii::t('app', Html::encode('Halaman')); ?></a>
-    </li>
+    </li>   
     <li class="active">
         <?php echo Yii::t('app', Html::encode($this->title)); ?>
     </li>
@@ -56,6 +56,10 @@ $this->registerJs(
             echo $this->render('static/_page_home_form', [
                 'widgetleft' => $widgetleft,
                 'widgetright' => $widgetright,
+                'widgetsidebar' => $widgetsidebar,
+                'defaultwidget' => $defaultwidget,
+                'page' => $page,
+                'pagename' => $pagename,
                 'model' => $model,
                 'other' => $other
             ]);

@@ -10,6 +10,7 @@ class Page extends \yii\base\Module
     const WIDGET_HOME_RIGHT_POSITION = 'homeright';
     const WIDGET_HOME_LEFT_POSITION = 'homeleft';
     const WIDGET_HOME_SIDEBAR_POSITION = 'homesidebar';
+    const WIDGET_DEFAULT_HOME = 'HomeDefaultWidget';
 
     public $controllerNamespace = 'app\modules\page\controllers';
 

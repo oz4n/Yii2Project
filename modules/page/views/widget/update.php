@@ -1,35 +1,36 @@
 <?php
-
 use yii\web\View;
+
 use yii\helpers\Url;
 use yii\helpers\Html;
-
 /**
  * @var yii\web\View $this
  * @var app\modules\dao\ar\Widget $model
  */
-$this->title = Yii::t('app', 'Create {modelClass}', [
-            'modelClass' => 'Widget',
-        ]);
+
+$this->title = Yii::t('app', 'Update {modelClass}: ', [
+        'modelClass' => 'Widget',
+    ]) . ' ' . $model->name;
 $this->registerJs(
-        "$('ul.navigation > li#pages').addClass('active');"
+        "$('ul.navigation > li#pages').addClass('active');"       
         , View::POS_READY);
 ?>
+
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
         <?php echo Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
         <a href="<?php echo Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?php echo Yii::t('app', 'Beranda'); ?></a>
-    </li>   
-    <li>
+    </li>
+      <li>
         <a href="<?php echo Url::toRoute(['/page/page/index', 'action' => 'page-list']); ?>"><?php echo Yii::t('app', Html::encode('Halaman')); ?></a>
     </li>
-    <li>
+     <li>
         <a href="<?php echo Url::toRoute(['/page/page/update', 'action' => 'page-update','id'=>$page]); ?>"><?php echo Yii::t('app', Html::encode($pagename)); ?></a>
     </li>
     <li class="active">
-        Tambah Widget
+        Perbaharui Widget
     </li>
 </ul>
 
@@ -47,8 +48,8 @@ $this->registerJs(
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-6">
 
+    <div class="col-sm-6">
         <?php
         switch ($model->type) {
             case "PostSerch":
@@ -75,8 +76,7 @@ $this->registerJs(
             case "Contact";
                 echo $this->render('_contact_form', [
                     'model' => $model,
-                    'new' => $new,
-                    "page" => $page
+                    'new' => $new
                 ]);
                 break;
             case "GuestBook";
@@ -102,4 +102,5 @@ $this->registerJs(
         }
         ?>
     </div>
+
 </div>

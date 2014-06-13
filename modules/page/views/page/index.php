@@ -24,6 +24,7 @@ $this->registerJs(''
         . '$("select.action-bulk").select2({ allowClear: true, placeholder: "Tindakan Masal"});'
         . "init.push(function () { $('td#birth-input input').datepicker({language:'id',format: 'dd MM yyyy'});});"
         , View::POS_READY);
+
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
@@ -158,14 +159,14 @@ $this->registerJs(''
                     'attribute' => 'title',
                     'label' => 'Judul'
                 ],
-                [
-                    'attribute' => 'content',
-                    'label' => 'Isi',
-                    'format' => 'raw',
-                    'value' => function($data){
-                        return TextHelper::word_limiter(strip_tags($data->content), 9);
-                    }
-                ],
+//                [
+//                    'attribute' => 'content',
+//                    'label' => 'Isi',
+//                    'format' => 'raw',
+//                    'value' => function($data){
+//                        return TextHelper::word_limiter(strip_tags($data->content), 9);
+//                    }
+//                ],
                 'layout',
                 [
                     'attribute' => 'create_et',
