@@ -73,6 +73,14 @@ class RenderWidget extends Widget
                     ]);
                     echo Html::endTag('div');
                     break;
+                case "GuestBook";
+                    echo Html::beginTag('div', ['class' => $this->colClass]);
+                    echo \app\modules\site\widgets\GuestBookList::widget([
+                        'title' => $value->name,
+                        'param' => Json::decode($value->content)
+                    ]);
+                    echo Html::endTag('div');
+                    break;
                 case "HTML";
                     echo Html::beginTag('div', ['class' => $this->colClass]);
                     echo Html::beginTag('div', ['class' => 'magazine-sb-categories']);
