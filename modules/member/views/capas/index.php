@@ -20,7 +20,7 @@ $this->registerJs(
     '$("td").css({"padding-top": "20px"});'
     ."$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#capas').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
     . '$("td > select").select2({ allowClear: true, placeholder: "Filter item"});'
-    . '$("select.select-year").select2({ allowClear: true, placeholder: "Tahun"});'
+    
     . '$("select.opsi").select2({ allowClear: true, placeholder: "Tahun"});'
     . '$("select.save-status").select2({ allowClear: true, placeholder: "Tahun"});'
     . '$("select.action-bulk").select2({ allowClear: true, placeholder: "Tindakan Masal"});'
@@ -100,12 +100,12 @@ GridView::widget([
         . Html::beginTag('div', ['class' => 'form-inline'])
         . Html::dropDownList('bulk_action1', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('CapasSerch[year_filtr1]', '', CapasSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-        . '&nbsp;&nbsp;'
-        . Html::dropDownList('CapasSerch[year_opsi]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
-        . '&nbsp;&nbsp;'
-        . Html::dropDownList('CapasSerch[year_filtr2]', '', CapasSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-        . '&nbsp;&nbsp;'
+//        . Html::dropDownList('CapasSerch[year_filtr1]', '', CapasSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+//        . '&nbsp;&nbsp;'
+//        . Html::dropDownList('CapasSerch[year_opsi]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
+//        . '&nbsp;&nbsp;'
+//        . Html::dropDownList('CapasSerch[year_filtr2]', '', CapasSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+//        . '&nbsp;&nbsp;'
         . Html::dropDownList('CapasSerch[status_filtr1]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash','Pending'=>'Pending'], ['class' => 'form-control save-status'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
@@ -139,12 +139,12 @@ GridView::widget([
         . Html::beginTag('div', ['class' => 'form-inline'])
         . Html::dropDownList('bulk_action2', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
         . '&nbsp;&nbsp;'
-        . Html::dropDownList('CapasSerch[year_filtr3]', '', CapasSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-        . '&nbsp;&nbsp;'
-        . Html::dropDownList('CapasSerch[year_opsi1]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
-        . '&nbsp;&nbsp;'
-        . Html::dropDownList('CapasSerch[year_filtr4]', '', CapasSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-        . '&nbsp;&nbsp;'
+//        . Html::dropDownList('CapasSerch[year_filtr3]', '', CapasSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+//        . '&nbsp;&nbsp;'
+//        . Html::dropDownList('CapasSerch[year_opsi1]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
+//        . '&nbsp;&nbsp;'
+//        . Html::dropDownList('CapasSerch[year_filtr4]', '', CapasSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+//        . '&nbsp;&nbsp;'
         . Html::dropDownList('CapasSerch[status_filtr2]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft','Trash' => 'Trash','Pending'=>'Pending'], ['class' => 'form-control save-status'])
         . '&nbsp;&nbsp;'
         . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
@@ -256,10 +256,10 @@ GridView::widget([
         'hat_size',
         'membership_status',
         'status_organization',
-        [
-            'attribute' => 'year',
-            'filter' => CapasSerch::getYears()
-        ],
+//        [
+//            'attribute' => 'year',
+//            'filter' => CapasSerch::getYears()
+//        ],
         'educational_status',
         [
             'attribute' => 'marital_status',

@@ -18,6 +18,25 @@ class CapasModel extends Member
     public $otherlifeskill;
 
     /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['taxonomy_id', 'school_id', 'user_id', 'age', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
+            [['nra', 'name', 'nickname', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'tribal_members', 'identity_card_number', 'note', 'save_status','age','pants_size','shoe_size','hat_size'], 'required', 'message' => 'Tidak boleh kosong.'],
+            [['front_photo', 'side_photo', 'identity_card', 'certificate_of_organization', 'other_content'], 'string'],
+            [['create_et', 'update_et'], 'safe'],
+            [['nra'], 'string', 'max' => 32],
+            [['name', 'nationality', 'job', 'income_member', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'email', 'organizational_experience',  'illness', 'tribal_members', 'save_status'], 'string', 'max' => 45],
+            [['nickname', 'birth', 'blood_group', 'relationship_phone_number', 'membership_status', 'status_organization', 'type_member', 'identity_card_number'], 'string', 'max' => 25],
+            [['address', 'names_recommended', 'note'], 'string', 'max' => 255],
+            [['religion', 'gender', 'marital_status', 'educational_status', 'zip_code', 'phone_number', 'other_phone_number'], 'string', 'max' => 15],
+            [['height_body', 'weight_body', 'dress_size', 'pants_size', 'shoe_size', 'hat_size'], 'string', 'max' => 5]
+        ];
+    }
+    
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getTaxonomiesByLangSkill()

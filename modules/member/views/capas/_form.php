@@ -16,8 +16,7 @@ $this->registerJs(
     "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#capas').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
     . "init.push(function () { $('#birth-date').datepicker({language:'id',format: 'dd MM yyyy'});});"
     . 'init.push(function () { '
-    . '$(".select2-results").slimScroll({height: 190 });'
-    . '$("#select-year").select2({ allowClear: true, placeholder: "Tahun angkatan"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
+    . '$(".select2-results").slimScroll({height: 190 });'   
     . '$("#select-unit").select2({ allowClear: true, placeholder: "Status pendidikan"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-membership_status").select2({ allowClear: true, placeholder: "Status angota"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-status_organization").select2({ allowClear: true, placeholder: "Status organisasi"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
@@ -147,7 +146,7 @@ $form = ActiveForm::begin([
                     'PDTH' => 'PDTH',
                 ], ['id' => 'select-status_organization', 'maxlength' => 45])
                 ?>
-                <?= $form->field($model, 'year')->dropDownList(CapasSerch::getYears(), ['id' => 'select-year', 'maxlength' => 45]) ?>
+                
                 <?=
                 $form->field($model, 'educational_status')->dropDownList([
                     'SMA' => 'SMA',
