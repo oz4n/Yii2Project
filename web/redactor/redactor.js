@@ -155,6 +155,7 @@
         imageUploadParam: 'file', // input name
         imageResizable: true,
         thumbnail192:false,
+        imgoriginal:false,
         
         fileUpload: false, // url
         fileUploadParam: 'file', // input name
@@ -6899,13 +6900,14 @@
                             select.append($('<option value="' + v + '">' + k + '</option>'));
                         });
 
-                        var layot = "<div class='row'><div class='col-sm-4'><div class='form-group'  id='img-redactor-select'></div></div><div class='col-sm-4'><img id='img-redactor-loading' style='margin-left: -10px; margin-top: 8px; display: none;' src='" + this.opts.imgLoading + "'></div><div class='col-sm-4'>" + this.opts.form_file_serch + "</div></div>";
+//                        var layot = "<div class='row'><div class='col-sm-4'><div class='form-group'  id='img-redactor-select'></div></div><div class='col-sm-4'><img id='img-redactor-loading' style='margin-left: -10px; margin-top: 8px; display: none;' src='" + this.opts.imgLoading + "'></div><div class='col-sm-4'>" + this.opts.form_file_serch + "</div></div>";
+                        var layot = "<div class='row'  style='margin-bottom: 10px;'><div class='col-sm-6'><img id='img-redactor-loading' style='margin-top: 8px; display: none;' src='" + this.opts.imgLoading + "'></div><div class='col-sm-6'>" + this.opts.form_file_serch + "</div></div>";
                         $("#redactor_table_box").before(layot);
-                        $("#img-redactor-select").append(select);
-                        $("#redactor_file_box_select").select2({
-                            allowClear: true,
-                            placeholder: "Tag ..."
-                        });
+//                        $("#img-redactor-select").append(select);
+//                        $("#redactor_file_box_select").select2({
+//                            allowClear: true,
+//                            placeholder: "Tag ..."
+//                        });
                         $("#redactor_modal").attr('page-data', 1);
                         
                         this.fileFormSerch();
@@ -7296,44 +7298,19 @@
                 }
                
                
-                var data_this = this;
-                
+                var data_this = this;                
                 $("body").on("click", "#redactor_upload_btn", function() {
                     var img_select = $("#redactor_filename").attr("data-thumb");
                     var img_unique = $("#redactor_filename").attr("data-uniquename");
-                    var img129 = '<div><img data-unique="'+img_unique+'" data-original="' + img_select + '" src="' + data_this.opts.thumbnail192 + img_unique + '"></div>';
-                    var imgtools = '<div class="tools tools-bottom"><a href="javascript:undefined;" class="image-edit select-tooltip" data-id="17" data-toggle="tooltip" data-placement="top" data-original-title="Ganti gambar"><i class="fa  fa-arrow-circle-o-up" style="color:#d15b47"></i></a></div>';
+                    var img129 = '<img style="cursor: pointer; width: 1024px" class="img-responsive" data-unique="'+img_unique+'" data-original="' + img_select + '" src="' + data_this.opts.thumbnail192 + img_unique + '"></div>';
+//                    var imgtools = '<div class="tools tools-bottom"><a href="javascript:undefined;" class="image-edit select-tooltip" data-id="17" data-toggle="tooltip" data-placement="top" data-original-title="Ganti gambar"><i class="fa  fa-arrow-circle-o-up" style="color:#d15b47"></i></a></div>';
                     if (photoslidetarget != null) {
                         $(photoslidetarget).attr("style","");
                         $(photoslidetarget).empty();                        
-                        $(photoslidetarget).append(img129 + imgtools);
-                        var inputvalue = $(photoslideinput).val();
-                        if (inputvalue === "") {
-                            $(photoslideinput).val(img_unique);
-                        } else {
-                            var strvalue = $(photoslideinput).val();
-                            var imgdata = strvalue.split(",");
-                            $(photoslideinput).val($(photoslideinput).val() + ',' + img_unique);
-                            if(imgdata.length > 2){
-//                                var newstr = '';
-//                                for(var i =0; i<= imgdata.length; i++){
-//                                    if(imgdata[i] != img_unique){
-//                                        newstr += ',' + imgdata[i];
-//                                    }
-//                                }
-//                                $(photoslideinput).val("");
-//                                $(photoslideinput).val(newstr);
-                            }
-                            
-//                            console.log(imgdata.length);
-                        }
-                        
-                        $('.select-tooltip').tooltip();
+                        $(photoslidetarget).append(img129);
+//                        $('.select-tooltip').tooltip();
                         photoslidetarget = null;
-//                        phototarget.attr("src", img_select);
-//                        photoinput.attr("value", img_unique);
-//                        photopreview.css({"display": "block"});
-//                        photoselect.css({"display": "none"});
+                        data_this.sync();
                     }
                 });
                 $('#redactor_upload_btn').click($.proxy(this.imageCallbackLink, this));
@@ -7348,7 +7325,7 @@
                                     var data = '<img id="image-marker" src="' + val + '" />';
                                     if (data_this.opts.linebreaks === false)
                                         data = '<p>' + data + '</p>';
-                                    if(photoslidetarget === null){
+                                    if(photoslidetarget == null){
                                         data_this.imageInsert(data, true);
                                     }
                                 }
