@@ -51,32 +51,22 @@ class PageController extends Controller
         if (Yii::$app->user->can('pageindex')) {
             $searchModel = new PageSerch;
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-
+            if ((Yii::$app->request->get('bulk_action1') == 'delete' || Yii::$app->request->get('bulk_action2') == 'delete')) {
+                $this->deleteAll(Yii::$app->request->get('selection'));
+            }
+            if ((Yii::$app->request->get('bulk_action1') == 'trash' || Yii::$app->request->get('bulk_action2') == 'trash')) {
+                $this->trashAll(Yii::$app->request->get('selection'));
+            }
             return $this->render('index', [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
-    /**
-     * Displays a single Post model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        if (Yii::$app->user->can('pageview')) {
-            return $this->render('view', [
-                'model' => $this->findModel($id),
-            ]);
-        } else {
-            throw new HttpException(403, 'You are not allowed to access this page', 0);
-        }
-    }
-
+    
     /**
      * Creates a new Post model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -106,11 +96,11 @@ class PageController extends Controller
             }
             $model->setAttribute('other_content', Json::encode($data));
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['update', 'action'=>'page-update','id' => $model->id]);
             } else {
                 return $this->render('create', [
-                    'model' => $model,
-                    'other' => ['imgsliderstatus' => 'Disable']
+                            'model' => $model,
+                            'other' => ['imgsliderstatus' => 'Disable']
                 ]);
             }
         } else {
@@ -139,16 +129,38 @@ class PageController extends Controller
             }
 
             if (isset($param['imgslider']) && null != $param['imgslider']) {
-                $img = explode(',', $param['imgslider']);
-                $other = Json::decode($model->other_content);
-                foreach ($other['imgslider'] as $v) {
-                    $file = new Filesystem();
-                    $file->remove($this->path . 'pageslider' . DS . 'page' . DS . $v);
+                if ($param["type"] == "page") {
+                    $img = explode(',', $param['imgslider']);
+                    $other = Json::decode($model->other_content);
+                    if (isset($other['imgslider'])) {
+                        foreach ($other['imgslider'] as $v) {
+                            $file = new Filesystem();
+                            $file->remove($this->path . 'pageslider' . DS . 'page' . DS . $v);
+                        }
+                    }
+
+                    foreach ($img as $v) {
+                        Image::thumbnail($this->path . 'original' . DS . $v, 970, 384)->save($this->path . 'pageslider' . DS . 'page' . DS . $v, ['quality' => 80]);
+                    }
+                    $images = [];
+                    foreach ($img as $k => $v) {
+                        $images["img$k"] = $v;
+                    }
+                    $data['imgslider'] = $images;
                 }
-                foreach ($img as $v) {
-                    Image::thumbnail($this->path . 'original' . DS . $v, 970, 384)->save($this->path . 'pageslider' . DS . 'page' . DS . $v, ['quality' => 80]);
+                if ($param["type"] == "pagehelper") {
+                    $homeimage = json_decode($param['imgslider']);
+                    $data['imgslider'] = $homeimage;
+                    
+                    //remove image slider
+                    $other = json_decode($model->other_content);                   
+                    if (isset($other->imgslider)) {                               
+                        $this->removeImageSLider($other->imgslider);
+                    }
+                    
+                    //resize image slider                 
+                    $this->resizeImageSLider($homeimage);
                 }
-                $data['imgslider'] = $img;
             }
 
             if ($model->load(Yii::$app->request->post())) {
@@ -159,14 +171,14 @@ class PageController extends Controller
                 $widget = new WidgetModel;
 
                 return $this->render('update', [
-                    'widgetleft' => $widget->loadAllLeftWidget(),
-                    'widgetright' => $widget->loadAllRightWidget(),
-                    'widgetsidebar' => $widget->loadAllSidebarWidget(),
-                    'defaultwidget' => $widget->loadAllDefaultWidget(),
-                    'page' => $id,
-                    'pagename' => $model->title,
-                    'model' => $model,
-                    'other' => Json::decode($model->other_content)
+                            'widgetleft' => $widget->loadAllLeftWidget(),
+                            'widgetright' => $widget->loadAllRightWidget(),
+                            'widgetsidebar' => $widget->loadAllSidebarWidget(),
+                            'defaultwidget' => $widget->loadAllDefaultWidget(),
+                            'page' => $id,
+                            'pagename' => $model->title,
+                            'model' => $model,
+                            'other' => json_decode($model->other_content)
                 ]);
             }
         } else {
@@ -197,6 +209,57 @@ class PageController extends Controller
             throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
+    
+    public function actionTrash($id)
+    {
+        if (Yii::$app->user->can('pagetrash')) {
+            $model = $this->findModel($id);
+            $model->status = 'Trash';
+            $model->save();
+            return $this->redirect(['index', 'action' => 'page-list']);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
+    }
+
+    protected function trashAll($data)
+    {
+        if (null != $data) {
+            foreach ($data as $id) {
+                $model = $this->findModel($id);
+                $model->status = 'Trash';
+                $model->save();
+            }
+            return $this->redirect(['index', 'action' => 'page-list']);
+        } else {
+            return $this->redirect(['index', 'action' => 'page-list']);
+        }
+    }
+
+    /**
+     * @param array $data
+     * @return \yii\web\Response
+     */
+    protected function deleteAll($data)
+    {
+        if (null != $data) {
+
+            foreach ($data as $id) {
+                $model = $this->findModel($id);
+                $other = Json::decode($model->other_content);
+                if (isset($other['imgslider']) && null != $other['imgslider']) {
+                    foreach ($other['imgslider'] as $value) {
+                        $file = new Filesystem();
+                        $file->remove($this->path . 'pageslider' . DS . 'page' . DS . $value);
+                    }
+                }
+                $model->delete();
+            }
+            return $this->redirect(['index', 'action' => 'page-list']);
+        } else {
+            return $this->redirect(['index', 'action' => 'page-list']);
+        }
+    }
 
     /**
      * Finds the Post model based on its primary key value.
@@ -211,6 +274,71 @@ class PageController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function removeImageSLider($image)
+    {
+        $file = new Filesystem();
+        if ($image->imgslide1 != false) {
+            $file->remove($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide1);
+        }
+        if ($image->imgslide2 != false) {
+            $file->remove($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide2);
+        }
+        if ($image->imgslide3 != false) {
+            $file->remove($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide3);
+        }
+
+        if ($image->imgslide4 != false) {
+            $file->remove($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide4);
+        }
+        if ($image->imgslide5 != false) {
+            $file->remove($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide5);
+        }
+        if ($image->imgslide6 != false) {
+            $file->remove($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide6);
+        }
+        if ($image->imgslide7 != false) {
+            $file->remove($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide7);
+        }
+        if ($image->imgslide8 != false) {
+            $file->remove($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide8);
+        }
+        if ($image->imgslide9 != false) {
+            $file->remove($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide9);
+        }
+    }
+
+    protected function resizeImageSLider($image)
+    {
+        if (isset($image->imgslide1) && $image->imgslide1 != false) {
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide1, 1024, 300)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide1, ['quality' => 80]);
+        }
+        if (isset($image->imgslide2) && $image->imgslide2 != false) {
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide2, 1024, 300)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide2, ['quality' => 80]);
+        }
+        if (isset($image->imgslide3) && $image->imgslide3 != false) {
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide3, 1024, 300)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide3, ['quality' => 80]);
+        }
+
+        if (isset($image->imgslide4) && $image->imgslide4 != false) {
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide4, 150, 130)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide4, ['quality' => 80]);
+        }
+        if (isset($image->imgslide5) && $image->imgslide5 != false) {
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide5, 200, 139)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide5, ['quality' => 80]);
+        }
+        if (isset($image->imgslide6) && $image->imgslide6 != false) {
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide6, 200, 107)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide6, ['quality' => 80]);
+        }
+        if (isset($image->imgslide7) && $image->imgslide7 != false) {
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide7, 150, 180)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide7, ['quality' => 80]);
+        }
+        if (isset($image->imgslide8) && $image->imgslide8 != false) {
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide8, 100, 100)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide8, ['quality' => 80]);
+        }
+        if (isset($image->imgslide9) && $image->imgslide9 != false) {
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide9, 100, 100)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide9, ['quality' => 80]);
         }
     }
 

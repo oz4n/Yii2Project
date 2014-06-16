@@ -12,9 +12,7 @@ use yii\web\View;
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var app\modules\member\searchs\AreaSerch $searchModel
  */
-$this->title = Yii::t('app', 'Tambah {modelClass} Baru', [
-    'modelClass' => 'Daerah',
-]);
+$this->title = 'Daerah';
 
 $this->registerJs(
     "$('ul.navigation > li.mm-dropdown > ul > li#area').parent().parent().addClass('active open');"

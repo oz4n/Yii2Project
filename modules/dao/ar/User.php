@@ -41,8 +41,8 @@ use dektrium\user\models\User as BaseUser;
  */
 class User extends BaseUser
 {
-    public $captcha;
 
+    public $captcha;
 
     /**
      * @inheritdoc
@@ -65,14 +65,13 @@ class User extends BaseUser
     public function rules()
     {
         return [
-            [['username', 'email', 'password_hash', 'auth_key', 'created_at', 'updated_at'], 'required'],
+            [['username', 'email', 'password_hash', 'auth_key', 'created_at', 'updated_at'], 'required', 'message' => 'Tidak boleh kosong'],
             [['confirmation_sent_at', 'confirmed_at', 'recovery_sent_at', 'blocked_at', 'registered_from', 'logged_in_from', 'logged_in_at', 'created_at', 'updated_at'], 'integer'],
             [['slug'], 'string'],
             [['username'], 'string', 'max' => 25],
             [['email', 'unconfirmed_email', 'role'], 'string', 'max' => 255],
             [['password_hash'], 'string', 'max' => 60],
             [['auth_key', 'confirmation_token', 'recovery_token'], 'string', 'max' => 32]
-
         ];
     }
 
@@ -183,4 +182,5 @@ class User extends BaseUser
     {
         return $this->hasMany(UserLog::className(), ['user_id' => 'id']);
     }
+
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: root
@@ -8,16 +9,17 @@
 
 namespace app\modules\users\controllers;
 
+use Yii;
 use dektrium\user\controllers\AdminController as BaseAdminController;
 use app\modules\users\searchs\UserSearch;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\HttpException;
 
 class UserController extends BaseAdminController
 {
+
     public $layout = '@app/modules/dashboard/views/layouts/main';
-
-
 
     /**
      * @inheritdoc
@@ -34,19 +36,19 @@ class UserController extends BaseAdminController
                     'block' => ['post']
                 ],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['index', 'create', 'update', 'delete', 'block', 'confirm', 'delete-tokens'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                                return in_array(\Yii::$app->user->identity->username, $this->module->admins);
-                            }
-                    ],
-                ]
-            ]
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'rules' => [
+//                    [
+//                        'actions' => ['index', 'create', 'update', 'delete', 'block', 'confirm', 'delete-tokens'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                        'matchCallback' => function ($rule, $action) {
+//                    return in_array(Yii::$app->user->identity->username, $this->module->admins);
+//                }
+//                    ],
+//                ]
+//            ]
         ];
     }
 
@@ -56,12 +58,12 @@ class UserController extends BaseAdminController
      */
     public function actionIndex()
     {
-        $searchModel  = new UserSearch();
+        $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($_GET);
 
         return $this->render('@app/modules/users/views/user/index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
         ]);
     }
 
@@ -74,13 +76,13 @@ class UserController extends BaseAdminController
     {
         $model = $this->module->manager->createUser(['scenario' => 'create']);
 
-        if ($model->load(\Yii::$app->request->post()) && $model->create()) {
-            \Yii::$app->getSession()->setFlash('admin_user', \Yii::t('user', 'User has been created'));
+        if ($model->load(Yii::$app->request->post()) && $model->create()) {
+            Yii::$app->getSession()->setFlash('admin_user', Yii::t('user', 'User has been created'));
             return $this->redirect(['index']);
         }
 
         return $this->render('@app/modules/users/views/user/create', [
-            'model' => $model
+                    'model' => $model
         ]);
     }
 
@@ -95,13 +97,13 @@ class UserController extends BaseAdminController
         $model = $this->findModel($id);
         $model->scenario = 'update';
 
-        if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->getSession()->setFlash('admin_user', \Yii::t('user', 'User has been updated'));
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->getSession()->setFlash('admin_user', Yii::t('user', 'User has been updated'));
             return $this->refresh();
         }
 
         return $this->render('@app/modules/users/views/user/update', [
-            'model' => $model
+                    'model' => $model
         ]);
     }
 
@@ -113,9 +115,9 @@ class UserController extends BaseAdminController
     public function actionConfirm($id)
     {
         $this->findModel($id)->confirm(false);
-        \Yii::$app->getSession()->setFlash('admin_user', \Yii::t('user', 'User has been confirmed'));
+        Yii::$app->getSession()->setFlash('admin_user', Yii::t('user', 'Akun Sudah di konfirmasi'));
 
-        return $this->redirect(['update', 'id' => $id]);
+        return $this->redirect(['index', 'action' => 'user-lisst']);
     }
 
     /**
@@ -129,9 +131,9 @@ class UserController extends BaseAdminController
         $model->recovery_token = null;
         $model->recovery_sent_at = null;
         $model->save(false);
-        \Yii::$app->getSession()->setFlash('admin_user', \Yii::t('user', 'All user tokens have been deleted'));
+        Yii::$app->getSession()->setFlash('admin_user', Yii::t('user', 'User toke sudah terhapus'));
 
-        return $this->redirect(['update', 'id' => $id]);
+        return $this->redirect(['index', 'action' => 'user-lisst']);
     }
 
     /**
@@ -143,9 +145,38 @@ class UserController extends BaseAdminController
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        \Yii::$app->getSession()->setFlash('admin_user', \Yii::t('user', 'User has been deleted'));
+        Yii::$app->getSession()->setFlash('admin_user', Yii::t('user', 'User has been deleted'));
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'action' => 'user-list']);
+    }
+
+    public function actionBulk()
+    {
+        if (Yii::$app->user->can('userbulk')) {
+            if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+                $this->deleteAll(Yii::$app->request->post('selection'));
+                return $this->redirect(['index', 'action' => 'user-list']);
+            } else {
+                return $this->redirect(['index', 'action' => 'user-list']);
+            }
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
+    }
+
+    /**
+     * @param array $data
+     * @return \yii\web\Response
+     */
+    private function deleteAll($data)
+    {
+        if (null !== $data) {
+            foreach ($data as $id) {
+                $this->findModel($id)->delete();
+            }
+        } else {
+            return $this->redirect(['index', 'action' => 'user-list']);
+        }
     }
 
     /**
@@ -159,13 +190,13 @@ class UserController extends BaseAdminController
         $user = $this->findModel($id);
         if ($user->getIsBlocked()) {
             $user->unblock();
-            \Yii::$app->getSession()->setFlash('admin_user', \Yii::t('user', 'User has been unblocked'));
+            Yii::$app->getSession()->setFlash('admin_user', Yii::t('user', 'User has been unblocked'));
         } else {
             $user->block();
-            \Yii::$app->getSession()->setFlash('admin_user', \Yii::t('user', 'User has been blocked'));
+            Yii::$app->getSession()->setFlash('admin_user', Yii::t('user', 'User has been blocked'));
         }
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'action' => 'user-list']);
     }
 
     /**
@@ -185,4 +216,5 @@ class UserController extends BaseAdminController
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-} 
+
+}

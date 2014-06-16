@@ -1,8 +1,10 @@
 <?php
+
 use app\modules\dashboard\helpers\Navigation;
 use Yii;
 use yii\helpers\Url;
 use yii\web\View;
+
 /**
  * @var \yii\web\View $this
  */
@@ -16,9 +18,9 @@ use yii\web\View;
         <div class="navbar-header">
 
 
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']) ?>"> 
                 <div>
-                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/main-navbar-logo.png" alt="Zend Framework 2" />
+                    <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/main-navbar-logo.png"/>
                 </div>                                
                 Paskibraka App
             </a>
@@ -33,71 +35,10 @@ use yii\web\View;
                 <div class="right clearfix">
                     <ul class="nav navbar-nav pull-right right-navbar-nav">
 
-                        
-                    <li class="nav-icon-btn nav-icon-btn-danger dropdown">
-                        <a href="pages-blank.html#notifications" class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="label">5</span>
-                            <i class="nav-icon fa fa-bullhorn"></i>
-                            <span class="small-screen-text">Notifications</span>
-                        </a>
-
-                        <!-- NOTIFICATIONS -->
-
-                        <!-- Javascript -->
-                        <script>
-                            init.push(function() {
-                                $('#main-navbar-notifications').slimScroll({height: 250});
-                            });
-                        </script>
-                        <!-- / Javascript -->
-
-                        <div class="dropdown-menu widget-notifications no-padding" style="width: 300px">
-                            <div class="notifications-list" id="main-navbar-notifications">
-
-                                <div class="notification">
-                                    <div class="notification-title text-danger">SYSTEM</div>
-                                    <div class="notification-description"><strong>Error 500</strong>: Syntax error in index.php at line <strong>461</strong>.</div>
-                                    <div class="notification-ago">12h ago</div>
-                                    <div class="notification-icon fa fa-hdd-o bg-danger"></div>
-                                </div> <!-- / .notification -->
-
-                                <div class="notification">
-                                    <div class="notification-title text-info">STORE</div>
-                                    <div class="notification-description">You have <strong>9</strong> new orders.</div>
-                                    <div class="notification-ago">12h ago</div>
-                                    <div class="notification-icon fa fa-truck bg-info"></div>
-                                </div> <!-- / .notification -->
-
-                                <div class="notification">
-                                    <div class="notification-title text-default">CRON DAEMON</div>
-                                    <div class="notification-description">Job <strong>"Clean DB"</strong> has been completed.</div>
-                                    <div class="notification-ago">12h ago</div>
-                                    <div class="notification-icon fa fa-clock-o bg-default"></div>
-                                </div> <!-- / .notification -->
-
-                                <div class="notification">
-                                    <div class="notification-title text-success">SYSTEM</div>
-                                    <div class="notification-description">Server <strong>up</strong>.</div>
-                                    <div class="notification-ago">12h ago</div>
-                                    <div class="notification-icon fa fa-hdd-o bg-success"></div>
-                                </div> <!-- / .notification -->
-
-                                <div class="notification">
-                                    <div class="notification-title text-warning">SYSTEM</div>
-                                    <div class="notification-description"><strong>Warning</strong>: Processor load <strong>92%</strong>.</div>
-                                    <div class="notification-ago">12h ago</div>
-                                    <div class="notification-icon fa fa-hdd-o bg-warning"></div>
-                                </div> <!-- / .notification -->
-
-                            </div> <!-- / .notifications-list -->
-                            <a href="pages-blank.html#" class="notifications-link">INFO SELENGKAPNYA</a>
-                        </div> <!-- / .dropdown-menu -->
-                    </li>
-                    
-                    <li class="nav-icon-btn nav-icon-btn-success dropdown">
-                       
-                        <?php
-                        $this->registerJs('init.push(function() {
+                            <?php if (Yii::$app->user->can('dashboardloadmessage')): ?>
+                            <li class="nav-icon-btn nav-icon-btn-success dropdown">                       
+                                <?php
+                                $this->registerJs('init.push(function() {
                                 $("#main-navbar-messages").slimScroll({
                                     height: 300
                                 }).bind("slimscroll", function(e, pos) {
@@ -105,7 +46,7 @@ use yii\web\View;
                                         $("#img-messages-loading").css({"display":"block"});
                                         var pagedata = $("#main-navbar-messages").attr("page-data");
                                         $.ajax({
-                                            url: "'.Url::toRoute(['/dashboard/dashboard/loadmessage']).'",
+                                            url: "' . Url::toRoute(['/dashboard/dashboard/loadmessage']) . '",
                                             type: "get",
                                             data: {"page_id":pagedata},
                                             dataType: "json",
@@ -126,17 +67,23 @@ use yii\web\View;
                                     }
                                 });
                             });'
-                        , View::POS_READY);
-                        ?>
-                        <?= app\modules\dashboard\helpers\Message::widget() ?>
-                    </li>
-                    <!-- /3. $END_NAVBAR_ICON_BUTTONS -->
+                                        , View::POS_READY);
+                                ?>                       
+                            <?= app\modules\dashboard\helpers\Message::widget() ?>
+                            </li>
+                        <?php endif; ?>
+                        <!-- /3. $END_NAVBAR_ICON_BUTTONS -->
 
                         <li class="dropdown">
                             <a href="pages-blank.html#" class="dropdown-toggle user-menu" data-toggle="dropdown">
-                                <img src="<?php echo Yii::getAlias('@web'); ?>/PixelAdmin/img/avatars/1.jpg" alt="">
-                                <span><?= Yii::$app->user->identity->username ?></span>
-                                <span><?= Yii::$app->user->identity->getId() ?></span>
+                                <?php
+                                echo \cebe\gravatar\Gravatar::widget([
+                                    'email' => Yii::$app->user->identity->email,
+                                    'size' => 32,
+                                    'defaultImage' => 'mm',
+                                ])
+                                ?>
+                                <span><?= Yii::$app->user->identity->username ?></span>                               
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a href="pages-blank.html#">Profile <span class="label label-warning pull-right">new</span></a></li>

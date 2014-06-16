@@ -340,19 +340,25 @@ GridView::widget([
             'buttons' => [
                 'view' => function ($url, $data) {
                         return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/member/ppi/view', 'action' => 'member-ppi-view', 'id' => $data->id]), [
-                            'class' => 'btn btn-success btn-xs',
+                            'class' => 'select-tooltip btn btn-primary btn-xs',
+                            'data-toggle' => "tooltip",
+                            'data-original-title' => "Lihat Detail",                            
                             'title' => Yii::t('yii', 'Lihat Detail'),
                         ]);
                     },
                 'update' => function ($url, $data) {
                         return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/member/ppi/update", 'action' => 'member-ppi-update', 'id' => $data->id]), [
-                            'class' => 'btn btn-primary btn-xs',
-                            'title' => Yii::t('yii', 'Memperbarui'),
+                            'class' => 'select-tooltip btn btn-primary btn-xs',
+                            'data-toggle' => "tooltip",
+                            'data-original-title' => "Perbaharui",
+                            'title' => Yii::t('yii', 'Perbaharui'),
                         ]);
                     },
                 'delete' => function ($url, $data) {
                         return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/member/ppi/delete", 'action' => 'member-ppi-delete', 'id' => $data->id]), [
-                            'class' => 'btn btn-danger btn-xs',
+                            'class' => 'select-tooltip btn btn-danger btn-xs',
+                            'data-toggle' => "tooltip",
+                            'data-original-title' => "Hapus",
                             'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
                             'data-method' => 'post',
                             'data-pjax' => 0,
@@ -361,7 +367,9 @@ GridView::widget([
                     },
                 'trash' => function ($url, $data) {
                         return Html::a('<i class="fa  fa-trash-o"></i>', Url::toRoute(['/member/ppi/trash', 'action' => 'member-ppi-trash', 'id' => $data->id]), [
-                            'class' => 'btn btn-warning btn-xs',
+                             'class' => 'select-tooltip btn btn-warning btn-xs',
+                            'data-toggle' => "tooltip",
+                            'data-original-title' => "Tong sampah",
                             'data-confirm' => 'Apakah Anda yakin ingin membuang ke tong sampah?',
                             'data-method' => 'post',
                             'data-pjax' => 0,

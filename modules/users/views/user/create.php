@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Dektrium project.
  *
@@ -9,41 +8,55 @@
  * file that was distributed with this source code.
  */
 
+use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
+use yii\web\View;
 /**
  * @var yii\web\View $this
  * @var dektrium\user\models\User $model
  */
-
-$this->title = Yii::t('user', 'Create a user account');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('user', 'Users'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('user', 'Tambah Akun');
+$this->registerJs(
+        "$('ul.navigation > li#user > ul.mm-dropdown > li#account').addClass('active').parent().addClass('open').parent().addClass('active open');"
+        , View::POS_READY);
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <?= Html::encode($this->title) ?>
+<ul class="breadcrumb breadcrumb-page">
+    <div class="breadcrumb-label text-light-gray">
+        <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
-    <div class="panel-body">
-        <div class="alert alert-info">
-            <?= Yii::t('user', 'Password and username will be sent to user by email') ?>.
-            <?= Yii::t('user', 'If you want password to be generated automatically leave its field empty') ?>.
+    <li>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
+    </li>
+    <li>
+        <a href="<?= Url::toRoute(['/user/admin/index', 'action' => 'user-list']); ?>"><?= Yii::t('app', 'Akun'); ?></a>
+    </li>
+    <li class="active">
+        Tambah Akun
+    </li>
+</ul>
+<div class="page-header">
+    <div class="row">
+        <div class="col-xs-8">
+            <h1 class="text-center text-left-sm">
+                <i class="fa fa-user page-header-icon"> </i>
+                &nbsp;
+                <?= Html::encode('Akun') ?>
+                
+            </h1>
         </div>
-        <?php $form = ActiveForm::begin(); ?>
-
-        <?= $form->field($model, 'username')->textInput(['maxlength' => 25, 'autofocus' => true]) ?>
-
-        <?= $form->field($model, 'email')->textInput(['maxlength' => 255]) ?>
-
-        <?= $form->field($model, 'password')->passwordInput() ?>
-
-        <?= $form->field($model, 'role')->dropDownList($model->getRules(),['maxlength' => 255]) ?>
-
-        <div class="form-group">
-            <?= Html::submitButton(Yii::t('user', 'Save'), ['class' => 'btn btn-success']) ?>
+        <div class="col-xs-4">
+            
         </div>
+    </div>
+</div>
 
-        <?php ActiveForm::end(); ?>
+<div class="row">
+
+    <div class="col-sm-6">
+        <?=
+        $this->render("_form", [
+            'model' => $model
+        ]);
+        ?>
     </div>
 </div>

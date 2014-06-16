@@ -1,8 +1,11 @@
 <?php
 use app\modules\site\widgets\RenderWidget;
-
+$this->title = "Beranda";
+$this->registerMetaTag(['name' => 'keywords', 'content' =>'Beranda']);
 /* Slider */
-echo $this->render('slider');
+echo $this->render('slider',[
+    'image'=>$image
+]);
 ?>
 
 <div class="container content">

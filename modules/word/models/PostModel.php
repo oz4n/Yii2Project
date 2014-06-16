@@ -84,7 +84,7 @@ class PostModel extends Post
 
     public function saveCatRelation($data, $post_id)
     {
-        foreach ($data as $id) {            
+        foreach ($data as $id) {
             $new = new Taxpostrelations;
             $new->post_id = $post_id;
             $new->tax_id = $id;
@@ -96,7 +96,7 @@ class PostModel extends Post
 
     public function saveTagRelation($data, $post_id)
     {
-        foreach ($data as $id) {           
+        foreach ($data as $id) {
             $new = new Taxpostrelations;
             $new->post_id = $post_id;
             $new->tax_id = $id;
@@ -104,27 +104,19 @@ class PostModel extends Post
         }
         return true;
     }
-    
-    public function deleteTagRelation($data, $post_id)
+
+    public function deleteTagRelation($post_id)
     {
-        foreach ($data as $id) {
-            Taxpostrelations::deleteAll([
-                'tax_id' => $id,
-                'post_id' => $post_id
-            ]);
-        }
-        return true;
+        Taxpostrelations::deleteAll([
+                    'post_id' => $post_id
+        ]);
     }
-    
-    public function deleteCatRelation($data, $post_id)
+
+    public function deleteCatRelation($post_id)
     {
-        foreach ($data as $id) {
-            Taxpostrelations::deleteAll([
-                'tax_id' => $id,
-                'post_id' => $post_id
-            ]);
-        }
-         return true;
+        Taxpostrelations::deleteAll([
+                    'post_id' => $post_id
+        ]);
     }
 
 }

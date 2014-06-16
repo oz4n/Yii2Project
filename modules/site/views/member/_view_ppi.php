@@ -3,7 +3,7 @@
         <div class="thumbnail thumbnails thumbnail-style thumbnail-kenburn">
             <div class="thumbnail-img">
                 <div class="overflow-hidden">
-                    <img class="img-responsive" src="<?php echo Yii::getAlias('@web').'/resources/images/member/frontphoto/'.$model->front_photo; ?>" alt="">  
+                    <img style="width: 1024px" class="img-responsive" src="<?php echo Yii::getAlias('@web').'/resources/images/member/frontphoto/'.$model->front_photo; ?>" alt="">  
                 </div>
             </div>  
         </div>

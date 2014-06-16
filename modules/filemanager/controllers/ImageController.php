@@ -302,7 +302,7 @@ class ImageController extends Controller
                 $model->type = FileManager::FILE_TYPE_IMAGE;
                 $model->size = "$file->size";
                 $model->file_type = $file->type;
-                $model->description = "Photo Anggota";
+                $model->description = 'Keterangan photo';
                 $model->create_at = date("Y-m-d H:i:s");
                 $model->update_et = date("Y-m-d H:i:s");
                 $model->save();
@@ -324,7 +324,9 @@ class ImageController extends Controller
                     "files" => [
                         "status" => true,
                         "id" => $model->id,
+                        "name" => $file->name,
                         "orginal_name" => $file->name,
+                        "description" => $model->description,
                         "unique_name" => $unique_name,
                         "path" => $base_path,
                         "original" => $base_path . 'original' . DS . $unique_name,
@@ -375,23 +377,26 @@ class ImageController extends Controller
 
                 if ((isset($param['album_id']) && $param['album_id'] != 0) && $key == null) {
                     $data = $model->getImageByAlbumId($param['album_id'], $per_page, 0);
+                    $image = new ImageModel;
                     return $this->render('index', [
                         'model' => $data,
                         'album_id' => $param['album_id'],
                         'album' => $model->getAllAlbums(),
                         'album_name' => $model->getAlbumNameById($param['album_id']),
                         'searchModel' => $searchModel,
-                        'keyword' => $key
+                        'keyword' => $key,
+                         'image' => $image
                     ]);
                 } else {
-
+                    $image = new ImageModel;
                     $data = $model->getAllImages($per_page, 0, $key);
                     return $this->render('index', [
                         'model' => $data,
                         'album_id' => 0,
                         'album' => $model->getAllAlbums(),
                         'searchModel' => $searchModel,
-                        'keyword' => $key
+                        'keyword' => $key,
+                        'image' => $image
                     ]);
                 }
             }
@@ -426,14 +431,15 @@ class ImageController extends Controller
     public function actionUpdate($id)
     {
         if (Yii::$app->user->can('imageupdate')) {
-            $model = $this->findModel($id);
-
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
+            if (\Yii::$app->request->isAjax) {
+                $model = $this->findModel($id);
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    echo Json::encode($model);
+                } else {
+                    echo Json::encode($model);
+                }
+            }else{
+                throw new NotFoundHttpException('The requested page does not exist.');
             }
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -468,12 +474,12 @@ class ImageController extends Controller
      * Finds the File model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return File the loaded model
+     * @return ImageModel the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = File::findOne($id)) !== null) {
+        if (($model = ImageModel::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

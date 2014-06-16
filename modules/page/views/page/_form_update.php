@@ -107,7 +107,7 @@ $this->registerJs(
 ?>
 <?php $form = ActiveForm::begin(['id' => 'page-form']); ?>
 <div class="col-sm-8"> 
-    <div class="row" style="margin-bottom: 15px; <?= isset($other->imgsliderstatus ) ? $other->imgsliderstatus == "Disable" ? 'display: none;' : '' : 'display: none;'?>" id="img-slider">
+    <div class="row" style="margin-bottom: 15px; <?= $other->imgsliderstatus == "Disable" ? 'display: none;' : ''?>" id="img-slider">
         <?= Html::activeHiddenInput($model, 'type') ?>
         <?= Html::activeHiddenInput($model, 'imgslider', ['id' => 'img-slider-value', 'value' => isset($other->imgslider) ? json_encode($other->imgslider) : ""]) ?>
         <?php if (isset($other->imgslider)): ?>  
@@ -237,7 +237,7 @@ $this->registerJs(
             <div class="form-group">
                 <label class="control-label" for="pagemodel-imgsliderstatus">Gambar Slider</label>
                 <div id="switchers-colors-default" class="form-group-margin">
-                    <?= Html::checkbox('PageModel[imgsliderstatus]', isset($other->imgsliderstatus) ? $other->imgsliderstatus == "Enable" ? true : false : false, ['id' => 'imgsliderstatus-id', 'value' => 'Enable', 'data-class' => "switcher-primary", 'class' => 'switcher-primary']) ?>                                               
+                    <?= Html::checkbox('PageModel[imgsliderstatus]', $other->imgsliderstatus == "Enable" ? true : false, ['id' => 'imgsliderstatus-id', 'value' => 'Enable', 'data-class' => "switcher-primary", 'class' => 'switcher-primary']) ?>                                               
                 </div>
 
             </div>

@@ -1,5 +1,6 @@
 <?php
-
+$this->title =$tax;
+$this->registerMetaTag(['name' => 'keywords', 'content' => $tax]);
 switch ($model->layout) {
     case "full":
         echo $this->render('_taxpage_full_view', [

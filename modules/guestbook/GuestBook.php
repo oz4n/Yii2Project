@@ -8,8 +8,6 @@ class GuestBook extends \yii\base\Module
 
     public function init()
     {
-        $this->setLayoutPath('@app/modules/dashboard/views/layouts');
-        $this->layout = 'main';
         parent::init();
 
         // custom initialization code goes here

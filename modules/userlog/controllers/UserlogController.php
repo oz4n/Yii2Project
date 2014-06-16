@@ -2,19 +2,20 @@
 
 namespace app\modules\userlog\controllers;
 
-
 use Yii;
 use app\modules\userlog\models\UserLogModel;
 use app\modules\userlog\searchs\UserLogSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\HttpException;
 
 /**
  * UserlogController implements the CRUD actions for UserLog model.
  */
 class UserlogController extends Controller
 {
+
     public function behaviors()
     {
         return [
@@ -33,15 +34,19 @@ class UserlogController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UserLogSerch;
-        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
-        if ((Yii::$app->request->get('bulk_action1') == 'delete' || Yii::$app->request->get('bulk_action2') == 'delete')) {
-            $this->deleteAll(Yii::$app->request->get('selection'));
+        if (Yii::$app->user->can('userlogindex')) {
+            $searchModel = new UserLogSerch;
+            $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+            if ((Yii::$app->request->get('bulk_action1') == 'delete' || Yii::$app->request->get('bulk_action2') == 'delete')) {
+                $this->deleteAll(Yii::$app->request->get('selection'));
+            }
+            return $this->render('index', [
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
+            ]);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-        ]);
     }
 
     /**
@@ -51,45 +56,12 @@ class UserlogController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new UserLog model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new UserLogModel;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
+        if (Yii::$app->user->can('userlogview')) {
+            return $this->render('view', [
+                        'model' => $this->findModel($id),
             ]);
-        }
-    }
-
-    /**
-     * Updates an existing UserLog model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
@@ -101,9 +73,13 @@ class UserlogController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (Yii::$app->user->can('userlogdelete')) {
+            $this->findModel($id)->delete();
 
-        return $this->redirect(['index', 'action' => 'user-log-list']);
+            return $this->redirect(['index', 'action' => 'user-log-list']);
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
     }
 
     /**
@@ -138,6 +114,5 @@ class UserlogController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
 
 }

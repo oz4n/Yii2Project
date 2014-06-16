@@ -38,7 +38,9 @@ class DashboardAsset extends AssetBundle
         'PixelAdmin/css/widgets.css',
         'redactor/redactor.css',
         'PixelAdmin/css/galery.css',
-        'jnestable/nestable.css',
+//         'unify-v1.4/css/plugins.css',
+//        'unify-v1.4/plugins/owl-carousel/owl-carousel/owl.carousel.css',
+       
     ];
     public $js = [
         /**
@@ -69,6 +71,9 @@ class DashboardAsset extends AssetBundle
         'jfileupload/js/jquery.fileupload-validate.js',
         
         'jnestable/jquery.nestable.js',
+        'jtabletojson/src/jquery.tabletojson.js',
+//        'unify-v1.4/plugins/owl-carousel/owl-carousel/owl.carousel.js',
+//        'unify-v1.4/js/plugins/owl-carousel.js',
     ];
     
 

@@ -52,7 +52,7 @@ class CapasSerch extends CapasModel
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 30
+                'pageSize' =>50
             ]
         ]);
 

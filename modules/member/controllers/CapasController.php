@@ -105,12 +105,12 @@ class CapasController extends Controller
             $this->langskill = $param['language_skill'];
             $this->lifeskill = $param['life_skill'];
             $this->otherlifeskill = $param['otherlifeskill'];
-            $this->brevetaward = $param['brevet_award'];
+//            $this->brevetaward = $param['brevet_award'];
 
             $this->photo->copyProntPhoto($param['front_photo']);
             $this->photo->copyProntPhotoThumb($param['front_photo']);
             $this->photo->copySidePhoto($param['side_photo']);
-            $this->photo->copyCertificatePhoto($param['certificate_of_organization']);
+//            $this->photo->copyCertificatePhoto($param['certificate_of_organization']);
             $this->photo->copyIdentityCardPhoto($param['identity_card']);
 
 
@@ -183,7 +183,7 @@ class CapasController extends Controller
             $this->langskill = $param['language_skill'];
             $this->lifeskill = $param['life_skill'];
             $this->otherlifeskill = $param['otherlifeskill'];
-            $this->brevetaward = $param['brevet_award'];
+//            $this->brevetaward = $param['brevet_award'];
 
             if (null != $this->otherlifeskill) {
                 $this->saveOtherLifeSkill($this->otherlifeskill);
@@ -232,10 +232,10 @@ class CapasController extends Controller
                 $this->photo->copyIdentityCardPhoto($param['identity_card']);
             }
 
-            if (($model->certificate_of_organization != $param['certificate_of_organization']) && $param['certificate_of_organization'] != null) {
-                $this->photo->deleteCertificatePhoto($model->certificate_of_organization);
-                $this->photo->copyCertificatePhoto($param['certificate_of_organization']);
-            }
+//            if (($model->certificate_of_organization != $param['certificate_of_organization']) && $param['certificate_of_organization'] != null) {
+//                $this->photo->deleteCertificatePhoto($model->certificate_of_organization);
+//                $this->photo->copyCertificatePhoto($param['certificate_of_organization']);
+//            }
 
 
             //save database

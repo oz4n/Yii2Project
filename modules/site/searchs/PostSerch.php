@@ -147,6 +147,15 @@ class PostSerch extends PostModel
         }
         return $links;
     }
+    
+    public function getTag($tags)
+    {
+        $links = [];
+        foreach ($tags as $tag) {
+            $links[] = $tag['name'];
+        }
+        return $links;
+    }
 
     public function getAuthorNameById()
     {

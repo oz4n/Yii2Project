@@ -78,7 +78,6 @@ class UserLogModel extends UserLog
         $this->time_zone = $ipinfo['timeZone'];
         $this->create_at = date("Y-m-d H:i:s");
         $this->update_et = date("Y-m-d H:i:s");
-
         if (isset($get_param['action'])) {
             switch ($get_param['action']) {
                 case "member-ppi-list":
@@ -138,6 +137,68 @@ class UserLogModel extends UserLog
             }
         }
         
+    }
+    
+    protected function ppilog($user_name, $get_param, $post_param)
+    {
+        if (isset($get_param['action'])) {
+            switch ($get_param['action']) {
+                case "member-ppi-list":
+                    $this->content = json_encode(array_merge($user_name, $get_param));
+                    $this->title = 'List data anggota PPI';
+                    return $this->save();
+                    exit;
+                case "member-ppi-create":
+                    if ($user_agent['getMethod'] == "GET") {
+                        $this->content = json_encode(array_merge($user_name, $get_param));
+                        $this->title = 'Form penambahan data anggota PPI';
+                    } else {
+                        $this->content = json_encode(array_merge($user_name, $post_param));
+                        $this->title = 'Tambah data anggota PPI';
+                    }
+                    return $this->save();
+                    exit;
+                case "member-ppi-update":
+                    if ($user_agent['getMethod'] == "GET") {
+                        $this->content = json_encode(array_merge($user_name, $get_param));
+                        $this->title = 'Form pengubahan data anggota PPI';
+                    } else {
+                        $this->content = json_encode(array_merge($user_name, $post_param));
+                        $this->title = 'Perbaharui data anggota PPI';
+                    }
+                    return $this->save();
+                    exit;
+                case "member-ppi-delete":
+                    $this->content = json_encode(array_merge($user_name, $post_param));
+                    $this->title = 'Hapus data anggota PPI';
+                    return $this->save();
+                    exit;
+                case "member-ppi-view":
+                    $this->content = json_encode(array_merge($user_name, $get_param));
+                    $this->title = 'Lihat detail data anggota PPI';
+                    return $this->save();
+                    exit;
+                case "member-ppi-trash":
+                    $this->content = json_encode(array_merge($user_name, $post_param));
+                    $this->title = 'Buang ke tongsampah data anggota PPI';
+                    return $this->save();
+                    exit;
+                case "member-brevet-list":
+                    $this->content = json_encode(array_merge($user_name, $get_param));
+                    $this->title = 'Lihat data brevet anggota';
+                    return $this->save();
+                    exit;
+                case "member-brevet-view":
+                    $this->content = json_encode(array_merge($user_name, $get_param));
+                    $this->title = 'Lihat detail data brevet anggota';
+                    return $this->save();
+                    exit;
+//                case null:
+//                    $this->title = 'Aksi lainnya';
+//                    return $this->save();
+//                    exit;
+            }
+        }
     }
 
     public function getUserNameByID()

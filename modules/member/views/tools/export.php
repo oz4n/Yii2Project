@@ -28,7 +28,7 @@ $this->title = "Expor Data Anggota";
     <div class="row">
         <div class="col-xs-8">
             <h1 class="text-center text-left-sm">
-                <i class="fa fa-file page-header-icon"> </i>
+                <i class="fa fa-files-o page-header-icon"> </i>
                 &nbsp;
                 <?= Html::encode('Expor Data Anggota') ?>                            
             </h1>

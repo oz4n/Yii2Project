@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Dektrium project.
  *
@@ -21,14 +20,13 @@ use yii\widgets\ActiveForm;
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var dektrium\user\models\UserSearch $searchModel
  */
-
-$this->title = Yii::t('user', 'Manage users');
+$this->title = Yii::t('user', 'Akun');
 $this->registerJs(''
-    . '$("td").css({"padding-top": "20px"});'
-    , View::POS_READY);
+        . '$("td").css({"padding-top": "20px"});'
+        , View::POS_READY);
 $this->registerJs(
-    "$('ul.navigation > li#user > ul.mm-dropdown > li#account').addClass('active').parent().addClass('open').parent().addClass('active open');"
-    , View::POS_READY);
+        "$('ul.navigation > li#user > ul.mm-dropdown > li#account').addClass('active').parent().addClass('open').parent().addClass('active open');"
+        , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
@@ -51,8 +49,8 @@ $this->registerJs(
                 <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass}', [
-                    'modelClass' => 'Akun',
-                ]), Url::toRoute(['/user/admin/create', 'action' => 'user-create']))
+                            'modelClass' => 'Akun',
+                        ]), Url::toRoute(['/user/admin/create', 'action' => 'user-create']))
                 ?>
             </h1>
         </div>
@@ -60,12 +58,12 @@ $this->registerJs(
             <div class="pull-right">
                 <?php
                 $form = ActiveForm::begin([
-                    'action' => ['/page/page/index', 'action' => 'page-list'],
-                    'method' => 'GET',
-                    'options' => ['role' => 'form', 'id' => 'search'],
-                    'fieldConfig' => [
-                        'template' => "{input}\n{hint}\n{error}"
-                    ]
+                            'action' => ['/user/admin/index', 'action' => 'user-list'],
+                            'method' => 'GET',
+                            'options' => ['role' => 'form', 'id' => 'search'],
+                            'fieldConfig' => [
+                                'template' => "{input}\n{hint}\n{error}"
+                            ]
                 ]);
                 ?>
 
@@ -81,12 +79,11 @@ $this->registerJs(
         </div>
     </div>
 </div>
-
-<?php if (Yii::$app->getSession()->hasFlash('admin_user')): ?>
-    <div class="alert alert-success">
-        <p><?= Yii::$app->getSession()->getFlash('admin_user') ?></p>
-    </div>
-<?php endif; ?>
+<?php
+ActiveForm::begin([
+    'action' => ['/user/admin/bulk', 'action' => 'user-bulk'],
+]);
+?>
 
 <?php
 echo GridView::widget([
@@ -94,153 +91,132 @@ echo GridView::widget([
     'filterModel' => $searchModel,
     'tableOptions' => ['class' => 'table'],
     'layout' => Html::beginTag('div', ['class' => 'row'])
-        . Html::beginTag('div', ['class' => 'col-xs-8'])
-        . Html::beginTag('div', ['class' => 'form-inline'])
-        . Html::dropDownList('bulk_action1', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
-        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_filtr1]', '', PostSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-//        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_opsi]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
-//        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_filtr2]', '', PostSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-//        . '&nbsp;&nbsp;'
-        . Html::dropDownList('PostSerch[status_filtr1]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash'], ['class' => 'form-control save-status'])
-        . '&nbsp;&nbsp;'
-        . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
-        . Html::endTag('div')
-        . Html::endTag('div')
-        . Html::beginTag('div', ['class' => 'col-xs-4'])
-        . Html::beginTag('div', ['class' => 'pull-right'])
-        . '{pager}'
-        . Html::endTag('div')
-        . Html::beginTag('div', ['class' => 'pull-right', 'style' => 'padding-right: 10px; margin-top: 6px'])
-        . '{summary}'
-        . Html::endTag('div')
-        . Html::endTag('div')
-        . Html::endTag('div')
-        . Html::beginTag('div', ['class' => 'panel', 'style' => 'margin-bottom: 15px; margin-top: 10px'])
-        . Html::beginTag('div', ['class' => 'panel-body'])
-        . Html::beginTag('div', ['class' => 'table-responsive'])
-        . '{items}'
-        . Html::endTag('div')
-        . Html::endTag('div')
-        . Html::endTag('div')
-        . Html::beginTag('div', ['class' => 'row'])
-        . Html::beginTag('div', ['class' => 'col-xs-8'])
-        . Html::beginTag('div', ['class' => 'form-inline'])
-        . Html::dropDownList('bulk_action2', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
-        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_filtr3]', '', PostSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-//        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_opsi1]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
-//        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_filtr4]', '', PostSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-//        . '&nbsp;&nbsp;'
-        . Html::dropDownList('PostSerch[status_filtr2]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash'], ['class' => 'form-control save-status'])
-        . '&nbsp;&nbsp;'
-        . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
-        . Html::endTag('div')
-        . Html::endTag('div')
-        . Html::beginTag('div', ['class' => 'col-xs-4'])
-        . Html::beginTag('div', ['class' => 'pull-right'])
-        . '{pager}'
-        . Html::endTag('div')
-        . Html::beginTag('div', ['class' => 'pull-right', 'style' => 'padding-right: 10px; margin-top: 6px'])
-        . '{summary}'
-        . Html::endTag('div')
-        . Html::endTag('div')
-        . Html::endTag('div'),
+    . Html::beginTag('div', ['class' => 'col-xs-8'])
+    . Html::beginTag('div', ['class' => 'form-inline'])
+    . Html::dropDownList('bulk_action1', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control action-bulk'])
+    . '&nbsp;&nbsp;'
+    . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
+    . Html::endTag('div')
+    . Html::endTag('div')
+    . Html::beginTag('div', ['class' => 'col-xs-4'])
+    . Html::beginTag('div', ['class' => 'pull-right'])
+    . '{pager}'
+    . Html::endTag('div')
+    . Html::beginTag('div', ['class' => 'pull-right', 'style' => 'padding-right: 10px; margin-top: 6px'])
+    . '{summary}'
+    . Html::endTag('div')
+    . Html::endTag('div')
+    . Html::endTag('div')
+    . Html::beginTag('div', ['class' => 'panel', 'style' => 'margin-bottom: 15px; margin-top: 10px'])
+    . Html::beginTag('div', ['class' => 'panel-body'])
+    . Html::beginTag('div', ['class' => 'table-responsive'])
+    . '{items}'
+    . Html::endTag('div')
+    . Html::endTag('div')
+    . Html::endTag('div')
+    . Html::beginTag('div', ['class' => 'row'])
+    . Html::beginTag('div', ['class' => 'col-xs-8'])
+    . Html::beginTag('div', ['class' => 'form-inline'])
+    . Html::dropDownList('bulk_action2', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus'], ['class' => 'form-control action-bulk'])
+    . '&nbsp;&nbsp;'
+    . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
+    . Html::endTag('div')
+    . Html::endTag('div')
+    . Html::beginTag('div', ['class' => 'col-xs-4'])
+    . Html::beginTag('div', ['class' => 'pull-right'])
+    . '{pager}'
+    . Html::endTag('div')
+    . Html::beginTag('div', ['class' => 'pull-right', 'style' => 'padding-right: 10px; margin-top: 6px'])
+    . '{summary}'
+    . Html::endTag('div')
+    . Html::endTag('div')
+    . Html::endTag('div'),
     'columns' => [
+        [
+            'class' => 'yii\grid\CheckboxColumn'
+        ],
         [
             'label' => '',
             'format' => 'raw',
             'value' => function ($model) {
-                    return  Html::beginTag('div', ['class' => 'member','style'=>'margin-top: -10px']). Gravatar::widget([
-                        'email' => $model->email,
-                        'size' => 42,
-                        'defaultImage' => 'mm',
-                        'options' => [
-                            'class' => 'member-avatar'
-                        ]
-                    ]).Html::endTag('div');
-                }
+        return Html::beginTag('div', ['class' => 'member', 'style' => 'margin-top: -10px']) . Gravatar::widget([
+                    'email' => $model->email,
+                    'size' => 42,
+                    'defaultImage' => 'mm',
+                    'options' => [
+                        'class' => 'member-avatar'
+                    ]
+                ]) . Html::endTag('div');
+    }
         ],
         'username',
         'email:email',
         [
-            'attribute' =>  'role',
+            'attribute' => 'role',
             'label' => 'Hak Akses',
         ],
         [
-            'attribute' => 'registered_from',
-            'label' => 'IP Registrasi',
+            'header' => Yii::t('user', 'Konfirmasi'),
             'value' => function ($model, $index, $widget) {
-                    return $model->registered_from == null ? '<span class="not-set">' . Yii::t('user', '(not set)') . '</span>' : long2ip($model->registered_from);
-                },
-            'format' => 'html',
-        ],
-        [
-            'label' => 'Waktu Registrasi',
-            'attribute' => 'created_at',
-            'value' => function ($model, $index, $widget) {
-                    return Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [$model->created_at]);
-                }
-        ],
-        [
-            'header' => Yii::t('user', 'Confirmation'),
-            'value' => function ($model, $index, $widget) {
-                    if ($model->isConfirmed) {
-                        return '<div class="text-center"><span class="text-success">' . Yii::t('user', 'Confirmed') . '</span></div>';
-                    } else {
-                        return Html::a(Yii::t('user', 'Confirm'), ['confirm', 'id' => $model->id], [
-                            'class' => 'btn btn-xs btn-success btn-block',
-                            'data-method' => 'post',
-                            'data-confirm' => Yii::t('user', 'Are you sure to confirm this user?'),
-                        ]);
-                    }
-                },
+        if ($model->isConfirmed) {
+            return '<div class="text-center"><span class="text-success">' . Yii::t('user', 'Terkonfirmasi') . '</span></div>';
+        } else {
+            return Html::a(Yii::t('user', 'Konfirmasi'), ['confirm', 'id' => $model->id], [
+                        'class' => 'btn btn-xs btn-success btn-block',
+                        'data-method' => 'post',
+                        'data-confirm' => Yii::t('user', 'Apakah anda ingin mengkonfirmasi akun ini?'),
+            ]);
+        }
+    },
             'format' => 'raw',
             'visible' => Yii::$app->getModule('user')->confirmable
         ],
         [
-            'header' => Yii::t('user', 'Block status'),
+            'header' => Yii::t('user', 'Status'),
             'value' => function ($model, $index, $widget) {
-                    if ($model->isBlocked) {
-                        return Html::a(Yii::t('user', 'Unblock'), ['block', 'id' => $model->id], [
-                            'class' => 'btn btn-xs btn-success btn-block',
-                            'data-method' => 'post',
-                            'data-confirm' => Yii::t('user', 'Are you sure to unblock this user?')
-                        ]);
-                    } else {
-                        return Html::a(Yii::t('user', 'Block'), ['block', 'id' => $model->id], [
-                            'class' => 'btn btn-xs btn-danger btn-block',
-                            'data-method' => 'post',
-                            'data-confirm' => Yii::t('user', 'Are you sure to block this user?')
-                        ]);
-                    }
-                },
+        if ($model->isBlocked) {
+            return Html::a(Yii::t('user', 'Non Aktif'), ['/user/admin/block', 'action' => 'user-unblock', 'id' => $model->id], [
+                        'class' => 'btn btn-xs btn-danger btn-block',
+                        'data-method' => 'post',
+                        'data-confirm' => Yii::t('user', 'Apaka anda ingin mengaktifkan akun ini?')
+            ]);
+        } else {
+            return Html::a(Yii::t('user', 'Aktif'), ['/user/admin/block', 'action' => 'user-block', 'id' => $model->id], [
+                        'class' => 'btn btn-xs  btn-success btn-block',
+                        'data-method' => 'post',
+                        'data-confirm' => Yii::t('user', 'Apaakah anda ingin menonaktifkan Akun ini?')
+            ]);
+        }
+    },
             'format' => 'raw',
         ],
         [
             'class' => 'yii\grid\ActionColumn',
-            'template' => '{update} {delete}',
+            'header' => '<div class="text-center" style="width: 80px">Aksi</div>',
+            'template' => '{update}&nbsp{delete}',
             'buttons' => [
-                'update' => function ($url, $model) {
-                        return Html::a('<i class="glyphicon glyphicon-wrench"></i>', $url, [
-                            'class' => 'btn btn-xs btn-info',
-                            'title' => Yii::t('yii', 'Update'),
-                        ]);
-                    },
-                'delete' => function ($url, $model) {
-                        return Html::a('<i class="glyphicon glyphicon-trash"></i>', $url, [
-                            'class' => 'btn btn-xs btn-danger',
-                            'data-method' => 'post',
-                            'data-confirm' => Yii::t('user', 'Are you sure to delete this user?'),
-                            'title' => Yii::t('yii', 'Delete'),
-                        ]);
-                    },
+                'update' => function ($url, $data) {
+            return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/user/admin/update", 'action' => 'user-update', 'id' => $data->id]), [
+                        'class' => 'select-tooltip btn btn-primary btn-xs',
+                        'data-toggle' => "tooltip",
+                        'data-original-title' => "Perbaharui",
+                        'title' => Yii::t('yii', 'Perbaharui'),
+            ]);
+        },
+                'delete' => function ($url, $data) {
+            return Html::a('<i class="fa   fa-times"></i>', Url::toRoute(["/user/admin/delete", 'action' => 'user-delete', 'id' => $data->id]), [
+                        'class' => 'select-tooltip btn btn-danger btn-xs',
+                        'data-toggle' => "tooltip",
+                        'data-original-title' => "Hapus",
+                        'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
+                        'data-method' => 'post',
+                        'data-pjax' => 0,
+                        'title' => Yii::t('yii', 'Hapus'),
+            ]);
+        },
             ]
         ],
     ],
 ]);
 ?>
+<?php ActiveForm::end(); ?>

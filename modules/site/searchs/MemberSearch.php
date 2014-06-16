@@ -36,7 +36,11 @@ class MemberSearch extends MemberModel
     public function ppiMemberSearch($params)
     {
         $query = self::find();
-        $query->onCondition(['type_member' => MEMBER_TYPE_PPI]);
+        $query->onCondition([
+            'type_member' => MEMBER_TYPE_PPI,
+            'save_status' => MEMBER_PUBLISH_STATUS
+            ]
+        );
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -156,7 +160,11 @@ class MemberSearch extends MemberModel
     public function capasMemberSearch($params)
     {
         $query = self::find();
-        $query->onCondition(['type_member' => MEMBER_TYPE_CAPAS]);
+         $query->onCondition([
+            'type_member' => MEMBER_TYPE_CAPAS,
+            'save_status' => MEMBER_PUBLISH_STATUS
+            ]
+        );
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -276,7 +284,11 @@ class MemberSearch extends MemberModel
     public function paskibraMemberSearch($params)
     {
         $query = self::find();
-        $query->onCondition(['type_member' => MEMBER_TYPE_PASKIBRA]);
+         $query->onCondition([
+            'type_member' => MEMBER_TYPE_PASKIBRA,
+            'save_status' => MEMBER_PUBLISH_STATUS
+            ]
+        );
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [

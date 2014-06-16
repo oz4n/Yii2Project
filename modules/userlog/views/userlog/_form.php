@@ -8,6 +8,7 @@ use yii\widgets\ActiveForm;
  * @var app\modules\dao\ar\UserLog $model
  * @var yii\widgets\ActiveForm $form
  */
+
 ?>
 
 <div class="user-log-form">

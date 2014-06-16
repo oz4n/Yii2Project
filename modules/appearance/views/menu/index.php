@@ -10,7 +10,7 @@ use yii\helpers\Url;
  * @var app\modules\appearance\searchs\MenuSearc $searchModel
  */
 
-$this->title = Yii::t('app', 'Taxonomies');
+$this->title = Yii::t('app', 'Menu');
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerCssFile(Yii::getAlias('@web').'/jnestable/nestable.css');
 $this->registerJs(
@@ -34,12 +34,11 @@ $this->registerJs(
                     "dataid":data_id,
                     "' . Yii::$app->request->csrfParam . '" : "' . Yii::$app->request->getCsrfToken() . '"
                 },
-                dataType:"json",
+                 dataType:"json",
                 success:function(response){
-                    if(response.status == true){
-                                                
-                    }else{
-                    }
+                console.log("ozan rock");
+                    var urlredirect= "'.Yii::$app->request->getHostInfo().Url::toRoute(['/appearance/menu/index','action'=>'appearance-menu-list']).'";
+                    window.location.replace(urlredirect);    
                 }
             });'
             . 'return false;'

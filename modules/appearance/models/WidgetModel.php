@@ -76,4 +76,12 @@ class WidgetModel extends Widget
         ];
         return $model->setAttribute('content', Json::encode($data));
     }
+
+    public function setGuestBookAttr($model, $param)
+    {
+        $data = [
+            'limit' => $param['limit']
+        ];
+        return $model->setAttribute('content', Json::encode($data));
+    }
 }

@@ -22,5 +22,9 @@ class FormToolsMember extends Model
     public $year_filtr2 = null;
     public $member_type;
     public $limit;
+    public $save_status;
+    public $member_data;
+    public $type_member;
+    public $file;
 
 }

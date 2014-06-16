@@ -3,6 +3,10 @@
 use yii\helpers\Url;
 use yii\widgets\ListView;
 use yii\helpers\Html;
+
+$this->title = "Buku Tamu";
+$this->registerMetaTag(['name' => 'keywords', 'content' =>'buku tamu']);
+
 ?>
 <!--=== Breadcrumbs ===-->
 <div class="breadcrumbs">

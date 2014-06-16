@@ -6,7 +6,7 @@
             <li data-transition="3dcurtain-vertical" data-slotamount="10" data-masterspeed="300" data-thumb="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/revolution/thumbs/thumb1.jpg">
 
                 <!-- THE MAIN IMAGE IN THE FIRST SLIDE -->
-                <img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/revolution/bg1.jpg">
+                <img src="<?php echo Yii::getAlias('@web').'/resources/images/pageslider/helperpage/'.$image->imgslide1; ?>">
 
                 <!--                <div class="caption randomrotate box-shadow shadow-effect-2"
                                      data-x="570"
@@ -24,7 +24,7 @@
                      data-speed="300"
                      data-start="1900"
                      data-easing="easeOutExpo">
-                    <img class="img-border" src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/pk/6.jpg" alt="Image 10">
+                    <img class="img-border" src="<?php echo Yii::getAlias('@web').'/resources/images/pageslider/helperpage/'.$image->imgslide4; ?>" alt="Image 10">
                 </div>
                 <div class="caption randomrotate"
                      data-x="807"
@@ -32,7 +32,7 @@
                      data-speed="300"
                      data-start="1900"
                      data-easing="easeOutExpo">
-                    <img class="img-border" src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/pk/4.jpg" alt="Image 10">
+                    <img class="img-border" src="<?php echo Yii::getAlias('@web').'/resources/images/pageslider/helperpage/'.$image->imgslide5; ?>" alt="Image 10">
                 </div>
 
 
@@ -42,7 +42,7 @@
                      data-speed="300"
                      data-start="2200"
                      data-easing="easeOutExpo">
-                    <img class="img-border" src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/pk/1.jpg" alt="Image 13">
+                    <img class="img-border" src="<?php echo Yii::getAlias('@web').'/resources/images/pageslider/helperpage/'.$image->imgslide6; ?>" alt="Image 13">
                 </div>
                 <div class="caption randomrotate"
                      data-x="662"
@@ -50,7 +50,7 @@
                      data-speed="200"
                      data-start="1700"
                      data-easing="easeOutExpo">
-                    <img class="img-border" src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/pk/3.jpg" alt="Image 8">
+                    <img class="img-border" src="<?php echo Yii::getAlias('@web').'/resources/images/pageslider/helperpage/'.$image->imgslide8; ?>" alt="Image 8">
                 </div>
                 <div class="caption randomrotate"
                      data-x="750"
@@ -58,7 +58,7 @@
                      data-speed="300"
                      data-start="1700"
                      data-easing="easeOutExpo">
-                    <img class="img-border" src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/pk/2.jpg" alt="Image 8">
+                    <img class="img-border" src="<?php echo Yii::getAlias('@web').'/resources/images/pageslider/helperpage/'.$image->imgslide9; ?>" alt="Image 8">
                 </div>
 
 
@@ -68,7 +68,7 @@
                      data-speed="300"
                      data-start="1800"
                      data-easing="easeOutExpo">
-                    <img class="img-border" src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/pk/5.jpg" alt="Image 9">
+                    <img class="img-border" src="<?php echo Yii::getAlias('@web').'/resources/images/pageslider/helperpage/'.$image->imgslide7; ?>" alt="Image 9">
                 </div>
                 <div class="caption large_text sft"
                      data-x="40"
@@ -111,7 +111,7 @@
             <li data-transition="papercut" data-slotamount="15" data-masterspeed="300" data-delay="9400" data-thumb="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/revolution/thumbs/thumb2.jpg">
 
                 <!-- THE MAIN IMAGE IN THE SECOND SLIDE -->                                               
-                <img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/revolution/bg2.jpg">
+                <img src="<?php echo Yii::getAlias('@web').'/resources/images/pageslider/helperpage/'.$image->imgslide2; ?>">
                 <div class="caption large_text sfb bg-black-opacity"
                      data-x="50"
                      data-y="220"
@@ -128,7 +128,7 @@
             <li data-transition="slideleft" data-slotamount="1" data-masterspeed="300" data-thumb="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/revolution/thumbs/thumb3.jpg">
 
                 <!-- THE MAIN IMAGE IN THE THIRD SLIDE -->                                               
-                <img src="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/revolution/bg3.jpg" >
+                <img src="<?php echo Yii::getAlias('@web').'/resources/images/pageslider/helperpage/'.$image->imgslide3; ?>" >
 
                 <div class="caption large_text sft"
                      data-x="10"

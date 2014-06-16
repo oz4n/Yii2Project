@@ -9,6 +9,7 @@ use app\modules\site\models\PostModel;
 use app\modules\site\models\PageModel;
 use app\modules\site\searchs\PageSerch;
 use yii\helpers\Json;
+use yii\web\NotFoundHttpException;
 
 class SiteController extends Controller
 {
@@ -28,7 +29,11 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = PostSerch::find()->onCondition(['content' => 'pagehome', "type" => 'pagehelper'])->one();
+        $image = json_decode($model->other_content);
+        return $this->render('index', [
+                    'image' => $image->imgslider
+        ]);
     }
 
     public function actionTax()
@@ -40,11 +45,15 @@ class SiteController extends Controller
             if ($this->findTaxBySlug()->type == "menupage") {
                 $page = new PageSerch;
                 $query = $page->getPage(Yii::$app->request->getQueryParams());
-                return $this->render('taxpage', [
-                            'model' => $query,
-                            'tax' => $model->findTaxNameBySLug($param['tax']),
-                            'other' => Json::decode($query->other_content)
-                ]);
+                if (isset($query->other_content)) {
+                    return $this->render('taxpage', [
+                                'model' => $query,
+                                'tax' => $model->findTaxNameBySLug($param['tax']),
+                                'other' => Json::decode($query->other_content)
+                    ]);
+                } else {
+                    throw new NotFoundHttpException('The requested page does not exist.');
+                }
             } else if ((isset($param['tax']) && $param['tax'] != null) && $this->findTaxBySlug() !== true) {
                 $dataProvider = $model->searchPost(Yii::$app->request->getQueryParams());
                 $form = new PostModel;
@@ -67,7 +76,7 @@ class SiteController extends Controller
                         'tax' => $this->getTaxName($model),
             ]);
         } else {
-            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 
@@ -87,7 +96,7 @@ class SiteController extends Controller
         if (isset($param['slug'])) {
             return $model->findPostBySlug($param['slug']);
         } else {
-            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 

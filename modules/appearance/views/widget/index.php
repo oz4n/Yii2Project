@@ -129,7 +129,7 @@ $this->registerJs(
 </div>
 
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-8">
         <div class="panel widget-followers">
             <div class="panel-heading">
                 <span class="panel-title">Widget yang tersedia</span>
@@ -152,6 +152,7 @@ $this->registerJs(
         </div>
     </div>
 
+   
     <div class="col-sm-4">
         <div class="panel">
             <div class="panel-heading">
@@ -183,8 +184,6 @@ $this->registerJs(
                 <button class="btn btn-xs btn-primary" id="btn-sidebar-save"><i class="fa fa-check"></i>&nbsp; Simpan</button>
             </div>
         </div>
-    </div>
-    <div class="col-sm-4">
         <div class="panel widget-notifications">
             <div class="panel-heading">
                 <span class="panel-title">Footer</span>

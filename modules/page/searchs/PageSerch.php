@@ -15,12 +15,9 @@ class PageSerch extends PageModel
     private static $_items = array();
     private static $_list = array(NULL => 'None');
 
-    private $year_filtr1;
-    private $year_filtr2;
-    private $year_filtr3;
-    private $year_filtr4;
-    private $year_opsi;
-    private $year_opsi1;
+    private $status_filtr1;
+    private $status_filtr2;
+   
 
     public $keyword;
     
@@ -54,6 +51,16 @@ class PageSerch extends PageModel
             return $dataProvider;
         }
 
+       if (isset($params['PageSerch']['status_filtr1'])) {
+            $this->status_filtr1 = $params['PageSerch']['status_filtr1'];
+             $query->orFilterWhere(['like', 'status', $this->status_filtr1]);
+        }
+
+        if (isset($params['PageSerch']['status_filtr2'])) {
+            $this->status_filtr2 = $params['PageSerch']['status_filtr2'];
+             $query->orFilterWhere(['like', 'status', $this->status_filtr2]);
+        }
+        
        if (isset($params['PageSerch']['keyword'])) {
             $key = $params['PageSerch']['keyword'];
             $query->orFilterWhere(['like', 'title', $key])

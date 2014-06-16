@@ -6,6 +6,8 @@ use yii\helpers\Json;
 use app\modules\site\widgets\RenderWidget;
 
 $other = Json::decode($model->other_content);
+$this->title = $model->title;
+$this->registerMetaTag(['name' => 'keywords', 'content' => isset($other['tag']) ? implode(',',$model->getTag($other['tag'])) : implode(',', explode(" ", $this->title))]);
 ?>
 <!--=== Breadcrumbs ===-->
 <div class="breadcrumbs">
@@ -40,7 +42,7 @@ $other = Json::decode($model->other_content);
                         <ul class="list-unstyled list-inline blog-tags">
                             <li>
                                 <i class="fa fa-tags"></i>
-                                <?= implode(' ', $model->getTagLinks($other['tag'])) ?>
+                                <?= implode(' ', $model->getTagLinks($other['tag'])) ?>                               
                             </li>
                         </ul>
                     </div>
@@ -51,7 +53,7 @@ $other = Json::decode($model->other_content);
         <div class="col-md-4 magazine-page">
             <div class="row">
                 <?=
-                RenderWidget::widget(['colClass'=>'col-sm-12 margin-bottom-20 ','layoute_position' => 'sidebar', 'tax' => $param['tax']]);
+                RenderWidget::widget(['colClass' => 'col-sm-12 margin-bottom-20 ', 'layoute_position' => 'sidebar', 'tax' => $param['tax']]);
                 ?>
             </div>
         </div>

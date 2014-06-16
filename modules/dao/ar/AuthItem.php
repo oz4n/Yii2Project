@@ -36,7 +36,7 @@ class AuthItem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description'], 'required'],
+            [['description'], 'required','message'=>'Tidak boleh kosong'],
             [['type', 'created_at', 'updated_at'], 'integer'],
             [['data'], 'string'],
             [['name', 'description'], 'string', 'max' => 255],

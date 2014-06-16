@@ -75,6 +75,9 @@ class WidgetController extends Controller
                     case "SosialNetwork";
                         $new->setSosialNetworkAttr($new, $param);
                         break;
+                    case "GuestBook";
+                        $new->setGuestBookAttr($new, $param);
+                        break;
                 }
 
             }
@@ -106,13 +109,16 @@ class WidgetController extends Controller
             if (($param = Yii::$app->request->post('WidgetModel'))) {
                 switch ($model->type) {
                     case "RecentPosts":
-                        $new->setPostAttr($new, $param);
+                        $model->setPostAttr($model, $param);
                         break;
                     case "Contact";
-                        $new->setContactAttr($new, $param);
+                        $model->setContactAttr($model, $param);
                         break;
                     case "SosialNetwork";
-                        $new->setSosialNetworkAttr($new, $param);
+                        $model->setSosialNetworkAttr($model, $param);
+                        break;
+                    case "GuestBook";
+                        $model->setGuestBookAttr($model, $param);
                         break;
                 }
             }

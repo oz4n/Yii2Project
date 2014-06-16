@@ -8,7 +8,7 @@ $this->registerJsFile('PixelAdmin/js/jquery.2.0.3.min.js', [], ['position' => Vi
     <div class="panel-body">
         <div class="table-responsive">
             <?php
-            $objPHPExcel = \PHPExcel_IOFactory::load(\Yii::getAlias('@web') . 'resources/report/1402579790.xlsx');
+            $objPHPExcel = \PHPExcel_IOFactory::load(\Yii::getAlias('@web') . 'resources/report/export/administrator-1402638448.xlsx');
 
             foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
                 $worksheetTitle = $worksheet->getTitle();

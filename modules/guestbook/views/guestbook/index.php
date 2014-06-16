@@ -7,22 +7,23 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use cebe\gravatar\Gravatar;
 use yii\web\View;
+
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var app\modules\guestbook\searchs\GuestbookSerch $searchModel
  */
-$this->title = Yii::t('app', 'Guestbooks');
+$this->title = Yii::t('app', 'Buku Tamu');
 $this->registerJs(''
-    . '$("td").css({"padding-top": "20px"});'   
-    , View::POS_READY);
+        . '$("td").css({"padding-top": "20px"});'
+        , View::POS_READY);
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
         <?= Yii::t('app', 'Anda di sini:'); ?>
     </div>
     <li>
-        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
+        <a href="<?= Url::toRoute(['/dashboard/dashboard/index', 'action' => 'dashboard-list']); ?>"><?= Yii::t('app', 'Beranda'); ?></a>
     </li>
     <li>
         <a href="<?= Url::toRoute(['/guestbook/guestbook/index', 'action' => 'guestbook-list']); ?>"><?= Yii::t('app', Html::encode('Buku Tamu')); ?></a>
@@ -34,13 +35,7 @@ $this->registerJs(''
             <h1 class="text-center text-left-sm">
                 <i class="fa  fa-comments-o page-header-icon"> </i>
                 &nbsp;
-                <?= Html::encode('Buku Tamu') ?>
-                <?= Yii::t('app', '/'); ?>
-                <?=
-                Html::a(Yii::t('app', 'Tambah {modelClass}', [
-                            'modelClass' => 'Buku Tamu',
-                        ]), Url::toRoute(['/guestbook/guestbook/create', 'action' => 'guestbook-create']))
-                ?>
+                <?= Html::encode('Buku Tamu') ?>                
             </h1>
         </div>
         <div class="col-xs-4">
@@ -134,17 +129,17 @@ $this->registerJs(''
                 [
                     'label' => '',
                     'format' => 'RAW',
-                    'value' => function($data){
-                         
-                        return  Html::beginTag('div', ['class' => 'member','style'=>'margin-top: -10px']). Gravatar::widget([
-                                            'email' => $data->email,
-                                            'size' => 42,
-                                            'defaultImage' => 'mm',
-                                            'options' => [
-                                                'class' => 'member-avatar'
-                                            ]
-                                ]).Html::endTag('div');                        
-                            }                            
+                    'value' => function($data) {
+
+                return Html::beginTag('div', ['class' => 'member', 'style' => 'margin-top: -10px']) . Gravatar::widget([
+                            'email' => $data->email,
+                            'size' => 42,
+                            'defaultImage' => 'mm',
+                            'options' => [
+                                'class' => 'member-avatar'
+                            ]
+                        ]) . Html::endTag('div');
+            }
                 ],
                 [
                     'attribute' => 'name',
@@ -190,14 +185,16 @@ $this->registerJs(''
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'header' => '<div class="text-center" style="width: 120px">Aksi</div>',
-                    'template' => '<div class="text-center">{update}&nbsp{delete}&nbsp{trash}</div>',
+                    'template' => '<div class="text-center">{replay}&nbsp;{update}&nbsp;{delete}</div>',
                     'buttons' => [
-//                'view' => function ($url, $data) {
-//                        return Html::a('<i class="fa fa-eye"></i>', Url::toRoute(['/guestbook/guestbook/view', 'action' => 'guestbook-view', 'id' => $data->id]), [
-//                            'class' => 'btn btn-success btn-xs',
-//                            'title' => Yii::t('yii', 'Lihat Detail'),
-//                        ]);
-//                    },
+                'replay' =>  function ($url, $data) {
+                    return Html::a('<i class="fa fa-mail-forward"></i>', Url::toRoute(["/guestbook/guestbook/replay", 'action' => 'guestbook-replay', 'id' => $data->id]), [
+                                'class' => 'select-tooltip btn btn-success btn-xs',
+                                'data-toggle' => "tooltip",
+                                'data-original-title' => "Balas",
+                                'title' => Yii::t('yii', 'Balas'),
+                    ]);
+                },
                         'update' => function ($url, $data) {
                     return Html::a('<i class="fa fa-pencil"></i>', Url::toRoute(["/guestbook/guestbook/update", 'action' => 'guestbook-update', 'id' => $data->id]), [
                                 'class' => 'select-tooltip btn btn-primary btn-xs',
@@ -216,17 +213,6 @@ $this->registerJs(''
                                 'data-pjax' => 0,
                                 'title' => Yii::t('yii', 'Hapus'),
                     ]);
-                },
-                        'trash' => function ($url, $data) {
-                    return Html::a('<i class="fa  fa-trash-o"></i>', Url::toRoute(['/guestbook/guestbook/trash', 'action' => 'guestbook-trash', 'id' => $data->id]), [
-                                'class' => 'select-tooltip btn btn-warning btn-xs',
-                                'data-toggle' => "tooltip",
-                                'data-original-title' => "Tong sampah",
-                                'data-confirm' => 'Apakah Anda yakin ingin membuang ke tong sampah?',
-                                'data-method' => 'post',
-                                'data-pjax' => 0,
-                                'title' => Yii::t('yii', 'Tong Sampah'),
-                    ]);
                 }
                     ]
                 ],
@@ -238,25 +224,3 @@ $this->registerJs(''
         ?>
     </div>
 </div>
-        <?php
-//            GridView::widget([
-//        'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
-//        'columns' => [
-//            ['class' => 'yii\grid\SerialColumn'],
-//
-//            'id',
-//            'user_id',
-//            'parent_id',
-//            'name',
-//            'email:email',
-//            // 'web_site',
-//            // 'subject',
-//            // 'content',
-//            // 'create_at',
-//            // 'update_et',
-//
-//            ['class' => 'yii\grid\ActionColumn'],
-//        ],
-//    ]); 
-        ?>

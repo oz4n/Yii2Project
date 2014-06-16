@@ -3,7 +3,7 @@
 namespace app\modules\guestbook\controllers;
 
 use Yii;
-use app\modules\dao\ar\Guestbook;
+use app\modules\guestbook\models\GuestbookModel;
 use app\modules\guestbook\searchs\GuestbookSerch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -48,44 +48,6 @@ class GuestbookController extends Controller
     }
 
     /**
-     * Displays a single Guestbook model.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionView($id)
-    {
-        if (Yii::$app->user->can('guestbookview')) {
-            return $this->render('view', [
-                        'model' => $this->findModel($id),
-            ]);
-        } else {
-            throw new HttpException(403, 'You are not allowed to access this page', 0);
-        }
-    }
-
-    /**
-     * Creates a new Guestbook model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        if (Yii::$app->user->can('guestbookcreate')) {
-            $model = new Guestbook;
-
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('create', [
-                            'model' => $model,
-                ]);
-            }
-        } else {
-            throw new HttpException(403, 'You are not allowed to access this page', 0);
-        }
-    }
-
-    /**
      * Updates an existing Guestbook model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -97,7 +59,7 @@ class GuestbookController extends Controller
             $model = $this->findModel($id);
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['update', 'action' => 'guestbook-update', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
                             'model' => $model,
@@ -105,6 +67,25 @@ class GuestbookController extends Controller
             }
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
+    }
+
+    public function actionReplay($id)
+    {
+        $model = $this->findModel($id);
+        $new = new GuestbookModel;
+        $new->setAttribute("create_et", date("Y-m-d H:i:s"));
+        $new->setAttribute("update_et", date("Y-m-d H:i:s"));
+        $new->setAttribute("status", "Publish");
+        if ($new->load(Yii::$app->request->post()) && $new->save()) {
+            $model->status = 'Publish';
+            $model->save();
+            return $this->redirect(['replay', 'action' => 'guestbook-replay', 'id' => $id]);
+        } else {
+            return $this->render('replay', [
+                        'model' => $model,
+                        'child' => $model->findAllByParentId($id)
+            ]);
         }
     }
 
@@ -117,9 +98,10 @@ class GuestbookController extends Controller
     public function actionDelete($id)
     {
         if (Yii::$app->user->can('guestbookdelete')) {
-            $this->findModel($id)->delete();
-
-            return $this->redirect(['index']);
+            $model = $this->findModel($id);
+            $model->deleteAll(['parent_id' => $id]);
+            $model->delete();
+            return $this->redirect(['index', 'action' => 'guestbook-list']);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
@@ -129,12 +111,12 @@ class GuestbookController extends Controller
      * Finds the Guestbook model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Guestbook the loaded model
+     * @return GuestbookModel the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Guestbook::findOne($id)) !== null) {
+        if (($model = GuestbookModel::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

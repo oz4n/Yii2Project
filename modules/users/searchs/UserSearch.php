@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: root
@@ -8,13 +9,13 @@
 
 namespace app\modules\users\searchs;
 
-
 use app\modules\users\models\UserModel;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 class UserSearch extends UserModel
 {
+
     public $keyword;
 
     /**
@@ -60,11 +61,19 @@ class UserSearch extends UserModel
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+        
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
+
+        if (isset($params['UserSearch']['keyword'])) {
+            $key = $params['UserSearch']['keyword'];           
+            $query->orFilterWhere(['like', 'username', $key]);
+            $query->orFilterWhere(['like', 'email', $key]);
+            $query->orFilterWhere(['like', 'role', $key]);
+        }
+        
         $this->addCondition($query, 'username', true);
         $this->addCondition($query, 'email', true);
         $this->addCondition($query, 'created_at');
@@ -93,4 +102,5 @@ class UserSearch extends UserModel
             $query->andWhere([$attribute => $value]);
         }
     }
-} 
+
+}

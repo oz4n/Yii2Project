@@ -14,13 +14,42 @@ define('EOL', (PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
 use Yii;
 use yii\web\Controller;
 use yii\web\User;
+use yii\imagine\Image;
 
 class TestController extends Controller
 {
 
     public function actionTest()
     {
-        echo Yii::getAlias('@app');
+        $pat = "/media/HD-500/Libraries/Github/Yii2Project/web/resources/images/original/";
+        $img = imagecreatefromjpeg($pat . "20140530171040-645105076-adaaas.jpg");
+//        echo imagesx($img)."<br>";
+//        echo imagesy($img)."<br>";
+        $imagine = new \Imagine\Gd\Imagine();
+        $imagine = new \Imagine\Imagick\Imagine();
+        $image = $imagine->open($pat . "20140530171040-645105076-adaaas.jpg");
+        $image->crop(new \Imagine\Image\Point(5, 200), new \Imagine\Image\Box(1804, 255))
+            ->show('jpg');
+
+//        $imagine = new \Imagine\Imagick\Imagine();
+//        $options = array(
+//        'resolution-units' => \Imagine\Image\ImageInterface::RESOLUTION_PIXELSPERINCH,
+//        'resolution-x' => 150,
+//        'resolution-y' => 120,
+//        'resampling-filter' => \Imagine\Image\ImageInterface::FILTER_LANCZOS,
+//        );
+//        $imagine->open($pat . "20140530171040-645105076-adaaas.jpg")->save($pat . "ozan.jpg", $options);
+
+        
+//        $img = imagecreatefromjpeg($pat . "20140530171040-645105076-adaaas.jpg");
+//        echo imagesx($img)."<br>";
+//        echo imagesy($img)."<br>";
+//        Image::thumbnail($pat. "20140530171040-645105076-adaaas.jpg", 1080, 500)->save($pat."ozan", ['quality' => 80]);
+//        $size = new \Imagine\Image\Box(imagesx($img), imagesy($img));
+//        $point = new \Imagine\Image\Point\Center($size);
+//        $size->scale($ratio);
+//        Image::crop($pat . "20140530171040-645105076-adaaas.jpg", 1080, 500, [1,0])->save($pat . "ozan-rock.jpg", ['quality' => 80]);
+        ;
     }
 
     public function actionRepot()
@@ -58,7 +87,7 @@ class TestController extends Controller
         $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension('C')->setAutoSize(true);
 
 
-        // Redirect output to a client’s web browser (Excel2007)
+        // Redirect output to a client's web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="01simple.xlsx"');
         header('Cache-Control: max-age=0');
@@ -84,9 +113,9 @@ class TestController extends Controller
         $data = \app\modules\dao\ar\Member::find()->all();
         $objPHPExcel->getActiveSheet()->setTitle('PPI LOTENG');
         $objPHPExcel->getActiveSheet()->setCellValue('D1', \PHPExcel_Shared_Date::PHPToExcel(time()));
-        
+
         $baseRow = 7;
-        $objPHPExcel->getActiveSheet()->setCellValue('B2', date('F d, Y H:i:s', time()));       
+        $objPHPExcel->getActiveSheet()->setCellValue('B2', date('F d, Y H:i:s', time()));
         foreach ($data as $r => $dataRow) {
             $row = $baseRow + $r;
             $objPHPExcel->getActiveSheet()->insertNewRowBefore($row, 1);
@@ -139,14 +168,14 @@ class TestController extends Controller
                     ->setCellValue('AT' . $row, "personal")
                     ->setCellValue('AU' . $row, $dataRow->note);
         }
-        
+
 
 //        $objPHPExcel->getActiveSheet()->removeRow($baseRow - 1, 1);
 
         $alpabet = 'A';
         $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($alpabet)->setAutoSize(true);
         for ($n = 0; $n < 46; $n++) {
-            $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension(++$alpabet)->setAutoSize(true);
+            $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension( ++$alpabet)->setAutoSize(true);
         }
 
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');

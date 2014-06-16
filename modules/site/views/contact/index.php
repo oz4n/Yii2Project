@@ -1,4 +1,7 @@
-
+<?php
+$this->title = "Kontak";
+$this->registerMetaTag(['name' => 'keywords', 'content' =>'kontak']);
+?>
 <!--=== Breadcrumbs ===-->
 <div class="breadcrumbs">
     <div class="container">

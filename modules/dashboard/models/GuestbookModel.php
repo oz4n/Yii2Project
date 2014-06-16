@@ -28,8 +28,8 @@ class GuestbookModel extends Guestbook
 
     public function getMessage($offset, $limit)
     {
-        $model = self::find();
-        $query = $model->offset($offset)->limit($limit)->orderBy([
+        $model = self::find();        
+        $query = $model->onCondition(['parent_id' => null])->offset($offset)->limit($limit)->orderBy([
                     'status' => SORT_DESC,
                     'create_et' => SORT_DESC
                 ]);

@@ -19,7 +19,7 @@ $this->registerJs(
     . '$(".select2-results").slimScroll({height: 190 });'   
     . '$("#select-unit").select2({ allowClear: true, placeholder: "Status pendidikan"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-membership_status").select2({ allowClear: true, placeholder: "Status angota"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
-    . '$("#select-status_organization").select2({ allowClear: true, placeholder: "Status organisasi"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
+//    . '$("#select-status_organization").select2({ allowClear: true, placeholder: "Status organisasi"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-marital_status").select2({ allowClear: true, placeholder: "Status perkawinan"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-job").select2({ allowClear: true, placeholder: "Pekerjaan"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-dress_size").select2({ allowClear: true, placeholder: "Ukuran baju"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
@@ -34,7 +34,7 @@ $this->registerJs(
     . '$("#select-save_status").select2({ allowClear: true, placeholder: "Save status"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-languageskill").select2({ allowClear: true, placeholder: "Pilih"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-lifeskill").select2({ allowClear: true, placeholder: "Pilih"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
-    . '$("#select-brevetawards").select2({ allowClear: true, placeholder: "Penghargaan"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
+//    . '$("#select-brevetawards").select2({ allowClear: true, placeholder: "Penghargaan"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-income_father").select2({ allowClear: true, placeholder: "Penghasilan bapak"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '$("#select-income_mothers").select2({ allowClear: true, placeholder: "Penghasilan ibu"}).change(function(){ if($(this).valid()){ $(this).parent().parent().addClass("has-success"); } });'
     . '});'
@@ -101,7 +101,7 @@ $form = ActiveForm::begin([
                 ?>
 
 
-                <?= $form->field($model, 'taxonomies')->dropDownList(CapasSerch::getBrevetAwards(), ['multiple' => 'multiple', 'name' => 'CapasModel[brevet_award]', 'id' => 'select-brevetawards'])->label('Brevet Penghargaan') ?>
+                <?php //$form->field($model, 'taxonomies')->dropDownList(CapasSerch::getBrevetAwards(), ['multiple' => 'multiple', 'name' => 'CapasModel[brevet_award]', 'id' => 'select-brevetawards'])->label('Brevet Penghargaan') ?>
                 <?= $form->field($model, 'organizational_experience')->textInput(['maxlength' => 45]) ?>
                 <?= $form->field($model, 'illness')->textInput(['maxlength' => 45]) ?>
                 <?= $form->field($model, 'height_body')->textInput(['maxlength' => 45]) ?>
@@ -128,23 +128,23 @@ $form = ActiveForm::begin([
                 <span class="panel-title">Status</span>
             </div>
             <div class="panel-body">
-                <?=
-                $form->field($model, 'membership_status')->dropDownList([
-                    'Anggota Biasa' => 'Anggota Biasa',
-                    'Anggota Kehormatan' => 'Anggota Kehormatan',
-                    'Pengurus Kota' => 'Pengurus Kota',
-                    'Pengurus Kab' => 'Pengurus Kab',
-                    'Pengurus Provinsi' => 'Pengurus Provinsi',
-                    'Pengurus Pusat' => 'Pengurus Pusat',
-                ], ['id' => 'select-membership_status', 'maxlength' => 45])
+                <?php
+//                $form->field($model, 'membership_status')->dropDownList([
+//                    'Anggota Biasa' => 'Anggota Biasa',
+//                    'Anggota Kehormatan' => 'Anggota Kehormatan',
+//                    'Pengurus Kota' => 'Pengurus Kota',
+//                    'Pengurus Kab' => 'Pengurus Kab',
+//                    'Pengurus Provinsi' => 'Pengurus Provinsi',
+//                    'Pengurus Pusat' => 'Pengurus Pusat',
+//                ], ['id' => 'select-membership_status', 'maxlength' => 45])
                 ?>
-                <?=
-                $form->field($model, 'status_organization')->dropDownList([
-                    'Aktif' => 'Aktif',
-                    'Non Aktif' => 'Non Aktif',
-                    'Mutasi' => 'Mutasi',
-                    'PDTH' => 'PDTH',
-                ], ['id' => 'select-status_organization', 'maxlength' => 45])
+                <?php
+//                $form->field($model, 'status_organization')->dropDownList([
+//                    'Aktif' => 'Aktif',
+//                    'Non Aktif' => 'Non Aktif',
+//                    'Mutasi' => 'Mutasi',
+//                    'PDTH' => 'PDTH',
+//                ], ['id' => 'select-status_organization', 'maxlength' => 45])
                 ?>
                 
                 <?=
@@ -422,45 +422,7 @@ $form = ActiveForm::begin([
         </div>
 
     </div>
-    <div class="panel colourable">
-        <div class="panel-heading">
-            <span class="panel-title">Sertifikat Organisasi</span>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div id="preview-front-photo" class="dz-preview dz-image-preview"
-                         style="<?php echo $model->certificate_of_organization == null ? "display: none;" : ""; ?> border-radius: 0px; width: 284px; margin: 0">
-                        <div class="dz-details">
-                            <div class="dz-size">
-                                Ukuran Photo: 
-                                <span data-dz-size="">
-                                    <strong>120x300</strong> px
-                                </span>
-                            </div>
-                            <div class="dz-thumbnail-wrapper">
-                                <div class="dz-thumbnail" style="width: 265px; height: 170px;">
-                                    <img id="img-target-photo"
-                                         src="<?php echo $model->certificate_of_organization == null ? "" : Yii::getAlias('@web') . "/resources/images/member/certificate/" . $model->certificate_of_organization; ?>"
-                                         data-dz-thumbnail="" style="max-height: 202px;">
-                                </div>
-                            </div>
-                        </div>
-                        <a id="remove-front-photo" class="select-image dz-remove" href="#" style="border-radius: 0"
-                           data-toggle="modal" data-target="#modal-sizes-2">Ganti Photo</a>
-                    </div>
-                    <div id="select-front-photo" class="select-image dropzone-box" data-toggle="modal"
-                         data-target="#modal-sizes-2"
-                         style="<?php echo $model->certificate_of_organization == null ? "" : "display: none;"; ?>">
-                        <div class="dz-default dz-message" style="margin-left: -40px">
-                            <i class="fa fa-cloud-upload"></i>
-                        </div>
-                    </div>
-                    <?= Html::activeHiddenInput($model, 'certificate_of_organization', ['id' => 'input-file']) ?>
-                </div>
-            </div>
-        </div>
-    </div>
+ 
 
     <div class="panel colourable">
         <div class="panel-heading">

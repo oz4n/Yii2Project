@@ -32,9 +32,10 @@ class GuestbookSerch extends Guestbook
     public function search($params)
     {
         $query = Guestbook::find();
+        $query->onCondition(['parent_id' => null]);
         $query->orderBy([
             'status' => SORT_DESC,
-            'create_et' => SORT_DESC           
+            'create_et' => SORT_DESC,
         ]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

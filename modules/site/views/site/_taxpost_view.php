@@ -10,7 +10,7 @@ $imgname = $img[count($img) - 1];
 ?>
 <div class="row">
     <div class="col-md-4 funny-boxes-img">
-        <img alt="" src="<?php echo Yii::getAlias('@web') . "/resources/images/thumbnail/191x128/" . $imgname; ?>" class="img-responsive">
+        <img style="width: 1024px" src="<?php echo Yii::getAlias('@web') . "/resources/images/thumbnail/191x128/" . $imgname; ?>" class="img-responsive">
         <ul class="list-unstyled">
             <li><i class="fa fa-calendar"></i>&nbsp;<?= date('F j, Y',strtotime($data->create_et)); ?></li>            
             <li><i class="fa fa-bullhorn"></i>&nbsp;<?= $data->findTaxNameBySLug($tax) ?></li>

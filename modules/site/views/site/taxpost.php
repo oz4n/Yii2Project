@@ -4,7 +4,8 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ListView;
 use app\modules\site\widgets\RenderWidget;
-
+$this->title =$tax;
+$this->registerMetaTag(['name' => 'keywords', 'content' => $tax]);
 ?>
 
 <!--=== Breadcrumbs ===-->

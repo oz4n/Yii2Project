@@ -11,7 +11,7 @@ use app\modules\site\helpers\TextHelper;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var app\modules\word\searchs\PostSerch $searchModel
+ * @var app\modules\word\searchs\PageSerch $searchModel
  */
 $this->title = Yii::t('app', 'Halaman');
 
@@ -98,13 +98,13 @@ $this->registerJs(''
             . Html::beginTag('div', ['class' => 'form-inline'])
             . Html::dropDownList('bulk_action1', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
             . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_filtr1]', '', PostSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+//        . Html::dropDownList('PageSerch[year_filtr1]', '', PageSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
 //        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_opsi]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
+//        . Html::dropDownList('PageSerch[year_opsi]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
 //        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_filtr2]', '', PostSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+//        . Html::dropDownList('PageSerch[year_filtr2]', '', PageSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
 //        . '&nbsp;&nbsp;'
-            . Html::dropDownList('PostSerch[status_filtr1]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash'], ['class' => 'form-control save-status'])
+            . Html::dropDownList('PageSerch[status_filtr1]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash'], ['class' => 'form-control save-status'])
             . '&nbsp;&nbsp;'
             . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
             . Html::endTag('div')
@@ -130,13 +130,13 @@ $this->registerJs(''
             . Html::beginTag('div', ['class' => 'form-inline'])
             . Html::dropDownList('bulk_action2', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
             . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_filtr3]', '', PostSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+//        . Html::dropDownList('PageSerch[year_filtr3]', '', PageSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
 //        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_opsi1]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
+//        . Html::dropDownList('PageSerch[year_opsi1]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
 //        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PostSerch[year_filtr4]', '', PostSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
+//        . Html::dropDownList('PageSerch[year_filtr4]', '', PageSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
 //        . '&nbsp;&nbsp;'
-            . Html::dropDownList('PostSerch[status_filtr2]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash'], ['class' => 'form-control save-status'])
+            . Html::dropDownList('PageSerch[status_filtr2]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash'], ['class' => 'form-control save-status'])
             . '&nbsp;&nbsp;'
             . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
             . Html::endTag('div')

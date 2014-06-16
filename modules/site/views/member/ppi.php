@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ListView;
+$this->title = "Anggota Purna Paskibraka Indonesia";
+$this->registerMetaTag(['name' => 'keywords', 'content' =>'ppi']);
 ?>
 
 <!--=== Breadcrumbs ===-->
@@ -17,17 +19,7 @@ use yii\widgets\ListView;
 </div>
 <!--/breadcrumbs-->
 <div class="container content">
-    <div class="row">
-        <div class="col-md-4 magazine-page">   
-            <div class="headline margin-bottom-20" style="margin-top: -10px"><h2>Daftar Sebagai Anggota</h2></div>
-            <ol>
-                <li>Admin PPE</li>
-                <li>Admin Agency</li>
-                <li>Helpdesk</li>
-                <li>Sub Admin</li>
-            </ol>
-        </div>
-
+    <div class="row">       
         <!-- Bordered Funny Boxes -->
         <div class="col-sm-8">
            <?php 
@@ -52,6 +44,13 @@ use yii\widgets\ListView;
             ]);
            ?>
         </div>
-        <!-- End Bordered Funny Boxes -->
+        <div class="col-md-4 magazine-page">   
+            <div class="headline margin-bottom-20" style="margin-top: -10px"><h2>Daftar Sebagai Anggota</h2></div>
+            <ol>
+                <li>Purna Paskibraka Indonesia (PPI)</li>
+                <li>Paskibra</li>
+                <li>Calon Paskibra (Capas)</li>               
+            </ol>
+        </div>
     </div>    
 </div>

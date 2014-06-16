@@ -19,12 +19,8 @@ class PostSerch extends Post
 
     private static $_items = array();
     private static $_list = array(NULL => 'None');
-    private $year_filtr1;
-    private $year_filtr2;
-    private $year_filtr3;
-    private $year_filtr4;
-    private $year_opsi;
-    private $year_opsi1;
+    private $status_filtr1;
+    private $status_filtr2;  
     public $keyword;
 
     public function rules()
@@ -56,6 +52,16 @@ class PostSerch extends Post
             return $dataProvider;
         }
         
+        if (isset($params['PostSerch']['status_filtr1'])) {
+            $this->status_filtr1 = $params['PostSerch']['status_filtr1'];
+             $query->orFilterWhere(['like', 'status', $this->status_filtr1]);
+        }
+
+        if (isset($params['PostSerch']['status_filtr2'])) {
+            $this->status_filtr1 = $params['PostSerch']['status_filtr2'];
+             $query->orFilterWhere(['like', 'status', $this->status_filtr1]);
+        }
+
         if (isset($params['PostSerch']['keyword'])) {
             $key = $params['PostSerch']['keyword'];
             $query->orFilterWhere(['like', 'title', $key])

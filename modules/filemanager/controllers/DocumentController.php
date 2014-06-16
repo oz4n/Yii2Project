@@ -63,18 +63,20 @@ class DocumentController extends Controller
                 /**
                  * Save DocumentModel name and order attr to database
                  */
-                $model = new DocumentModel();
+                $model = new DocumentModel;
+
                 $model->user_id = Yii::$app->user->identity->getId();
                 $model->name = $file->name;
                 $model->orginal_name = $file->name;
                 $model->unique_name = $unique_name;
                 $model->type = FileManager::FILE_TYPE_DOCUMENT;
-                $model->size = "$this->bytes($file->size)";
+                $model->size = "$file->size";
                 $model->file_type = $file->type;
-                $model->description = "Dokumen " . $file->name;
+                $model->description = "Tidak ada keterangan";
                 $model->create_at = date("Y-m-d H:i:s");
                 $model->update_et = date("Y-m-d H:i:s");
                 $model->save();
+
                 $base_path = Yii::getAlias('@web') . DS . 'resources' . DS . 'documents' . DS;
                 echo Json::encode([
                     'filelink' => $base_path . $dir . DS . $unique_name,
@@ -101,14 +103,14 @@ class DocumentController extends Controller
                 $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : "";
                 $position = ($page * $per_page);
                 $query = $file->onCondition(['type' => FileManager::FILE_TYPE_DOCUMENT])
-                    ->orFilterWhere(['like', 'name', $key])
-                    ->orFilterWhere(['like', 'orginal_name', $key])
-                    ->orFilterWhere(['like', 'unique_name', $key])
-                    ->orFilterWhere(['like', 'description', $key])
-                    ->orderBy(['create_at' => SORT_DESC])
-                    ->limit($per_page)
-                    ->offset($position)
-                    ->all();
+                        ->orFilterWhere(['like', 'name', $key])
+                        ->orFilterWhere(['like', 'orginal_name', $key])
+                        ->orFilterWhere(['like', 'unique_name', $key])
+                        ->orFilterWhere(['like', 'description', $key])
+                        ->orderBy(['create_at' => SORT_DESC])
+                        ->limit($per_page)
+                        ->offset($position)
+                        ->all();
                 /** @var File $v */
                 foreach ($query as $v) {
                     $data[] = [
@@ -141,8 +143,8 @@ class DocumentController extends Controller
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
             return $this->render('index', [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -158,7 +160,7 @@ class DocumentController extends Controller
     {
         if (Yii::$app->user->can('documentview')) {
             return $this->render('view', [
-                'model' => $this->findModel($id),
+                        'model' => $this->findModel($id),
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -173,13 +175,38 @@ class DocumentController extends Controller
     public function actionCreate()
     {
         if (Yii::$app->user->can('documentcreate')) {
-            $model = new File;
+            $model = new DocumentModel;
+            if (Yii::$app->request->post()) {
+                $file = UploadedFile::getInstanceByName('file');
+                if ($file->size === 0 && $file == null) {
+                    return $this->render('create', [
+                                'model' => $model,
+                    ]);
+                } else {
+                    $dir = date("Ym");
+                    $this->filesystem->mkdir($this->path . $dir);
+                    $unique_name = preg_replace('/\s+/', '-', date("YmdHis") . '-' . rand(0, 999999999) . '-' . $file->name);
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                    $file->saveAs($this->path . $dir . DS . $unique_name);
+                    $model->setAttribute("create_at", date("Y-m-d H:i:s"));
+                    $model->setAttribute("update_et", date("Y-m-d H:i:s"));
+                    $model->setAttribute("user_id", Yii::$app->user->identity->getId());
+                    $model->setAttribute("orginal_name", $file->name);
+                    $model->setAttribute("unique_name", $unique_name);
+                    $model->setAttribute("size", "$file->size");
+                    $model->setAttribute("file_type", $file->type);
+                    $model->setAttribute("type", FileManager::FILE_TYPE_DOCUMENT);
+                    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                        return $this->redirect(['index', 'action' => 'filemanager-document-list']);
+                    } else {
+                        return $this->render('create', [
+                                    'model' => $model,
+                        ]);
+                    }
+                }
             } else {
                 return $this->render('create', [
-                    'model' => $model,
+                            'model' => $model,
                 ]);
             }
         } else {
@@ -197,12 +224,12 @@ class DocumentController extends Controller
     {
         if (Yii::$app->user->can('documentupdate')) {
             $model = $this->findModel($id);
-
+            $model->setAttribute("update_et", date("Y-m-d H:i:s"));
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['update', 'action' => 'filemanager-document-update', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                    'model' => $model,
+                            'model' => $model,
                 ]);
             }
         } else {
@@ -219,11 +246,46 @@ class DocumentController extends Controller
     public function actionDelete($id)
     {
         if (Yii::$app->user->can('documentdelete')) {
-            $this->findModel($id)->delete();
-
-            return $this->redirect(['index']);
+            $model = $this->findModel($id);
+            $dir = date("Ym", strtotime($model->create_at));
+            $this->filesystem->remove($this->path . $dir . DS . $model->unique_name);
+            $model->delete();
+            return $this->redirect(['index', 'action' => 'filemanager-document-list']);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
+    }
+
+    public function actionBulk()
+    {
+        if (Yii::$app->user->can('documentbulk')) {
+            if (Yii::$app->request->post() && (Yii::$app->request->post('bulk_action1') == 'delete' || Yii::$app->request->post('bulk_action2') == 'delete')) {
+                $this->deleteAll(Yii::$app->request->post('selection'));
+                return $this->redirect(['index', 'action' => 'filemanager-document-list']);
+            } else {
+                return $this->redirect(['index', 'action' => 'filemanager-document-list']);
+            }
+        } else {
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
+    }
+
+    /**
+     * @param array $data
+     * @return \yii\web\Response
+     */
+    private function deleteAll($data)
+    {
+        if (null !== $data) {
+            foreach ($data as $id) {
+                $model = $this->findModel($id);
+                $dir = date("Ym", strtotime($model->create_at));
+                $this->filesystem->remove($this->path . $dir . DS . $model->unique_name);
+                $model->delete();
+            }
+            return $this->redirect(['index', 'action' => 'filemanager-document-list']);
+        } else {
+            return $this->redirect(['index', 'action' => 'filemanager-document-list']);
         }
     }
 
@@ -231,12 +293,12 @@ class DocumentController extends Controller
      * Finds the File model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return File the loaded model
+     * @return DocumentModel the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = File::findOne($id)) !== null) {
+        if (($model = DocumentModel::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

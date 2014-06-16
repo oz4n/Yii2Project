@@ -39,7 +39,7 @@ class WidgetController extends Controller
      */
     public function actionCreate($id)
     {
-        if (Yii::$app->user->can('widgetcreate')) {
+        if (Yii::$app->user->can('pagewidgetcreate')) {
             $model = $this->findModel($id);
             $get = Yii::$app->request->getQueryParams();
             $new = new WidgetModel;
@@ -86,7 +86,7 @@ class WidgetController extends Controller
      */
     public function actionUpdate($id)
     {
-        if (Yii::$app->user->can('widgetupdate')) {
+        if (Yii::$app->user->can('pagewidgetupdate')) {
             $model = $this->findModel($id);
             $get = Yii::$app->request->getQueryParams();
             if (($param = Yii::$app->request->post('WidgetModel'))) {
@@ -122,27 +122,31 @@ class WidgetController extends Controller
 
     public function actionUpdateposition()
     {
-        if (Yii::$app->request->isAjax) {
-            $param = Yii::$app->request->post();
-            $data = Json::decode($param['data']);
+        if (Yii::$app->user->can('pagewidgetupdateposition')) {
+            if (Yii::$app->request->isAjax) {
+                $param = Yii::$app->request->post();
+                $data = Json::decode($param['data']);
 
-            foreach ($data as $k => $v) {
-                $model = $this->findModel($v['id']);
-                $model->position = $k;
-                $model->layoute_position = $v['layoute'];
-                $model->save();
+                foreach ($data as $k => $v) {
+                    $model = $this->findModel($v['id']);
+                    $model->position = $k;
+                    $model->layoute_position = $v['layoute'];
+                    $model->save();
+                }
+                echo Json::encode([
+                    'text' => 'Posisi berhasil diperbaharui.'
+                ]);
+            } else {
+                throw new NotFoundHttpException('The requested page does not exist.');
             }
-            echo Json::encode([
-                'text' => 'Posisi berhasil diperbaharui.'
-            ]);
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+            throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
 
     public function actionDeletewidgetitem()
     {
-        if (Yii::$app->user->can('widgetdeleteitem')) {
+        if (Yii::$app->user->can('pagewidgetdeleteitem')) {
             if (Yii::$app->request->isAjax) {
                 $param = Yii::$app->request->post();
                 $this->findModel($param['dataid'])->delete();

@@ -13,6 +13,9 @@ use app\modules\userrbac\UserRbac;
  */
 class RuleSerch extends RuleModel
 {
+
+    public $keyword;
+
     public function rules()
     {
         return [
@@ -41,17 +44,11 @@ class RuleSerch extends RuleModel
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'type' => $this->type,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'rule_name', $this->rule_name])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'data', $this->data]);
+        if (isset($params["RuleSerch"]["keyword"])) {
+            $query->orFilterWhere(['like', 'description', $params["RuleSerch"]["keyword"]]);
+        }
 
         return $dataProvider;
     }
+
 }

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Url;
+use yii\helpers\Html;
 ?>
 <!--=== Breadcrumbs ===-->
 <div class="breadcrumbs">
@@ -27,19 +28,14 @@ use yii\helpers\Url;
                             <li class="rounded-x" data-target="#myCarousel" data-slide-to="1"></li>
                             <li class="rounded-x" data-target="#myCarousel" data-slide-to="2"></li>
                         </ol>
-
-                        <div class="carousel-inner">
-                            <div class="item active">
-                                <img class="img-responsive" src="<?php echo Yii::getAlias('@web') . "/resources/images/pageslider/page/" . $other['imgslider'][0]; ?>" alt="">
-                            </div>
-                            <div class="item">
-                                <img class="img-responsive" src="<?php echo Yii::getAlias('@web') . "/resources/images/pageslider/page/" . $other['imgslider'][1]; ?>" alt="">
-                            </div>
-                            <div class="item">
-                                <img class="img-responsive" src="<?php echo Yii::getAlias('@web') . "/resources/images/pageslider/page/" . $other['imgslider'][2]; ?>" alt="">
-                            </div>
-                        </div>
-
+                        <?php
+                        $image = ((object) $other['imgslider']);
+                        echo Html::beginTag('div', ['class' => 'carousel-inner']);
+                        echo isset($image->img0) ? Html::tag('div', Html::img(Yii::getAlias('@web') . "/resources/images/pageslider/page/" . $image->img0, ['class' => 'img-responsive']), ['class' => 'item active']) : "";
+                        echo isset($image->img1) ? Html::tag('div', Html::img(Yii::getAlias('@web') . "/resources/images/pageslider/page/" . $image->img1, ['class' => 'img-responsive']), ['class' => 'item']) : "";
+                        echo isset($image->img2) ? Html::tag('div', Html::img(Yii::getAlias('@web') . "/resources/images/pageslider/page/" . $image->img2, ['class' => 'img-responsive']), ['class' => 'item']) : "";
+                        echo Html::endTag('div');
+                        ?>
                         <div class="carousel-arrow">
                             <a data-slide="prev" href="#myCarousel" class="left carousel-control">
                                 <i class="fa fa-angle-left"></i>

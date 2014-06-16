@@ -42,14 +42,19 @@ class PostController extends Controller
         if (Yii::$app->user->can('postindex')) {
             $searchModel = new PostSerch;
             $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+            if ((Yii::$app->request->get('bulk_action1') == 'delete' || Yii::$app->request->get('bulk_action2') == 'delete')) {
+                $this->deleteAll(Yii::$app->request->get('selection'));
+            }
+            if ((Yii::$app->request->get('bulk_action1') == 'trash' || Yii::$app->request->get('bulk_action2') == 'trash')) {
+                $this->trashAll(Yii::$app->request->get('selection'));
+            }
             return $this->render('index', [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
-
     }
 
     /**
@@ -61,7 +66,7 @@ class PostController extends Controller
     {
         if (Yii::$app->user->can('postview')) {
             return $this->render('view', [
-                'model' => $this->findModel($id),
+                        'model' => $this->findModel($id),
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -115,7 +120,7 @@ class PostController extends Controller
                 return $this->redirect(['update', 'action' => 'word-post-update', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
-                    'model' => $model,
+                            'model' => $model,
                 ]);
             }
         } else {
@@ -158,19 +163,18 @@ class PostController extends Controller
                 $model->other_content = Json::encode($data);
                 $model->save();
 
-                if (null != $param['tag']) {
-                    $model->deleteTagRelation($this->tag, $model->id);
-                    $model->saveTagRelation($this->tag, $model->id);
+                $model->deleteTagRelation($model->id);
+                $model->deleteCatRelation($model->id); 
+                if (null != $param['category']) {                    
+                    $model->saveCatRelation($this->category, $model->id);                   
                 }
-
-                if (null != $param['category']) {
-                    $model->deleteCatRelation($this->category, $model->id);
-                    $model->saveCatRelation($this->category, $model->id);
+                if (null != $param['tag']) {
+                    $model->saveTagRelation($this->tag, $model->id);
                 }
                 return $this->redirect(['update', 'action' => 'word-post-update', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                    'model' => $model,
+                            'model' => $model,
                 ]);
             }
         } else {
@@ -189,7 +193,7 @@ class PostController extends Controller
         if (Yii::$app->user->can('postdelete')) {
             $this->findModel($id)->delete();
             return $this->redirect(['index',
-                'action' => 'word-post-list'
+                        'action' => 'word-post-list'
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -199,10 +203,10 @@ class PostController extends Controller
     public function actionBulk()
     {
         if (Yii::$app->user->can('postbulk')) {
+            
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
-
     }
 
     public function actionTrash($id)
@@ -212,10 +216,42 @@ class PostController extends Controller
             $model->status = 'Trash';
             $model->save();
             return $this->redirect(['index',
-                'action' => 'word-post-list'
+                        'action' => 'word-post-list'
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
+        }
+    }
+    
+     protected function trashAll($data)
+    {
+        if (null != $data) {
+            foreach ($data as $id) {
+                $model = $this->findModel($id);
+                $model->status = 'Trash';
+                $model->save();
+            }
+            return $this->redirect(['index', 'action' => 'word-post-list']);
+        } else {
+            return $this->redirect(['index', 'action' => 'word-post-list']);
+        }
+    }
+
+    /**
+     * @param array $data
+     * @return \yii\web\Response
+     */
+    protected function deleteAll($data)
+    {
+        if (null != $data) {
+
+            foreach ($data as $id) {
+                $model = $this->findModel($id);                
+                $model->delete();
+            }
+            return $this->redirect(['index', 'action' => 'word-post-list']);
+        } else {
+            return $this->redirect(['index', 'action' => 'word-post-list']);
         }
     }
 

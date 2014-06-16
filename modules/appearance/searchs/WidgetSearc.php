@@ -59,7 +59,7 @@ class WidgetSearc extends WidgetModel
     {
         $model = self::find();
         $query = $model->onCondition(['status' => Appearance::APPEARANCE_WIDGET_DEFAULT]);
-        return $query->all();
+        return $query->orderBy(['position' => SORT_ASC])->all();
     }
 
     public function loadAllSidebarWidget()
