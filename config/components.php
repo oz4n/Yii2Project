@@ -18,20 +18,17 @@ return [
         'class' => 'yii\rbac\DbManager',
         'defaultRoles' => ['administrator', 'admin'],
     ],
-//        'view' => [
-//            'theme' => [
-//                'pathMap' => [
-//                    '@dektrium/user/views' => '@app/modules/users/views'
-//                ],
-//            ],
-//        ],
+    'view' => [
+        'theme' => [
+            'pathMap' => [
+                '@dektrium/user/views' => '@app/modules/site/views/user'
+            ],
+        ],
+    ],
     'cache' => [
         'class' => 'yii\caching\FileCache',
     ],
-    'user' => [
-        'identityClass' => 'app\models\User',
-        'enableAutoLogin' => true,
-    ],
+
     'log' => [
         'traceLevel' => YII_DEBUG ? 3 : 0,
         'targets' => [
