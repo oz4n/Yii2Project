@@ -23,7 +23,7 @@ return [
     'userlog' => [
         'class' => 'app\modules\userlog\UserLog',
         'layout' => '@app/modules/dashboard/views/layouts/main',
-        'log_tatus' => true
+        'log_tatus' => false
     ],
     'filemanager' => [
         'class' => 'app\modules\filemanager\FileManager',
