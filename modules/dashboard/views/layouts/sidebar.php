@@ -22,7 +22,7 @@ use Yii;
                 ],
                 [
                     'label' => 'Database',
-                    'url' => '#',
+                    'url' => ['/member/ppi/index', 'action' => 'member-ppi-list'],
                     'icon' => 'menu-icon fa fa-archive',
                     'visible' => Yii::$app->user->can('databasemenu'),
                     'options' => [
@@ -31,7 +31,7 @@ use Yii;
                     'items' => [
                         [
                             'label' => 'Anggota',
-                            'url' => ['#'],
+                            'url' => ['/member/ppi/index', 'action' => 'member-ppi-list'],
                             'icon' => 'menu-icon fa fa-angle-double-right',
                             'visible' => Yii::$app->user->can('membermenu'),
                             'options' => [
@@ -123,7 +123,7 @@ use Yii;
                         ],
                         [
                             'label' => 'Alat',
-                            'url' => ['#'],
+                            'url' => ['/member/tools/import', 'action' => 'member-tools-import'],
                             'icon' => 'menu-icon fa fa-angle-double-right',
                             'visible' => Yii::$app->user->can('toolsmenu'),
                             'options' => [
@@ -154,7 +154,7 @@ use Yii;
                 ],
                 [
                     'label' => 'Tulisan',
-                    'url' => ['#'],
+                    'url' => ['/word/post/index', 'action' => 'word-post-list'],
                     'icon' => 'menu-icon fa  fa-pencil',
                     'visible' => Yii::$app->user->can('postmenu'),
                     'items' => [
@@ -198,7 +198,7 @@ use Yii;
                 ],
                 [
                     'label' => 'Media',
-                    'url' => ['#'],
+                    'url' => ["/filemanager/image/index", "action" => "filemanager-image-list"],
                     'icon' => 'menu-icon fa fa-briefcase',
                     'visible' => Yii::$app->user->can('mediamenu'),
                     'items' => [
@@ -224,19 +224,10 @@ use Yii;
                 ],
                 [
                     'label' => 'Tampilan',
-                    'url' => ['#'],
+                    'url' => ['/appearance/menu/index', 'action' => 'appearance-menu-list'],
                     'icon' => 'menu-icon fa fa-leaf',
                     'visible' => Yii::$app->user->can('appearancemenu'),
-                    'items' => [
-                        [
-                            'label' => 'Umum',
-                            'url' => ['/appearance/general/index', 'action' => 'appearance-general-list'],
-//                            'visible' => Yii::$app->user->can('generalindex'),
-                            'icon' => 'menu-icon fa fa-angle-double-right',
-                            'options' => [
-                                'id' => 'general'
-                            ]
-                        ],
+                    'items' => [                       
                         [
                             'label' => 'Menu',
                             'url' => ['/appearance/menu/index', 'action' => 'appearance-menu-list'],
@@ -268,7 +259,7 @@ use Yii;
                 ],
                 [
                     'label' => 'Pengguna',
-                    'url' => ['#'],
+                    'url' => ['/user/admin/index', 'action' => 'user-list'],
                     'icon' => 'menu-icon fa fa-users',
                     'visible' => Yii::$app->user->can('usermenu'),
                     'options' => [

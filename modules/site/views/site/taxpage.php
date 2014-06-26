@@ -1,7 +1,6 @@
 <?php
 $this->title =$tax;
 $this->registerMetaTag(['name' => 'keywords', 'content' => $tax]);
-$this->registerJsFile('unify-v1.4/plugins/jquery-1.10.2.min.js', [], ['position' => \yii\web\View::POS_HEAD]);
 switch ($model->layout) {
     case "full":
         echo $this->render('_taxpage_full_view', [

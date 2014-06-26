@@ -2,12 +2,17 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
+use yii\web\View;
 /**
  * @var yii\web\View $this
  * @var app\modules\dao\ar\File $model
  * @var yii\widgets\ActiveForm $form
  */
+$this->registerJs('
+	init.push(function () {
+	    $("#file-doc").pixelFileInput({ placeholder: "Pilih file..." });
+	})'
+        , View::POS_READY);
 ?>
 
 <div class="col-sm-6">
@@ -16,7 +21,7 @@ use yii\widgets\ActiveForm;
     <?= Html::activeHiddenInput($model, 'user_id') ?>    
     <?php if($model->isNewrecord):?>
     <div class="form-group">        
-        <?= Html::fileInput('file', null, ['class' => 'form-control']) ?>
+        <?= Html::fileInput('file', null, ['id'=>'file-doc','class' => 'form-control']) ?>
     </div>
     <?php endif;?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => 255]) ?>

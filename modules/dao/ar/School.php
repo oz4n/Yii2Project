@@ -38,7 +38,8 @@ class School extends \yii\db\ActiveRecord
     {
         return [
             [['taxonomy_id'], 'integer'],
-            [['name', 'type', 'address'], 'required'],
+            [['name', 'type', 'address'], 'required', 'message' => 'Tidak boleh kosong.'],
+            [['name'], 'unique', 'message' => 'Item yang anda inputkan sudah ada.'],
             [['create_et', 'update_et'], 'safe'],
             [['name', 'type', 'email', 'zip_code'], 'string', 'max' => 45],
             [['address'], 'string', 'max' => 255],

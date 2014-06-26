@@ -4,10 +4,7 @@ use yii\helpers\Url;
 ?>
 <!--=== Breadcrumbs ===-->
 <div class="breadcrumbs">
-    <div class="container">
-        <?php if ($other['imgsliderstatus'] == "Enable"): ?>
-            <h1 class="pull-left"><?= $tax ?></h1>
-<?php endif; ?>
+    <div class="container">       
         <ul class="pull-right breadcrumb">
             <li><a href="<?= Url::toRoute(['/site/site/index']) ?>">Beranda</a></li>         
             <li class="active"><?= $tax ?></li>

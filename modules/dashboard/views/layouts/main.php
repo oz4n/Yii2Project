@@ -9,14 +9,12 @@ use yii\web\View;
  * @var string $content
  */
 DashboardAsset::register($this);
-$this->registerJs(
-        'var init = [];'
-        , View::POS_HEAD);
-$this->registerJsFile('PixelAdmin/js/demo.js', [], ['position' => View::POS_BEGIN]);
+$this->registerJs('var init = [];', View::POS_HEAD);
 $this->registerJs(
         'init.push(function () {});'
         .'window.PixelAdmin.start(init);'
         . '$(".select-tooltip").tooltip();'
+        . '$("select").select2({ allowClear: true, placeholder: "Select item"});'
         , View::POS_END);
 ?>
 <?php $this->beginPage() ?>
@@ -31,7 +29,7 @@ $this->registerJs(
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
-    <body class="theme-default main-menu-animated">
+    <body class="theme-frost main-menu-animated main-navbar-fixed main-menu-fixed">
         <?php $this->beginBody() ?>
         <div id="main-wrapper">
             <?php 

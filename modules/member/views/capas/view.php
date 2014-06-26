@@ -12,8 +12,9 @@ use yii\web\View;
 $this->title = $model->name;
 $this->registerJsFile('PixelAdmin/js/jquery.2.0.3.min.js', [], ['position' => View::POS_HEAD]);
 $this->registerJs(
-    "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#capas').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
-    , View::POS_READY);
+        "$('ul.navigation > li#database > ul.mm-dropdown > li#member > ul.mm-dropdown > li#capas').addClass('active').parent().parent().addClass('open').parent().parent().addClass('active open');"
+        , View::POS_READY);
+//$model = new app\modules\member\models\PaskibraModel;
 ?>
 
 <ul class="breadcrumb breadcrumb-page">
@@ -40,8 +41,8 @@ $this->registerJs(
                 <?= Yii::t('app', '/'); ?>
                 <?=
                 Html::a(Yii::t('app', 'Tambah {modelClass} Baru', [
-                    'modelClass' => 'Anggota',
-                ]), Url::toRoute(['/member/capas/create', 'action' => 'member-capas-create']))
+                            'modelClass' => 'Anggota',
+                        ]), Url::toRoute(['/member/capas/create', 'action' => 'member-capas-create']))
                 ?>
             </h1>
         </div>
@@ -55,8 +56,12 @@ $this->registerJs(
 <div class="row">
     <div class="col-sx-12 col-sm-3 text-center">
         <span class="profile-picture">
-            <?=
-            Html::img(Yii::getAlias('@web') . '/resources/images/member/frontphoto/' . $model->front_photo, ['id' => 'avatar', 'class' => 'editable img-responsive', 'alt' => $model->name]);
+            <?php
+            if ($model->front_photo != null) {
+                echo Html::img(Yii::getAlias('@web') . '/resources/images/member/frontphoto/' . $model->front_photo, ['id' => 'avatar', 'class' => 'editable img-responsive', 'alt' => $model->name]);
+            } else {
+                echo Html::img(Yii::getAlias('@web') . '/resources/images/default/user200x200.png' . $model->front_photo, ['id' => 'avatar', 'class' => 'editable img-responsive', 'alt' => $model->name]);
+            }
             ?>
         </span>
 
@@ -75,12 +80,9 @@ $this->registerJs(
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <?=
                 Html::a('<i class="fa  fa-trash-o"></i>&nbsp;&nbsp;' . Yii::t('app', 'Hapus'), ['delete', 'id' => $model->id], [
-                    'data' => [
                         'data-confirm' => 'Apakah Anda yakin ingin menghapus item ini?',
                         'data-method' => 'post',
-                        'data-pjax' => 0,
                         'title' => Yii::t('yii', 'Hapus'),
-                    ],
                 ])
                 ?>
             </div>
@@ -93,7 +95,7 @@ $this->registerJs(
                     <div class="profile-info-row">
                         <div class="profile-info-name"> <?= Yii::t('app', 'NRA') ?></div>
                         <div class="profile-info-value">
-                            <span><?= $model->nra ?></span>
+                            <span><?= !empty($model->nra) ? $model->nra : "none" ?></span>
                         </div>
                     </div>
 
@@ -112,7 +114,14 @@ $this->registerJs(
                     </div>
 
                     <div class="profile-info-row">
-                        <div class="profile-info-name"> <?= Yii::t('app', 'Kelahiran') ?></div>
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Nomor KTP') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->identity_card_number ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Tanggal Lahir') ?></div>
                         <div class="profile-info-value">
                             <span><?= $model->birth ?></span>
                         </div>
@@ -147,7 +156,7 @@ $this->registerJs(
                     </div>
 
                     <div class="profile-info-row">
-                        <div class="profile-info-name"> <?= Yii::t('app', 'Kebangsaan') ?> </div>
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Kewarganegaraan') ?> </div>
                         <div class="profile-info-value">
                             <i class="fa fa-map-marker"></i>
                             &nbsp;
@@ -159,13 +168,6 @@ $this->registerJs(
                         <div class="profile-info-name"> <?= Yii::t('app', 'Asal Daerah') ?></div>
                         <div class="profile-info-value">
                             <span><?= $model->getAreaName() ?></span>
-                        </div>
-                    </div>
-
-                    <div class="profile-info-row">
-                        <div class="profile-info-name"> <?= Yii::t('app', 'Nomor KTP') ?></div>
-                        <div class="profile-info-value">
-                            <span><?= $model->identity_card_number ?></span>
                         </div>
                     </div>
 
@@ -184,26 +186,212 @@ $this->registerJs(
                     </div>
 
                     <div class="profile-info-row">
-                        <div class="profile-info-name"> <?= Yii::t('app', 'Brevet Penghargaan') ?></div>
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Kode Pos') ?></div>
                         <div class="profile-info-value">
-                            <span><?= $model->brevetaward ?></span>
+                            <span><?= $model->zip_code ?></span>
                         </div>
                     </div>
 
                     <div class="profile-info-row">
-                        <div class="profile-info-name"> <?= Yii::t('app', 'Status Perkawinan') ?></div>
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Golongan Darah') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->blood_group ?></span>
+                        </div>
+                    </div>
+
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Pengalaman organisasi') ?></div>
                         <div class="profile-info-value">
                             <span><?= $model->organizational_experience ?></span>
                         </div>
                     </div>
 
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Penyakit yang di derita') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->illness ?></span>
+                        </div>
+                    </div>
 
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Tinggi badan') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->height_body ?></span>
+                        </div>
+                    </div>
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Berat badan') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->weight_body ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Ukuran baju') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->dress_size ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Ukuran celana') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->pants_size ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Ukuran sepatu') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->shoe_size ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Ukuran topi') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->hat_size ?></span>
+                        </div>
+                    </div>
+
+                  
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Status Pendidikan') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->educational_status ?></span>
+                        </div>
+                    </div>
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Status Perkawinan') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->marital_status ?></span>
+                        </div>
+                    </div>
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Pekerjaan') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->job ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Email') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->email ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Nomor HP') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->phone_number ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Nomor HP Lainnya') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->other_phone_number ?></span>
+                        </div>
+                    </div>
+
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Status dg HP') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->relationship_phone_number ?></span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Nama Bapak') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->father_name ?></span>
+                        </div>
+                    </div>
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Nama Ibu') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->mother_name ?></span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Pekerjaan bapak') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->father_work ?></span>
+                        </div>
+                    </div>
+                    
+                     <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Pekerjaan ibu') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->mother_work ?></span>
+                        </div>
+                    </div>
+                    
+                     <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Penghasilan bapak') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->income_father ?></span>
+                        </div>
+                    </div>
+                    
+                     <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Penghasilan ibu') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->income_mothers ?></span>
+                        </div>
+                    </div>
+                    
+                     <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Jumlah saudara laki-laki') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->number_of_brothers ?></span>
+                        </div>
+                    </div>
+                    
+                     <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Jumlah saudara perempuan') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->number_of_sisters ?></span>
+                        </div>
+                    </div>
+                    
+                     <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Jumlah anak kandung') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->number_of_children ?></span>
+                        </div>
+                    </div>
+                    
+                     <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Keterampilan bahasa asing') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->languageskill ?></span>
+                        </div>
+                    </div>
+                    
+                     <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Keterampilan personal') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->lifeskill ?></span>
+                        </div>
+                    </div>
+                    
+                     <div class="profile-info-row">
+                        <div class="profile-info-name"> <?= Yii::t('app', 'Catatan') ?></div>
+                        <div class="profile-info-value">
+                            <span><?= $model->note ?></span>
+                        </div>
+                    </div>
+                    
                     <div class="profile-info-row">
                         <div class="profile-info-name"> <?= Yii::t('app', 'Terdaftar') ?></div>
                         <div class="profile-info-value">
                             <i class="fa fa-calendar"></i>
                             &nbsp;
-                            <span><?= $model->create_et ?></span>
+                            <span><?= date("F d, Y",strtotime($model->create_et)) ?></span>
                         </div>
                     </div>
 
@@ -211,61 +399,14 @@ $this->registerJs(
                         <div class="profile-info-name"> <?= Yii::t('app', 'Diperbaharui') ?></div>
                         <div class="profile-info-value">
                             <i class="fa fa-calendar"></i>
-                            &nbsp;
-                            <span><?= $model->update_et ?></span>
+                            &nbsp;                          
+                             <span><?= date("F d, Y",strtotime($model->update_et)) ?></span>
                         </div>
                     </div>
-
-
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-</div>
-
-
-<div class="space-10"></div>
-
-<div class="row">
-    <div class="col-xs-12 col-sm-6">
-        <div class="widget-box transparent">
-            <div class="widget-header widget-header-small">
-                <h4 class="smaller">
-                    <i class="fa fa-bookmark-o"></i>
-                    &nbsp;
-                    <?= Yii::t('app', 'Catatan') ?>
-                </h4>
-            </div>
-
-            <div class="widget-body">
-                <div class="widget-main">
-                    <p>
-                        <?= $model->note; ?>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-xs-12 col-sm-6">
-        <div class="widget-box transparent">
-            <div class="widget-header widget-header-small header-color-blue2">
-                <h4 class="smaller">
-                    <i class="fa fa-lightbulb-o"></i>&nbsp;
-                    <?= Yii::t('app', 'Keterampilan') ?>
-                </h4>
-            </div>
-
-            <div class="widget-body">
-                <div class="widget-main padding-16">
-
-                    <div class="hr hr-16"></div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 

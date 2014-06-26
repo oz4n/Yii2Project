@@ -10,12 +10,12 @@ use yii\web\View;
  */
 SiteAsset::register($this);
 $this->registerJs(
-        'jQuery(document).ready(function() {'.
+        'jQuery(document).ready(function() {' .
         'App.init();' .
         'Index.initRevolutionSlider();' .
-        'OwlCarousel.initOwlCarousel();'.      
+        'OwlCarousel.initOwlCarousel();' .
         '});'
-, View::POS_END);
+        , View::POS_END);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -25,21 +25,22 @@ $this->registerJs(
     <head>
         <meta charset="<?= Yii::$app->charset ?>"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
-    <body class="header-fixed boxed-layout container">
+    <body class="boxed-layout container">
         <?php $this->beginBody() ?>
         <div class="wrapper">
             <?php
             /* Header */
             echo $this->render('header');
-            
+
             /* Content Part */
             echo $content;
             /* Footer */
             echo $this->render('footer');
-            /*copyright*/
+            /* copyright */
             echo $this->render('copyright');
             ?>
         </div>

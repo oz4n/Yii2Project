@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Dektrium project.
  *
@@ -17,27 +16,31 @@ use yii\widgets\ActiveForm;
  * @var yii\widgets\ActiveForm $form
  * @var dektrium\user\forms\PasswordRecovery $model
  */
-
-$this->title = Yii::t('user', 'Reset your password');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('user', 'Reset password');
 ?>
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
-                <?php $form = ActiveForm::begin([
-                    'id' => 'password-recovery-form',
-                ]); ?>
+<div class="breadcrumbs">
+    <div class="container">      
+        <ul class="pull-right breadcrumb">
+            <li><?= Html::a('Beranda', ['/site/site/index']) ?></li>
+            <li class="active">Reset password</li>
+        </ul>
+    </div>   
+</div>
+<div class="container content">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <?php
+            $form = ActiveForm::begin([
+                        'id' => 'password-recovery-form',
+            ]);
+            ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+            <?= $form->field($model, 'password')->passwordInput()->label('Kata sandi baru') ?>
 
-                <?= Html::submitButton(Yii::t('user', 'Finish'), ['class' => 'btn btn-success btn-block']) ?><br>
+            <?= Html::submitButton(Yii::t('user', 'Selesai'), ['class' => 'btn btn-u btn-block']) ?><br>
 
-                <?php ActiveForm::end(); ?>
-            </div>
+            <?php ActiveForm::end(); ?>
+
         </div>
     </div>
 </div>

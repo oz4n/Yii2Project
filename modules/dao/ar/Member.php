@@ -11,6 +11,7 @@ use Yii;
  * @property integer $taxonomy_id
  * @property integer $school_id
  * @property integer $user_id
+ * @property integer $user_created
  * @property string $nra
  * @property string $name
  * @property string $nickname
@@ -63,14 +64,16 @@ use Yii;
  * @property string $names_recommended
  * @property string $note
  * @property string $other_content
+ * @property string $slug
  * @property string $save_status
  * @property string $create_et
  * @property string $update_et
  *
+ * @property User $userCreated
  * @property School $school
  * @property Taxonomy $taxonomy
  * @property User $user
- * @property Taxmemberrelations $taxmemberrelations
+ * @property Taxmemberrelations[] $taxmemberrelations
  * @property Taxonomy[] $taxonomies
  */
 class Member extends \yii\db\ActiveRecord
@@ -81,7 +84,6 @@ class Member extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-
         return 'member';
     }
 
@@ -91,9 +93,10 @@ class Member extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['taxonomy_id', 'school_id', 'user_id', 'age', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
-            [['nra', 'name', 'nickname', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'year', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'tribal_members', 'identity_card_number', 'note', 'save_status','age','pants_size','shoe_size','hat_size'], 'required', 'message' => 'Tidak boleh kosong.'],
-            [['front_photo', 'side_photo', 'identity_card', 'certificate_of_organization', 'other_content'], 'string'],
+            [['taxonomy_id', 'school_id', 'user_id', 'user_created', 'age', 'number_of_brothers', 'number_of_sisters', 'number_of_children'], 'integer'],
+            [['name', 'nickname', 'address', 'birth', 'nationality', 'religion', 'gender', 'marital_status', 'blood_group', 'father_name', 'mother_name', 'educational_status', 'phone_number', 'other_phone_number', 'relationship_phone_number', 'email', 'illness', 'height_body', 'weight_body', 'membership_status', 'status_organization', 'tribal_members', 'identity_card_number', 'note', 'save_status', 'create_et', 'update_et'], 'required', 'message' => 'Tidak boleh kosong.'],
+            [['nra','email','phone_number'], 'unique', 'message' => 'Item yang anda inputkan sudah ada.'],
+            [['front_photo', 'side_photo', 'brevetaward', 'lifeskill', 'languageskill', 'identity_card', 'certificate_of_organization', 'other_content', 'slug'], 'string'],
             [['create_et', 'update_et'], 'safe'],
             [['nra'], 'string', 'max' => 32],
             [['name', 'nationality', 'job', 'income_member', 'father_name', 'mother_name', 'father_work', 'mother_work', 'income_father', 'income_mothers', 'email', 'organizational_experience', 'year', 'illness', 'tribal_members', 'save_status'], 'string', 'max' => 45],
@@ -114,6 +117,7 @@ class Member extends \yii\db\ActiveRecord
             'taxonomy_id' => Yii::t('app', 'Taxonomy ID'),
             'school_id' => Yii::t('app', 'School ID'),
             'user_id' => Yii::t('app', 'User ID'),
+            'user_created' => Yii::t('app', 'User Created'),
             'nra' => Yii::t('app', 'Nra'),
             'name' => Yii::t('app', 'Name'),
             'nickname' => Yii::t('app', 'Nickname'),
@@ -166,10 +170,19 @@ class Member extends \yii\db\ActiveRecord
             'names_recommended' => Yii::t('app', 'Names Recommended'),
             'note' => Yii::t('app', 'Note'),
             'other_content' => Yii::t('app', 'Other Content'),
+            'slug' => Yii::t('app', 'Slug'),
             'save_status' => Yii::t('app', 'Save Status'),
             'create_et' => Yii::t('app', 'Create Et'),
             'update_et' => Yii::t('app', 'Update Et'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserCreated()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_created']);
     }
 
     /**
@@ -201,7 +214,7 @@ class Member extends \yii\db\ActiveRecord
      */
     public function getTaxmemberrelations()
     {
-        return $this->hasOne(Taxmemberrelations::className(), ['member_id' => 'id']);
+        return $this->hasMany(Taxmemberrelations::className(), ['member_id' => 'id']);
     }
 
     /**
@@ -211,4 +224,5 @@ class Member extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Taxonomy::className(), ['id' => 'taxonomy_id'])->viaTable('taxmemberrelations', ['member_id' => 'id']);
     }
+
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Dektrium project.
  *
@@ -14,17 +13,32 @@ use yii\helpers\Html;
 /**
  * @var yii\web\View $this
  */
-
-$this->title = Yii::t('user', 'Recovery message sent');
+$this->title = Yii::t('user', 'Pesan Pemulihan terkirim');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="alert alert-info">
-    <h4><?= Html::encode($this->title) ?></h4>
-    <p>
-        <?= Yii::t('user', 'You have been sent an email with instructions on how to reset your password.') ?>
-        <?= Yii::t('user', 'Please check your email and click the reset link.') ?>
-    </p>
-    <p>
-        <?= Yii::t('user', 'The email can take a few minutes to arrive. But if you are having troubles, you can request a new one.') ?>
-    </p>
+<div class="breadcrumbs">
+    <div class="container">      
+        <ul class="pull-right breadcrumb">
+            <li><?= Html::a('Beranda', ['/site/site/index']) ?></li>
+            <li class="active">Pesan Pemulihan terkirim</li>
+        </ul>
+    </div>   
 </div>
+<div class="container content">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="alert alert-info">
+
+                <p>
+                    <?= Yii::t('user', 'Anda telah mengirim email dengan petunjuk tentang cara untuk mereset password Anda.') ?>
+                    <?= Yii::t('user', 'Silakan periksa email Anda dan klik link reset.') ?>
+                </p>
+                <p>
+                <?= Yii::t('user', 'Munkin anda perlu menunggu beberapa menit menunggu email konfirmasi. Tetapi jika Anda mengalami, Anda dapat meminta yang baru.') ?>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -144,7 +144,8 @@ echo GridView::widget([
                     'size' => 42,
                     'defaultImage' => 'mm',
                     'options' => [
-                        'class' => 'member-avatar'
+                       'class' => 'img-circle',
+                        'alt' => $model->username
                     ]
                 ]) . Html::endTag('div');
     }

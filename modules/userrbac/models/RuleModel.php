@@ -48,7 +48,7 @@ class RuleModel extends AuthItem
     {
         if (count($data) !== 0) {
             foreach ($data as $v) {
-                $new = new AuthItemChild;
+                $new = new AuthItemChild();
                 $new->parent = $parent;
                 $new->child = $v;
                 $new->save();

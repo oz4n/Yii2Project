@@ -1,12 +1,14 @@
 <?php
 use app\modules\site\widgets\RenderWidget;
-$this->title = "Beranda";
-$this->registerMetaTag(['name' => 'keywords', 'content' =>'Beranda']);
+$this->title = Yii::$app->name;
+$this->registerMetaTag(['name' => 'keywords', 'content' =>  str_replace(" ", ', ', $this->title)]);
 
-$this->registerJsFile('unify-v1.4/plugins/jquery-1.10.2.min.js', [], ['position' => \yii\web\View::POS_HEAD]);
 /* Slider */
 echo $this->render('slider',[
-    'image'=>$image
+    'image'=>$image,     
+     'slider_title1' => $other->slider_title1,
+     'slider_title2' => $other->slider_title2,
+     'slider_title3' => $other->slider_title3,
 ]);
 ?>
 
@@ -16,16 +18,9 @@ echo $this->render('slider',[
     <div class="shadow-wrapper">
         <div class="tag-box tag-box-v1 box-shadow shadow-effect-2">
             <h2>Kata mutiara hari ini</h2>
-            <p>Hidup ini bukan hanya mencari yang terbaik, namun lebih kepada menerima kenyataan bahwa kamu adalah kamu. Jadi dirimu sendiri. @Iwan False</p>
+            <p><?= $other->quotes_today ?></p>
         </div>      
     </div>
-    <!--    <div class="shadow-wrapper">
-            <blockquote class="tag-box tag-box-v1 box-shadow shadow-effect-2">
-                <h2>Kata mutiara hari ini</h2>
-                <p>Hidup ini bukan hanya mencari yang terbaik, namun lebih kepada menerima kenyataan bahwa kamu adalah kamu. Jadi dirimu sendiri.</p>
-                <small>Iwan Fals</small>
-            </blockquote>
-        </div>-->
     <div class="row">
         <div class="col-md-9">
             <div class="row">

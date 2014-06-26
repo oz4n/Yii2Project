@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'assetManager' => [
+        'bundles' => [
+            'yii\web\JqueryAsset' => [
+                'sourcePath' => null,
+                'js' => ['site/plugins/jquery-1.10.2.min.js'],                 
+            ],
+        ],
+    ],
     'request' => [
         'enableCsrfValidation' => true,
         'enableCookieValidation' => true
@@ -21,14 +29,13 @@ return [
     'view' => [
         'theme' => [
             'pathMap' => [
-                '@dektrium/user/views' => '@app/modules/site/views/user'
+                '@dektrium/user/views' => '@app/modules/site/views/user',               
             ],
         ],
     ],
     'cache' => [
         'class' => 'yii\caching\FileCache',
     ],
-
     'log' => [
         'traceLevel' => YII_DEBUG ? 3 : 0,
         'targets' => [
@@ -39,6 +46,6 @@ return [
         ],
     ],
     'db' => $db,
-    'mail' => $mail,
-    //'cache' => $memcache
+//    'mail' => $mail,
+        //'cache' => $memcache
 ];

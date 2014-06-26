@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Dektrium project.
  *
@@ -15,22 +14,39 @@ use yii\helpers\Html;
  * @var yii\web\View $this
  * @var dektrium\user\models\User $model
  */
-
 $this->title = Yii::$app->getModule('user')->confirmable ?
-    Yii::t('user', 'Confirmation needed') :
-    Yii::t('user', 'Your account has been created');
-$this->params['breadcrumbs'][] = $this->title;
+        Yii::t('user', 'Konfirmasi terkirim') :
+        Yii::t('user', 'Akun Anda telah dibuat');
 ?>
-<?php if (Yii::$app->getModule('user')->confirmable): ?>
-    <div class="alert alert-info">
-        <h4><?= Yii::t('user', 'Awesome, almost there! We need to confirm your email address.') ?></h4>
-        <?= Yii::t('user', 'Please check your email and click the confirmation link to complete your registration.') ?>
-        <?= Yii::t('user', 'The email can take a few minutes to arrive. But if you are having troubles, you can request a new one.') ?>
-        <?= Html::a(Yii::t('user', 'Request new confirmation message'), ['/user/registration/resend']) ?>
+
+
+
+<div class="breadcrumbs">
+    <div class="container">      
+        <ul class="pull-right breadcrumb">
+            <li><?= Html::a('Beranda', ['/site/site/index']) ?></li>
+            <li class="active">
+<?= $this->title ?>
+            </li>
+        </ul>
+    </div>   
+</div>
+<div class="container content">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <?php if (Yii::$app->getModule('user')->confirmable): ?>
+                <div class="alert alert-info">                    
+                    <?= Yii::t('user', 'Silakan periksa email Anda dan klik link konfirmasi untuk menyelesaikan pendaftaran Anda.') ?>
+                    <?= Yii::t('user', 'Anda perlu beberapa menit untuk menungu pesan masuk pada email Anda. Tetapi jika Anda mengalami kendala, Anda dapat meminta yang baru.') ?>
+                    <?= Html::a(Yii::t('user', 'Meminta pesan konfirmasi baru'), ['/user/registration/resend']) ?>
+                </div>
+                <?php else: ?>
+                <div class="alert alert-success">
+                    <h4><?= Html::encode($this->title) ?></h4>
+                    <?= Yii::t('user', 'Terima kasih untuk pendaftaran di website kami. Anda dapat masuk menggunakan kredensial Anda.') ?>
+                </div>
+                <?php endif; ?>
+        </div>
     </div>
-<?php else: ?>
-    <div class="alert alert-success">
-        <h4><?= Html::encode($this->title) ?></h4>
-        <?= Yii::t('user', 'Thank you for registration on our website. You may sign in using your credentials.') ?>
-    </div>
-<?php endif; ?>
+</div>

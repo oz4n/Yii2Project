@@ -2,8 +2,6 @@
 
 namespace app\modules\member\controllers;
 
-define("DS", DIRECTORY_SEPARATOR);
-
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -63,8 +61,8 @@ class CapasController extends Controller
                 $this->trashAll(Yii::$app->request->get('selection'));
             }
             return $this->render('index', [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -80,7 +78,7 @@ class CapasController extends Controller
     {
         if (Yii::$app->user->can('capasview')) {
             return $this->render('view', [
-                'model' => $this->findModel($id),
+                        'model' => $this->findModel($id),
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -99,18 +97,16 @@ class CapasController extends Controller
             $model->setAttribute('create_et', date("Y-m-d H:i:s"));
             $model->setAttribute('update_et', date("Y-m-d H:i:s"));
             $model->setAttribute('type_member', MEMBER_TYPE_CAPAS);
-            $model->setAttribute('user_id', Yii::$app->user->identity->getId());
+            $model->setAttribute('user_created', Yii::$app->user->identity->getId());
 
             $param = Yii::$app->request->post('CapasModel');
             $this->langskill = $param['language_skill'];
             $this->lifeskill = $param['life_skill'];
             $this->otherlifeskill = $param['otherlifeskill'];
-//            $this->brevetaward = $param['brevet_award'];
 
             $this->photo->copyProntPhoto($param['front_photo']);
             $this->photo->copyProntPhotoThumb($param['front_photo']);
             $this->photo->copySidePhoto($param['side_photo']);
-//            $this->photo->copyCertificatePhoto($param['certificate_of_organization']);
             $this->photo->copyIdentityCardPhoto($param['identity_card']);
 
 
@@ -135,10 +131,6 @@ class CapasController extends Controller
             }
 
 
-            if (null != $this->brevetaward) {
-                $data_brevet = $model->getAllBrevetNameById($this->brevetaward);
-                $model->setAttribute('brevetaward', implode(', ', $data_brevet));
-            }
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
@@ -150,14 +142,11 @@ class CapasController extends Controller
                     $model->saveTaxRelation($this->langskill, $model->id);
                 }
 
-                if (null != $this->brevetaward) {
-                    $model->saveTaxRelation($this->brevetaward, $model->id);
-                }
                 return $this->redirect(['view', 'action' => 'member-capas-view', 'id' => $model->id]);
             } else {
 
                 return $this->render('create', [
-                    'model' => $model,
+                            'model' => $model,
                 ]);
             }
         } else {
@@ -176,25 +165,19 @@ class CapasController extends Controller
         if (Yii::$app->user->can('capasupdate')) {
             $model = $this->findModel($id);
             $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-            $model->setAttribute('user_id', Yii::$app->user->identity->getId());
+            $model->setAttribute('user_created', Yii::$app->user->identity->getId());
             $param = Yii::$app->request->post('CapasModel');
 
             //skill
             $this->langskill = $param['language_skill'];
             $this->lifeskill = $param['life_skill'];
             $this->otherlifeskill = $param['otherlifeskill'];
-//            $this->brevetaward = $param['brevet_award'];
 
             if (null != $this->otherlifeskill) {
                 $this->saveOtherLifeSkill($this->otherlifeskill);
                 $this->other_skill = [$this->otherlifeskill];
                 $other_skill_id = [(count($this->lifeskill) + 1) => $this->otherlifeskillid];
                 array_push($this->lifeskill, $other_skill_id[(count($this->lifeskill) + 1)]);
-            }
-
-            if (null != $this->brevetaward) {
-                $data_brevet = $model->getAllBrevetNameById($this->brevetaward);
-                $model->setAttribute('brevetaward', implode(', ', $data_brevet));
             }
 
 
@@ -232,16 +215,13 @@ class CapasController extends Controller
                 $this->photo->copyIdentityCardPhoto($param['identity_card']);
             }
 
-//            if (($model->certificate_of_organization != $param['certificate_of_organization']) && $param['certificate_of_organization'] != null) {
-//                $this->photo->deleteCertificatePhoto($model->certificate_of_organization);
-//                $this->photo->copyCertificatePhoto($param['certificate_of_organization']);
-//            }
-
 
             //save database
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
                 if (null != $this->lifeskill) {
+                    $data = ArrayHelper::map($model->getTaxonomiesBySkill()->all(), 'id', 'id');
+                    $model->deleteAllTaxRelationByMemberId($data, $model->id);
                     $model->saveTaxRelation($this->lifeskill, $model->id);
                 } else {
                     $data = ArrayHelper::map($model->getTaxonomiesBySkill()->all(), 'id', 'id');
@@ -249,6 +229,8 @@ class CapasController extends Controller
                 }
 
                 if (null != $this->langskill) {
+                    $data = ArrayHelper::map($model->getTaxonomiesByLangSkill()->all(), 'id', 'id');
+                    $model->deleteAllTaxRelationByMemberId($data, $model->id);
                     $model->saveTaxRelation($this->langskill, $model->id);
                 } else {
                     $data = ArrayHelper::map($model->getTaxonomiesByLangSkill()->all(), 'id', 'id');
@@ -256,6 +238,8 @@ class CapasController extends Controller
                 }
 
                 if (null != $this->brevetaward) {
+                    $data = ArrayHelper::map($model->getTaxonomiesByBrevet()->all(), 'id', 'id');
+                    $model->deleteAllTaxRelationByMemberId($data, $model->id);
                     $model->saveTaxRelation($this->brevetaward, $model->id);
                 } else {
                     $data = ArrayHelper::map($model->getTaxonomiesByBrevet()->all(), 'id', 'id');
@@ -265,7 +249,7 @@ class CapasController extends Controller
                 return $this->redirect(['view', 'action' => 'member-ppi-view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                    'model' => $model
+                            'model' => $model
                 ]);
             }
         } else {
@@ -295,11 +279,42 @@ class CapasController extends Controller
     {
         if (Yii::$app->user->can('capasdelete')) {
             $model = $this->findModel($id);
+            $this->photo->deleteProntPhoto($model->front_photo);
+            $this->photo->deleteProntPhotoThumb($model->front_photo);
+            $this->photo->deleteSidePhoto($model->side_photo);
+            $this->photo->deleteIdentityCardPhoto($model->identity_card);
             $model->delete();
             return $this->redirect(['index', 'action' => 'member-capas-list']);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
+    }
+
+    public function actionPublish($id)
+    {
+        $model = $this->findModel($id);
+        $model->save_status = "Publish";
+        $model->user_created = Yii::$app->user->identity->getId();
+        $model->save();
+        return $this->redirect(['index', 'action' => 'member-capas-list']);
+    }
+
+    public function actionDraft($id)
+    {
+        $model = $this->findModel($id);
+        $model->save_status = "Draft";
+        $model->user_created = Yii::$app->user->identity->getId();
+        $model->save();
+        return $this->redirect(['index', 'action' => 'member-capas-list']);
+    }
+
+    public function actionPending($id)
+    {
+        $model = $this->findModel($id);
+        $model->save_status = "Pending";
+        $model->user_created = Yii::$app->user->identity->getId();
+        $model->save();
+        return $this->redirect(['index', 'action' => 'member-capas-list']);
     }
 
     protected function trashAll($data)
@@ -326,6 +341,10 @@ class CapasController extends Controller
 
             foreach ($data as $id) {
                 $model = $this->findModel($id);
+                $this->photo->deleteProntPhoto($model->front_photo);
+                $this->photo->deleteProntPhotoThumb($model->front_photo);
+                $this->photo->deleteSidePhoto($model->side_photo);
+                $this->photo->deleteIdentityCardPhoto($model->identity_card);
                 $model->delete();
             }
             return $this->redirect(['index', 'action' => 'member-capas-list']);

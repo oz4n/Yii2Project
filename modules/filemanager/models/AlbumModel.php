@@ -55,34 +55,42 @@ class AlbumModel extends Taxonomy
      */
     public function getImagesByAlbum()
     {
-        return $this->hasMany(File::className(), ['id' => 'file_id'])
-            ->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
-            ->viaTable('taxfilerelations', ['tax_id' => 'id']);
+        if (($album = $this->hasMany(File::className(), ['id' => 'file_id'])
+                ->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
+                ->viaTable('taxfilerelations', ['tax_id' => 'id'])) !== null) {
+            return $album;
+        } else {
+            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+        }
     }
 
     public function getImageByAlbumId($id, $limit, $offset)
     {
         $image = self::findOne($id);
-        $query = $image->getImagesByAlbum()
-            ->orderBy(['create_at' => SORT_DESC])
-            ->limit($limit)
-            ->offset($offset)
-            ->all();
-        return $query;
+        if ($image !== null) {
+            $query = $image->getImagesByAlbum()
+                    ->orderBy(['create_at' => SORT_DESC])
+                    ->limit($limit)
+                    ->offset($offset)
+                    ->all();
+            return $query;
+        } else {
+            throw new \yii\web\NotFoundHttpException('The requested page does not exist.');
+        }
     }
 
     public function getAllImages($limit, $offset, $key = null)
     {
         $image = ImageModel::find();
         $query = $image->onCondition(['type' => FileManager::FILE_TYPE_IMAGE])
-            ->orFilterWhere(['like', 'name', $key])
-            ->orFilterWhere(['like', 'orginal_name', $key])
-            ->orFilterWhere(['like', 'unique_name', $key])
-            ->orFilterWhere(['like', 'description', $key])
-            ->orderBy(['create_at' => SORT_DESC])
-            ->limit($limit)
-            ->offset($offset)
-            ->all();
+                ->orFilterWhere(['like', 'name', $key])
+                ->orFilterWhere(['like', 'orginal_name', $key])
+                ->orFilterWhere(['like', 'unique_name', $key])
+                ->orFilterWhere(['like', 'description', $key])
+                ->orderBy(['create_at' => SORT_DESC])
+                ->limit($limit)
+                ->offset($offset)
+                ->all();
         return $query;
     }
 
@@ -90,7 +98,7 @@ class AlbumModel extends Taxonomy
     {
         $models = self::find();
         $query = $models->onCondition(['term_id' => FileManager::FILE_IMAGE_TERM])
-            ->all();
+                ->all();
         return $query;
     }
 
@@ -98,7 +106,7 @@ class AlbumModel extends Taxonomy
     {
         $image = self::findOne($id);
         $query = $image->getImagesByAlbum()
-            ->all();
+                ->all();
         return count($query);
     }
 

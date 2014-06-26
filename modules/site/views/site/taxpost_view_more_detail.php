@@ -11,8 +11,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => isset($other['tag']) 
 ?>
 <!--=== Breadcrumbs ===-->
 <div class="breadcrumbs">
-    <div class="container">
-        <h1 class="pull-left"><?= $tax ?></h1>
+    <div class="container">       
         <ul class="pull-right breadcrumb">
             <li><a href="<?= Url::toRoute(['/site/site/index']) ?>">Beranda</a></li>
             <li class="active"><?= $tax ?></li>

@@ -134,9 +134,10 @@ $this->registerJs(''
                 return Html::beginTag('div', ['class' => 'member', 'style' => 'margin-top: -10px']) . Gravatar::widget([
                             'email' => $data->email,
                             'size' => 42,
-                            'defaultImage' => 'mm',
+                            'defaultImage' => 'mm',                            
                             'options' => [
-                                'class' => 'member-avatar'
+                                'class' => 'img-circle',
+                                'alt' => $data->name
                             ]
                         ]) . Html::endTag('div');
             }
@@ -170,7 +171,7 @@ $this->registerJs(''
                         return Html::tag('span', Html::tag('i', null, ['class' => 'fa fa-bookmark-o']) . '&nbsp&nbsp' . $data->status, ['style' => 'width: 120px', 'class' => 'badge badge-info']);
                         break;
                     case 'Unconfirmed':
-                        return Html::tag('span', Html::tag('i', null, ['class' => 'fa fa-trash-o']) . '&nbsp&nbsp' . $data->status, ['style' => 'width: 120px', 'class' => 'badge badge-danger']);
+                        return Html::tag('span', Html::tag('i', null, ['class' => 'fa  fa-lock']) . '&nbsp&nbsp' . $data->status, ['style' => 'width: 120px', 'class' => 'badge badge-danger']);
                         break;
                     case null;
                         break;
@@ -185,10 +186,10 @@ $this->registerJs(''
                 [
                     'class' => 'yii\grid\ActionColumn',
                     'header' => '<div class="text-center" style="width: 120px">Aksi</div>',
-                    'template' => '<div class="text-center">{replay}&nbsp;{update}&nbsp;{delete}</div>',
+                    'template' => '<div class="text-center">{replay}&nbsp;{update}&nbsp;{delete}&nbsp;{confirmed}</div>',
                     'buttons' => [
                 'replay' =>  function ($url, $data) {
-                    return Html::a('<i class="fa fa-mail-forward"></i>', Url::toRoute(["/guestbook/guestbook/replay", 'action' => 'guestbook-replay', 'id' => $data->id]), [
+                    return Html::a('<i class="fa fa-mail-forward"></i>', Url::toRoute(["/guestbook/guestbook/replay", 'action' => 'guestbook-replay', 'id' => $data->parent_id == null ? $data->id : $data->parent_id]), [
                                 'class' => 'select-tooltip btn btn-success btn-xs',
                                 'data-toggle' => "tooltip",
                                 'data-original-title' => "Balas",
@@ -213,6 +214,19 @@ $this->registerJs(''
                                 'data-pjax' => 0,
                                 'title' => Yii::t('yii', 'Hapus'),
                     ]);
+                },
+                          'confirmed' => function ($url, $data) {
+                    if($data->status == 'Unconfirmed'){
+                        return Html::a('<i class="fa fa-check-circle-o"></i>', Url::toRoute(["/guestbook/guestbook/confirmed", 'action' => 'guestbook-confirmed', 'id' => $data->id]), [
+                                'class' => 'select-tooltip btn btn-warning btn-xs',
+                                'data-toggle' => "tooltip",
+                                'data-original-title' => "Konfirmasi",
+                                'data-confirm' => 'Apakah Anda yakin ingin mengkonfiramsi item ini?',
+                                'data-method' => 'post',
+                                'data-pjax' => 0,
+                                'title' => Yii::t('yii', 'Konfirmasi'),
+                    ]);
+                    }
                 }
                     ]
                 ],

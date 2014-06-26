@@ -58,22 +58,25 @@ class UserSearch extends UserModel
     public function search($params)
     {
         $query = self::find();
+        $query->andFilterWhere(['not like', 'role', 'paskibramember']);
+        $query->andFilterWhere(['not like', 'role', 'ppimember']);
+        $query->andFilterWhere(['not like', 'role', 'capasmember']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-        
+
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
 
         if (isset($params['UserSearch']['keyword'])) {
-            $key = $params['UserSearch']['keyword'];           
+            $key = $params['UserSearch']['keyword'];
             $query->orFilterWhere(['like', 'username', $key]);
             $query->orFilterWhere(['like', 'email', $key]);
             $query->orFilterWhere(['like', 'role', $key]);
         }
-        
+
         $this->addCondition($query, 'username', true);
         $this->addCondition($query, 'email', true);
         $this->addCondition($query, 'created_at');

@@ -56,7 +56,8 @@ class Taxonomy extends \yii\db\ActiveRecord
     {
         return [
             [['parent_id', 'taxmenu', 'term_id', 'count', 'lft', 'rgt', 'root', 'level'], 'integer'],
-            [['name', 'create_et', 'update_et'], 'required'],
+            [['name', 'create_et', 'update_et'], 'required', 'message' => 'Tidak boleh kosong.'],
+            [['name'], 'unique', 'message' => 'Item yang anda inputkan sudah ada'],
             [['create_et', 'update_et'], 'safe'],
             [['name', 'description', 'slug'], 'string', 'max' => 255],
             [['type', 'status'], 'string', 'max' => 45]

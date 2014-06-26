@@ -24,6 +24,7 @@ use yii\web\NotFoundHttpException;
  */
 class RegistrationController extends Controller
 {
+
     /**
      * @inheritdoc
      */
@@ -73,14 +74,18 @@ class RegistrationController extends Controller
     {
         $model = $this->module->manager->createUser(['scenario' => 'register']);
 
-        if ($model->load(\Yii::$app->getRequest()->post()) && $model->register()) {
-            return $this->render('success', [
-                'model' => $model
-            ]);
+        if (\Yii::$app->getRequest()->post('UserModel')) {
+            $param = (object) \Yii::$app->getRequest()->post('UserModel');
+            $model->setRole($param->role);
+            if ($model->load(\Yii::$app->getRequest()->post()) && $model->register()) {
+                return $this->render('success', [
+                            'model' => $model
+                ]);
+            }
         }
 
         return $this->render('register', [
-            'model' => $model
+                    'model' => $model
         ]);
     }
 
@@ -103,8 +108,8 @@ class RegistrationController extends Controller
         }
 
         return $this->render('connect', [
-            'model'   => $model,
-            'account' => $account
+                    'model' => $model,
+                    'account' => $account
         ]);
     }
 
@@ -139,12 +144,13 @@ class RegistrationController extends Controller
             $model->getUser()->resend();
 
             return $this->render('success', [
-                'model' => $model
+                        'model' => $model
             ]);
         }
 
         return $this->render('resend', [
-            'model' => $model
+                    'model' => $model
         ]);
     }
+
 }

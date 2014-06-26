@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Dektrium project.
  *
@@ -17,27 +16,34 @@ use yii\widgets\ActiveForm;
  * @var yii\widgets\ActiveForm $form
  * @var dektrium\user\forms\Resend $model
  */
-
-$this->title = Yii::t('user', 'Request new confirmation message');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('user', 'Meminta pesan konfirmasi baru');
 ?>
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
-                <?php $form = ActiveForm::begin([
-                    'id' => 'resend-form',
-                ]); ?>
+<div class="breadcrumbs">
+    <div class="container">      
+        <ul class="pull-right breadcrumb">
+            <li><?= Html::a('Beranda', ['/site/site/index']) ?></li>
+            <li class="active">Konfirmasi Akun</li>
+        </ul>
+    </div>
+    <!--/container-->
+</div><!--/breadcrumbs-->
+<div class="container content">
 
-                <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
 
-                <?= Html::submitButton(Yii::t('user', 'Continue'), ['class' => 'btn btn-primary btn-block']) ?><br>
+            <?php
+            $form = ActiveForm::begin([
+                        'id' => 'resend-form',
+            ]);
+            ?>
 
-                <?php ActiveForm::end(); ?>
-            </div>
+            <?= $form->field($model, 'email')->textInput(['autofocus' => true])->label('Email Anda') ?>
+
+            <?= Html::submitButton(Yii::t('user', 'Kirim konfirmasi'), ['class' => 'btn btn-u btn-block']) ?><br>
+
+            <?php ActiveForm::end(); ?>
+
         </div>
     </div>
 </div>

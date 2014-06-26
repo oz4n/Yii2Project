@@ -11,8 +11,7 @@ use yii\helpers\Url;
 $this->title = $name;
 ?>
 <div class="breadcrumbs">
-    <div class="container">
-        <h1 class="pull-left"><?= Html::encode($this->title) ?></h1>
+    <div class="container">     
         <ul class="pull-right breadcrumb">
             <li><a href="<?= Url::toRoute(['/site/site/index']) ?>">Beranda</a></li>           
             <li class="active"><?= Html::encode($this->title) ?></li>

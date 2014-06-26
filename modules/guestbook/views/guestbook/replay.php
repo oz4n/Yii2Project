@@ -57,29 +57,64 @@ $this->registerJs(
                 </div>
                 <div class="panel tl-body">
                     <h4 class="text-info"><?= $model->subject ?></h4>
-                    <p><i class="fa fa-user"></i> &nbsp;<?= $model->name ?>&nbsp;&nbsp;&nbsp; <i class="fa fa-calendar"></i>&nbsp; <?= date('F d, Y', strtotime($model->create_et)) ?><?= Html::a('&nbsp;&nbsp;&nbsp; <i class="fa fa-pencil"></i>&nbsp;&nbsp;Perbaharui', ['/guestbook/guestbook/update', 'action' => 'guestbook-update', 'id' => $model->id]) ?></p>
+                    <p>
+                        <i class="fa fa-user"></i> &nbsp;<?= $model->name ?>&nbsp;&nbsp;&nbsp; <i class="fa fa-calendar"></i>&nbsp; <?= date('F d, Y', strtotime($model->create_et)) ?><?= Html::a('&nbsp;&nbsp;&nbsp; <i class="fa fa-pencil"></i>&nbsp;&nbsp;Perbaharui', ['/guestbook/guestbook/update', 'action' => 'guestbook-update', 'id' => $model->id]) ?>&nbsp;&nbsp;
+                       <?php
+                        switch ($model->status) {
+                            case 'Publish':
+                                echo Html::tag('span', Html::tag('i', null, ['class' => 'fa  fa-check-circle-o']) . '&nbsp&nbsp' . $model->status, ['style' => 'color:#5ebd5e;']);
+                                break;
+                            case 'Draft':
+                                echo Html::tag('span', Html::tag('i', null, ['class' => 'fa fa-bookmark-o']) . '&nbsp&nbsp' . $model->status, ['class' => 'badge badge-info']);
+                                break;
+                            case 'Unconfirmed':
+                                echo Html::tag('span', Html::tag('i', null, ['class' => 'fa  fa-lock']) . '&nbsp&nbsp' . $model->status, ['style' => 'color:#e66454;']);
+                                break;
+                            case null;
+                                break;
+                        }
+                        ?>
+                    </p>
                     <?= $model->content ?>
-                </div> 
-            </div>
-            <?php
+                    <?php
             foreach ($child as $value):
                 ?>
-                <div class="tl-entry">               
-                    <div class="tl-icon">
+                <div class="media">               
+                    <div class="pull-left">
                         <?=
                         \cebe\gravatar\Gravatar::widget([
                             'email' => $value->email,
-                            'size' => 40,
-                            'defaultImage' => 'mm'
+                            'size' => 32,
+                            'defaultImage' => 'mm',
+                            'options' =>['class'=>'img-circle']
                         ]);
                         ?>
                     </div>
-                    <div class="panel tl-body">                  
-                        <p><i class="fa fa-user"></i> &nbsp;<?= $value->name ?>&nbsp;&nbsp;&nbsp; <i class="fa fa-calendar"></i>&nbsp; <?= date('F d, Y', strtotime($value->create_et)) ?><?= Html::a('&nbsp;&nbsp;&nbsp; <i class="fa fa-pencil"></i>&nbsp;&nbsp;Perbaharui', ['/guestbook/guestbook/update', 'action' => 'guestbook-update', 'id' => $value->id]) ?> &nbsp;&nbsp;&nbsp; <i class="fa fa-mail-forward"></i>&nbsp; <?= $model->name ?> </p>
-                        <?= $value->content ?>
+                    <div class="media-body">  
+                        <p><?= $value->content ?><p>
+                        <p style="font-size: 9px"><i class="fa fa-user"></i> &nbsp;<?= $value->name ?>&nbsp;&nbsp;&nbsp; <i class="fa fa-calendar"></i>&nbsp; <?= date('F d, Y', strtotime($value->create_et)) ?><?= Html::a('&nbsp;&nbsp;&nbsp; <i class="fa fa-pencil"></i>&nbsp;&nbsp;Perbaharui', ['/guestbook/guestbook/update', 'action' => 'guestbook-update', 'id' => $value->id]) ?> &nbsp;&nbsp;
+                        <?php
+                        switch ($value->status) {
+                            case 'Publish':
+                                echo Html::tag('span', Html::tag('i', null, ['class' => 'fa  fa-check-circle-o']) . '&nbsp&nbsp' . $value->status, ['style' => 'color:#5ebd5e;']);
+                                break;
+                            case 'Draft':
+                                echo Html::tag('span', Html::tag('i', null, ['class' => 'fa fa-bookmark-o']) . '&nbsp&nbsp' . $value->status, ['class' => 'badge badge-info']);
+                                break;
+                            case 'Unconfirmed':
+                                echo Html::tag('span', Html::tag('i', null, ['class' => 'fa  fa-lock']) . '&nbsp&nbsp' . $value->status, ['style' => 'color:#e66454;']);
+                                break;
+                            case null;
+                                break;
+                        }
+                        ?>
+                        </p>
                     </div> 
                 </div>
             <?php endforeach; ?>
+                </div> 
+            </div>
+            
             <div class="tl-entry">
                 <div class="tl-icon bg-info"><i class="fa fa-comment"></i></div>
                 <div class="panel tl-body">

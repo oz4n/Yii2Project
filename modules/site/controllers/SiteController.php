@@ -23,6 +23,10 @@ class SiteController extends Controller
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+                'transparent' => true,
+                'minLength' => 3,
+                'maxLength' => 4,
+                'padding' => 0
             ],
         ];
     }
@@ -30,9 +34,10 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $model = PostSerch::find()->onCondition(['content' => 'pagehome', "type" => 'pagehelper'])->one();
-        $image = json_decode($model->other_content);
+        $other = json_decode($model->other_content);
         return $this->render('index', [
-                    'image' => $image->imgslider
+                    'image' => $other->imgslider,
+                    'other' => $other,
         ]);
     }
 

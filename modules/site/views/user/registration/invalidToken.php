@@ -15,12 +15,27 @@ use yii\helpers\Html;
  * @var yii\web\View $this
  */
 
-$this->title = Yii::t('user', 'Confirmation token is invalid');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('user', 'Tanda pemulihan tidak valid');
 ?>
-<div class="alert alert-danger">
-    <h4><?= Html::encode($this->title) ?></h4>
-    <?= Yii::t('user', 'We are sorry but your confirmation token is invalid. Maybe it is out-of-date or does not exist. You can try requesting a new one by clicking the link below:') ?>
-    <br>
-    <?= Html::a(Yii::t('user', 'Request new confirmation message'), ['/user/registration/resend']) ?>
+<div class="breadcrumbs">
+    <div class="container">      
+        <ul class="pull-right breadcrumb">
+            <li><?= Html::a('Beranda', ['/site/site/index']) ?></li>
+            <li class="active">Konfirmasi token</li>
+        </ul>
+    </div>   
 </div>
+<div class="container content">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="alert alert-danger">
+    
+            <?= Yii::t('user', 'Mohon maaf karena tanda konfirmasi tidak valid. Anda dapat mencoba meminta tanda pemulihan baru. Anda dapat mencoba meminta yang baru dengan mengklik tautan di bawah ini:') ?>
+          
+            <?= Html::a(Yii::t('user', 'Meminta pesan konfirmasi baru'), ['/user/registration/resend']) ?>
+        </div>
+        </div>
+    </div>
+</div>
+

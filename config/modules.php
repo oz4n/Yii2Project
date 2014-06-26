@@ -23,7 +23,7 @@ return [
     'userlog' => [
         'class' => 'app\modules\userlog\UserLog',
         'layout' => '@app/modules/dashboard/views/layouts/main',
-        'log_tatus' => false
+        'log_tatus' => true
     ],
     'filemanager' => [
         'class' => 'app\modules\filemanager\FileManager',
@@ -33,27 +33,7 @@ return [
         'class' => 'app\modules\guestbook\GuestBook',
         'layout' => '@app/modules/dashboard/views/layouts/main'
     ],
-
-    'user' => [
-        'class' => 'dektrium\user\Module',
-        'controllerMap' => [
-            'admin' => 'app\modules\users\controllers\UserController',
-            'registration' => 'app\modules\site\controllers\RegistrationController'
-        ],
-        'components' => [
-            'manager' => [
-                'userClass' => 'app\modules\users\models\UserModel',
-            ],
-        ],
-        'layout' => '@app/modules/site/views/layouts/main',
-        'confirmable' => true,
-        'allowUnconfirmedLogin' => false,
-        'confirmWithin' => 86400,
-        'cost' => 19,
-        'rememberFor' => 1209600,
-        'recoverWithin' => 21600,
-        'admins' => ['administrator']
-    ],
+    
     'appearance' => [
         'class' => 'app\modules\appearance\Appearance',
         'layout' => '@app/modules/dashboard/views/layouts/main'
@@ -64,5 +44,8 @@ return [
     ],
     'site' => [
         'class' => 'app\modules\site\Site',
+    ],
+    'setting' => [
+        'class' => 'app\modules\setting\Setting',
     ],
 ];

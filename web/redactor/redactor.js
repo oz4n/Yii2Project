@@ -6538,8 +6538,8 @@
             data = this.cleanStripTags(data);
 
             // parse if it is link on youtube & vimeo
-            var iframeStart = '<iframe width="500" height="281" src="',
-                    iframeEnd = '" frameborder="0" allowfullscreen></iframe>';
+            var iframeStart = '<p class="responsive-video" style="margin-bottom:10px;"><iframe width="100%" src="',
+                    iframeEnd = '" frameborder="0"></iframe></p>';
 
             if (data.match(reUrlYoutube))
             {

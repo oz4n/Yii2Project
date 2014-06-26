@@ -45,7 +45,7 @@ class ToolsModel extends PpiSerch
         $model->save_status = $save_status;
         $model->taxonomy_id = 114;
         $model->school_id = 1;
-        $model->user_id = Yii::$app->user->identity->getId();
+        $model->user_created = Yii::$app->user->identity->getId();
         $model->nra = $ppi->nra;
         $model->name = $ppi->name;
         $model->nickname = $ppi->nickname;
@@ -103,7 +103,7 @@ class ToolsModel extends PpiSerch
         $model->save_status = $save_status;
         $model->taxonomy_id = 114;
         $model->school_id = 1;
-        $model->user_id = Yii::$app->user->identity->getId();
+        $model->user_created = Yii::$app->user->identity->getId();
         $model->nra = $paskibra->nra;
         $model->name = $paskibra->name;
         $model->nickname = $paskibra->nickname;
@@ -161,7 +161,7 @@ class ToolsModel extends PpiSerch
         $model->save_status = $save_status;
         $model->taxonomy_id = 114;
         $model->school_id = 1;
-        $model->user_id = Yii::$app->user->identity->getId();
+        $model->user_created = Yii::$app->user->identity->getId();
         $model->nra = $capas->nra;
         $model->name = $capas->name;
         $model->nickname = $capas->nickname;
@@ -175,7 +175,7 @@ class ToolsModel extends PpiSerch
         $model->tribal_members = $capas->tribal_members;
         $model->zip_code = $capas->zip_code;
         $model->blood_group = $capas->blood_group;
-        $model->brevetaward = $capas->brevetaward;
+//        $model->brevetaward = $capas->brevetaward;
         $model->organizational_experience = $capas->organizational_experience;
         $model->illness = $capas->illness;
         $model->height_body = $capas->height_body;
@@ -184,9 +184,9 @@ class ToolsModel extends PpiSerch
         $model->pants_size = $capas->pants_size;
         $model->shoe_size = $capas->shoe_size;
         $model->hat_size = $capas->hat_size;
-        $model->membership_status = $capas->membership_status;
-        $model->status_organization = $capas->status_organization;
-        $model->year = $capas->year;
+//        $model->membership_status = $capas->membership_status;
+//        $model->status_organization = $capas->status_organization;
+//        $model->year = $capas->year;
         $model->educational_status = $capas->educational_status;
         $model->marital_status = $capas->marital_status;
         $model->job = $capas->job;
@@ -415,36 +415,36 @@ class ToolsModel extends PpiSerch
                     ->setCellValue('N' . $row, $this->getSchollNameByID($dataRow->school_id))
                     ->setCellValue('O' . $row, $dataRow->zip_code)
                     ->setCellValue('P' . $row, $dataRow->blood_group)
-                    ->setCellValue('Q' . $row, $dataRow->brevetaward)
-                    ->setCellValue('R' . $row, $dataRow->organizational_experience)
-                    ->setCellValue('S' . $row, $dataRow->illness)
-                    ->setCellValue('T' . $row, $dataRow->height_body)
-                    ->setCellValue('U' . $row, $dataRow->weight_body)
-                    ->setCellValue('V' . $row, $dataRow->dress_size)
+//                    ->setCellValue('Q' . $row, $dataRow->brevetaward)
+                    ->setCellValue('Q' . $row, $dataRow->organizational_experience)
+                    ->setCellValue('R' . $row, $dataRow->illness)
+                    ->setCellValue('S' . $row, $dataRow->height_body)
+                    ->setCellValue('T' . $row, $dataRow->weight_body)
+                    ->setCellValue('U' . $row, $dataRow->dress_size)
+                    ->setCellValue('V' . $row, $dataRow->shoe_size)
                     ->setCellValue('W' . $row, $dataRow->shoe_size)
-                    ->setCellValue('X' . $row, $dataRow->shoe_size)
-                    ->setCellValue('Y' . $row, $dataRow->hat_size)
-                    ->setCellValue('Z' . $row, $dataRow->membership_status)
-                    ->setCellValue('AA' . $row, $dataRow->status_organization)
-                    ->setCellValue('AB' . $row, $dataRow->educational_status)
-                    ->setCellValue('AC' . $row, $dataRow->marital_status)
-                    ->setCellValue('AD' . $row, $dataRow->job)
-                    ->setCellValue('AE' . $row, $dataRow->email)
-                    ->setCellValue('AF' . $row, $dataRow->phone_number)
-                    ->setCellValue('AG' . $row, $dataRow->other_phone_number)
-                    ->setCellValue('AH' . $row, $dataRow->relationship_phone_number)
-                    ->setCellValue('AI' . $row, $dataRow->father_name)
-                    ->setCellValue('AJ' . $row, $dataRow->mother_name)
-                    ->setCellValue('AK' . $row, $dataRow->father_work)
-                    ->setCellValue('AL' . $row, $dataRow->mother_work)
-                    ->setCellValue('AM' . $row, $dataRow->income_father)
-                    ->setCellValue('AN' . $row, $dataRow->income_mothers)
-                    ->setCellValue('AO' . $row, $dataRow->number_of_brothers)
-                    ->setCellValue('AP' . $row, $dataRow->number_of_sisters)
-                    ->setCellValue('AQ' . $row, $dataRow->number_of_children)
-                    ->setCellValue('AR' . $row, $dataRow->languageskill)
-                    ->setCellValue('AS' . $row, $dataRow->lifeskill)
-                    ->setCellValue('AT' . $row, $dataRow->note);
+                    ->setCellValue('X' . $row, $dataRow->hat_size)
+//                    ->setCellValue('Z' . $row, $dataRow->membership_status)
+//                    ->setCellValue('AA' . $row, $dataRow->status_organization)
+                    ->setCellValue('Y' . $row, $dataRow->educational_status)
+                    ->setCellValue('Z' . $row, $dataRow->marital_status)
+                    ->setCellValue('AA' . $row, $dataRow->job)
+                    ->setCellValue('AB' . $row, $dataRow->email)
+                    ->setCellValue('AC' . $row, $dataRow->phone_number)
+                    ->setCellValue('AD' . $row, $dataRow->other_phone_number)
+                    ->setCellValue('AE' . $row, $dataRow->relationship_phone_number)
+                    ->setCellValue('AF' . $row, $dataRow->father_name)
+                    ->setCellValue('AG' . $row, $dataRow->mother_name)
+                    ->setCellValue('AH' . $row, $dataRow->father_work)
+                    ->setCellValue('AI' . $row, $dataRow->mother_work)
+                    ->setCellValue('AJ' . $row, $dataRow->income_father)
+                    ->setCellValue('AK' . $row, $dataRow->income_mothers)
+                    ->setCellValue('AL' . $row, $dataRow->number_of_brothers)
+                    ->setCellValue('AM' . $row, $dataRow->number_of_sisters)
+                    ->setCellValue('AN' . $row, $dataRow->number_of_children)
+                    ->setCellValue('AO' . $row, $dataRow->languageskill)
+                    ->setCellValue('AP' . $row, $dataRow->lifeskill)
+                    ->setCellValue('AQ' . $row, $dataRow->note);
         }
 
 
@@ -452,7 +452,7 @@ class ToolsModel extends PpiSerch
 
         $alpabet = 'A';
         $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension($alpabet)->setAutoSize(true);
-        for ($n = 0; $n < 45; $n++) {
+        for ($n = 0; $n < 42; $n++) {
             $objPHPExcel->setActiveSheetIndex(0)->getColumnDimension( ++$alpabet)->setAutoSize(true);
         }
 
@@ -460,9 +460,24 @@ class ToolsModel extends PpiSerch
         $objWriter->save(str_replace('export.txt', $filename . '.xlsx', Yii::getAlias('@web') . 'resources/report/export/export.txt'));
     }
 
-    public function validateXlsxFormat($file)
+    public function validateXlsxFormat($file, $type)
+    {
+
+        if ($type === "PPI") {
+            return $this->validatePpiAndPaskibraXlsxFormat($file);
+        } else if ($type === "Paskibra") {
+            return $this->validatePpiAndPaskibraXlsxFormat($file);
+        } else if ($type === "Capas") {
+            return $this->validateCapasXlsxFormat($file);
+        } else {
+            return false;
+        }
+    }
+
+    protected function validateCapasXlsxFormat($file)
     {
         $objPHPExcel = \PHPExcel_IOFactory::load($file);
+        $data = [];
         foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
             $worksheetTitle = $worksheet->getTitle();
             $highestRow = $worksheet->getHighestRow(); // e.g. 10
@@ -474,152 +489,226 @@ class ToolsModel extends PpiSerch
                     for ($col = 0; $col < $highestColumnIndex; ++$col) {
                         $cell = $worksheet->getCellByColumnAndRow($col, $row);
                         $val = $cell->getValue();
-                        switch ($col) {
-                            case 0;
-                                return true;
-                                break;
-                            case 1;
-                                return true;
-                                break;
-                            case 2;
-                                return true;
-                                break;
-                            case 3;
-                                return true;
-                                break;
-                            case 4;
-                                return true;
-                                break;
-                            case 5;
-                                return true;
-                                break;
-                            case 6;
-                                echo "<th data-val='$col'>age</th>";
-                                break;
-                            case 7;
-                                echo "<th data-val='$col'>address</th>";
-                                break;
-                            case 8;
-                                echo "<th data-val='$col'>gender</th>";
-                                break;
-                            case 9;
-                                echo "<th data-val='$col'>religion</th>";
-                                break;
-                            case 10;
-                                echo "<th data-val='$col'>nationality</th>";
-                                break;
-                            case 11;
-                                echo "<th data-val='$col'>taxonomy_id</th>"; //asal daerah
-                                break;
-                            case 12;
-                                echo "<th data-val='$col'>tribal_members</th>";
-                                break;
-                            case 13;
-                                echo "<th data-val='$col'>school_id</th>"; // asal sekolah
-                                break;
-                            case 14;
-                                echo "<th data-val='$col'>zip_code</th>";
-                                break;
-                            case 15;
-                                echo "<th data-val='$col'>blood_group</th>";
-                                break;
-                            case 16;
-                                echo "<th data-val='$col'>brevetaward</th>";
-                                break;
-                            case 17;
-                                echo "<th data-val='$col'>organizational_experience</th>";
-                                break;
-                            case 18;
-                                echo "<th data-val='$col'>illness</th>";
-                                break;
-                            case 19;
-                                echo "<th data-val='$col'>height_body</th>";
-                                break;
-                            case 20;
-                                echo "<th data-val='$col'>weight_body</th>";
-                                break;
-                            case 21;
-                                echo "<th data-val='$col'>dress_size</th>";
-                                break;
-                            case 22;
-                                echo "<th data-val='$col'>pants_size</th>";
-                                break;
-                            case 23;
-                                echo "<th data-val='$col'>shoe_size</th>";
-                                break;
-                            case 24;
-                                echo "<th data-val='$col'>hat_size</th>";
-                                break;
-                            case 25;
-                                echo "<th data-val='$col'>membership_status</th>";
-                                break;
-                            case 26;
-                                echo "<th data-val='$col'>status_organization</th>";
-                                break;
-                            case 27;
-                                echo "<th data-val='$col'>year</th>";
-                                break;
-                            case 28;
-                                echo "<th data-val='$col'>educational_status</th>";
-                                break;
-                            case 29;
-                                echo "<th data-val='$col'>marital_status</th>";
-                                break;
-                            case 30;
-                                echo "<th data-val='$col'>job</th>";
-                                break;
-                            case 31;
-                                echo "<th data-val='$col'>email</th>";
-                                break;
-                            case 32;
-                                echo "<th data-val='$col'>phone_number</th>";
-                                break;
-                            case 33;
-                                echo "<th data-val='$col'>other_phone_number</th>";
-                                break;
-                            case 34;
-                                echo "<th data-val='$col'>relationship_phone_number</th>";
-                                break;
-                            case 35;
-                                echo "<th data-val='$col'>father_name</th>";
-                                break;
-                            case 36;
-                                echo "<th data-val='$col'>mother_name</th>";
-                                break;
-                            case 37;
-                                echo "<th data-val='$col'>father_work</th>";
-                                break;
-                            case 38;
-                                echo "<th data-val='$col'>mother_work</th>";
-                                break;
-                            case 39;
-                                echo "<th data-val='$col'>income_father</th>";
-                                break;
-                            case 40;
-                                echo "<th data-val='$col'>income_mothers</th>";
-                                break;
-                            case 41;
-                                echo "<th data-val='$col'>number_of_brothers</th>";
-                                break;
-                            case 42;
-                                echo "<th data-val='$col'>number_of_sisters</th>";
-                                break;
-                            case 43;
-                                echo "<th data-val='$col'>number_of_children</th>";
-                                break;
-                            case 44;
-                                echo "<th data-val='$col'>languageskill</th>";
-                                break;
-                            case 45;
-                                echo "<th data-val='$col'>lifeskill</th>";
-                                break;
-                            case 46;
-                                echo "<th data-val='$col'>note</th>";
-                                break;
+                        if ($val === "No") {
+                            $data[] = $val;
+                        } elseif ($val === "NRA") {
+                            $data[] = $val;
+                        } elseif ($val === "Nama Lengkap") {
+                            $data[] = $val;
+                        } elseif ($val === "Nama Pangilan") {
+                            $data[] = $val;
+                        } elseif ($val === "Nomor KTP") {
+                            $data[] = $val;
+                        } elseif ($val === "Tanggal Lahir") {
+                            $data[] = $val;
+                        } elseif ($val === "Alamat Lengkap") {
+                            $data[] = $val;
+                        } elseif ($val === "Jenis Kelamin") {
+                            $data[] = $val;
+                        } elseif ($val === "Umur") {
+                            $data[] = $val;
+                        } elseif ($val === "Agama") {
+                            $data[] = $val;
+                        } elseif ($val === "Kwarganegaraan") {
+                            $data[] = $val;
+                        } elseif ($val === "Asal Daerah") {
+                            $data[] = $val;
+                        } elseif ($val === "Suku Bangsa") {
+                            $data[] = $val;
+                        } elseif ($val === "Asal Skolah") {
+                            $data[] = $val;
+                        } elseif ($val === "Kode Post") {
+                            $data[] = $val;
+                        } elseif ($val === "Golongan Darah") {
+                            $data[] = $val;
+                        } elseif ($val === "Pengalaman Organisasi") {
+                            $data[] = $val;
+                        } elseif ($val === "Penyakit Yang Di Derita") {
+                            $data[] = $val;
+                        } elseif ($val === "Tinggi Badan") {
+                            $data[] = $val;
+                        } elseif ($val === "Berat Badan") {
+                            $data[] = $val;
+                        } elseif ($val === "Ukuran Baju") {
+                            $data[] = $val;
+                        } elseif ($val === "Ukuran celana") {
+                            $data[] = $val;
+                        } elseif ($val === "Ukuran Sepatu") {
+                            $data[] = $val;
+                        } elseif ($val === "Ukuran Topi") {
+                            $data[] = $val;
+                        } elseif ($val === "Status Pendidikan") {
+                            $data[] = $val;
+                        } elseif ($val === "Status Perkawinan") {
+                            $data[] = $val;
+                        } elseif ($val === "Pekerjaan") {
+                            $data[] = $val;
+                        } elseif ($val === "Email") {
+                            $data[] = $val;
+                        } elseif ($val === "Nomer Hendpon") {
+                            $data[] = $val;
+                        } elseif ($val === "Nomer Hendpon Lainnya") {
+                            $data[] = $val;
+                        } elseif ($val === "Status Dengan Nomer Hendpon Lainnya") {
+                            $data[] = $val;
+                        } elseif ($val === "Nama Bapak") {
+                            $data[] = $val;
+                        } elseif ($val === "Nama Ibu") {
+                            $data[] = $val;
+                        } elseif ($val === "Pekerjaan Bapak") {
+                            $data[] = $val;
+                        } elseif ($val === "Pekerjaan Ibu") {
+                            $data[] = $val;
+                        } elseif ($val === "Penghasilan Bapak") {
+                            $data[] = $val;
+                        } elseif ($val === "Penghasilan Ibu") {
+                            $data[] = $val;
+                        } elseif ($val === "Jumlah Saudara Laki-Laki") {
+                            $data[] = $val;
+                        } elseif ($val === "Jumlah Saudara Perempuan") {
+                            $data[] = $val;
+                        } elseif ($val === "Jumlah Anak Kandung") {
+                            $data[] = $val;
+                        } elseif ($val === "Keterampilan Bahasa Asing") {
+                            $data[] = $val;
+                        } elseif ($val === "Keterampilan Personal") {
+                            $data[] = $val;
+                        } elseif ($val === "Catatan") {
+                            $data[] = $val;
+                        } else {
+                            return false;
                         }
                     }
                 }
             }
+        }
+        if (count($data) === 43) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    protected function validatePpiAndPaskibraXlsxFormat($file)
+    {
+        $objPHPExcel = \PHPExcel_IOFactory::load($file);
+        $data = [];
+        foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
+            $worksheetTitle = $worksheet->getTitle();
+            $highestRow = $worksheet->getHighestRow(); // e.g. 10
+            $highestColumn = $worksheet->getHighestColumn(); // e.g 'F'
+            $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn);
+            $nrColumns = ord($highestColumn) - 64;
+            for ($row = 5; $row <= $highestRow; ++$row) {
+                if ($row === 5) {
+                    for ($col = 0; $col < $highestColumnIndex; ++$col) {
+                        $cell = $worksheet->getCellByColumnAndRow($col, $row);
+                        $val = $cell->getValue();
+                        if ($val === "No") {
+                            $data[] = $val;
+                        } elseif ($val === "NRA") {
+                            $data[] = $val;
+                        } elseif ($val === "Nama Lengkap") {
+                            $data[] = $val;
+                        } elseif ($val === "Nama Pangilan") {
+                            $data[] = $val;
+                        } elseif ($val === "Nomor KTP") {
+                            $data[] = $val;
+                        } elseif ($val === "Tanggal Lahir") {
+                            $data[] = $val;
+                        } elseif ($val === "Alamat Lengkap") {
+                            $data[] = $val;
+                        } elseif ($val === "Jenis Kelamin") {
+                            $data[] = $val;
+                        } elseif ($val === "Umur") {
+                            $data[] = $val;
+                        } elseif ($val === "Agama") {
+                            $data[] = $val;
+                        } elseif ($val === "Kwarganegaraan") {
+                            $data[] = $val;
+                        } elseif ($val === "Asal Daerah") {
+                            $data[] = $val;
+                        } elseif ($val === "Suku Bangsa") {
+                            $data[] = $val;
+                        } elseif ($val === "Asal Skolah") {
+                            $data[] = $val;
+                        } elseif ($val === "Kode Post") {
+                            $data[] = $val;
+                        } elseif ($val === "Golongan Darah") {
+                            $data[] = $val;
+                        } elseif ($val === "Brevet Penghargaan") {
+                            $data[] = $val;
+                        } elseif ($val === "Pengalaman Organisasi") {
+                            $data[] = $val;
+                        } elseif ($val === "Penyakit Yang Di Derita") {
+                            $data[] = $val;
+                        } elseif ($val === "Tinggi Badan") {
+                            $data[] = $val;
+                        } elseif ($val === "Berat Badan") {
+                            $data[] = $val;
+                        } elseif ($val === "Ukuran Baju") {
+                            $data[] = $val;
+                        } elseif ($val === "Ukuran celana") {
+                            $data[] = $val;
+                        } elseif ($val === "Ukuran Sepatu") {
+                            $data[] = $val;
+                        } elseif ($val === "Ukuran Topi") {
+                            $data[] = $val;
+                        } elseif ($val === "Status  Keanggotaan") {
+                            $data[] = $val;
+                        } elseif ($val === "Status Organisasi") {
+                            $data[] = $val;
+                        } elseif ($val === "Tahun Angkatan") {
+                            $data[] = $val;
+                        } elseif ($val === "Status Pendidikan") {
+                            $data[] = $val;
+                        } elseif ($val === "Status Perkawinan") {
+                            $data[] = $val;
+                        } elseif ($val === "Pekerjaan") {
+                            $data[] = $val;
+                        } elseif ($val === "Email") {
+                            $data[] = $val;
+                        } elseif ($val === "Nomer Hendpon") {
+                            $data[] = $val;
+                        } elseif ($val === "Nomer Hendpon Lainnya") {
+                            $data[] = $val;
+                        } elseif ($val === "Status Dengan Nomer Hendpon Lainnya") {
+                            $data[] = $val;
+                        } elseif ($val === "Nama Bapak") {
+                            $data[] = $val;
+                        } elseif ($val === "Nama Ibu") {
+                            $data[] = $val;
+                        } elseif ($val === "Pekerjaan Bapak") {
+                            $data[] = $val;
+                        } elseif ($val === "Pekerjaan Ibu") {
+                            $data[] = $val;
+                        } elseif ($val === "Penghasilan Bapak") {
+                            $data[] = $val;
+                        } elseif ($val === "Penghasilan Ibu") {
+                            $data[] = $val;
+                        } elseif ($val === "Jumlah Saudara Laki-Laki") {
+                            $data[] = $val;
+                        } elseif ($val === "Jumlah Saudara Perempuan") {
+                            $data[] = $val;
+                        } elseif ($val === "Jumlah Anak Kandung") {
+                            $data[] = $val;
+                        } elseif ($val === "Keterampilan Bahasa Asing") {
+                            $data[] = $val;
+                        } elseif ($val === "Keterampilan Personal") {
+                            $data[] = $val;
+                        } elseif ($val === "Catatan") {
+                            $data[] = $val;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        if (count($data) === 47) {
+            return true;
+        } else {
+            return false;
         }
     }
 

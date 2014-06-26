@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Dektrium project.
  *
@@ -14,11 +13,23 @@ use yii\helpers\Html;
 /**
  * @var yii\web\View $this
  */
-
-$this->title = Yii::t('user', 'Recovery token is invalid');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('user', 'Tanda pemulihan tidak valid');
 ?>
-<div class="alert alert-danger">
-    <h4><?= Html::encode($this->title) ?></h4>
-    <?= Yii::t('user', 'We are sorry but your confirmation token is invalid. Maybe it is out-of-date or does not exist. You can try requesting new recovery token.') ?>
+<div class="breadcrumbs">
+    <div class="container">      
+        <ul class="pull-right breadcrumb">
+            <li><?= Html::a('Beranda', ['/site/site/index']) ?></li>
+            <li class="active">Tanda pemulihan tidak valid</li>
+        </ul>
+    </div>   
 </div>
+<div class="container content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">                
+                <?= Yii::t('user', 'Mohon maaf karena tanda konfirmasi tidak valid. Anda dapat mencoba meminta tanda pemulihan baru.') ?>
+            </div>
+        </div>
+    </div>
+</div>
+

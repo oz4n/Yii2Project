@@ -128,11 +128,7 @@ class PaskibraModel extends Member
     {
 
         foreach ($data as $id) {
-            Taxmemberrelations::deleteAll([
-                'taxonomy_id' => $id,
-                'member_id' => $member_id
-            ]);
-            $new = new Taxmemberrelations;
+            $new = new Taxmemberrelations();
             $new->member_id = $member_id;
             $new->taxonomy_id = $id;
             $new->save();

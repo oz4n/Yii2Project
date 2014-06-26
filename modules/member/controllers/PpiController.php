@@ -2,8 +2,6 @@
 
 namespace app\modules\member\controllers;
 
-define("DS", DIRECTORY_SEPARATOR);
-
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -63,8 +61,8 @@ class PpiController extends Controller
                 $this->trashAll(Yii::$app->request->get('selection'));
             }
             return $this->render('index', [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                        'searchModel' => $searchModel,
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -80,7 +78,7 @@ class PpiController extends Controller
     {
         if (Yii::$app->user->can('ppiview')) {
             return $this->render('view', [
-                'model' => $this->findModel($id),
+                        'model' => $this->findModel($id),
             ]);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
@@ -99,7 +97,7 @@ class PpiController extends Controller
             $model->setAttribute('create_et', date("Y-m-d H:i:s"));
             $model->setAttribute('update_et', date("Y-m-d H:i:s"));
             $model->setAttribute('type_member', MEMBER_TYPE_PPI);
-            $model->setAttribute('user_id', Yii::$app->user->identity->getId());
+            $model->setAttribute('user_created', Yii::$app->user->identity->getId());
 
             $param = Yii::$app->request->post('PpiModel');
             $this->langskill = $param['language_skill'];
@@ -157,7 +155,7 @@ class PpiController extends Controller
             } else {
 
                 return $this->render('create', [
-                    'model' => $model,
+                            'model' => $model,
                 ]);
             }
         } else {
@@ -176,8 +174,9 @@ class PpiController extends Controller
         if (Yii::$app->user->can('ppiupdate')) {
             $model = $this->findModel($id);
             $model->setAttribute('update_et', date("Y-m-d H:i:s"));
-            $model->setAttribute('user_id', Yii::$app->user->identity->getId());
+            $model->setAttribute('user_created', Yii::$app->user->identity->getId());
             $param = Yii::$app->request->post('PpiModel');
+
 
             //skill
             $this->langskill = $param['language_skill'];
@@ -211,6 +210,7 @@ class PpiController extends Controller
                 $model->setAttribute('lifeskill', implode(', ', $data_skill));
             }
 
+
             //photo
             if (($model->front_photo != $param['front_photo']) && $param['front_photo'] != null) {
                 //delte old photo
@@ -240,8 +240,9 @@ class PpiController extends Controller
 
             //save database
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
                 if (null != $this->lifeskill) {
+                    $data = ArrayHelper::map($model->getTaxonomiesBySkill()->all(), 'id', 'id');
+                    $model->deleteAllTaxRelationByMemberId($data, $model->id);
                     $model->saveTaxRelation($this->lifeskill, $model->id);
                 } else {
                     $data = ArrayHelper::map($model->getTaxonomiesBySkill()->all(), 'id', 'id');
@@ -249,6 +250,8 @@ class PpiController extends Controller
                 }
 
                 if (null != $this->langskill) {
+                    $data = ArrayHelper::map($model->getTaxonomiesByLangSkill()->all(), 'id', 'id');
+                    $model->deleteAllTaxRelationByMemberId($data, $model->id);
                     $model->saveTaxRelation($this->langskill, $model->id);
                 } else {
                     $data = ArrayHelper::map($model->getTaxonomiesByLangSkill()->all(), 'id', 'id');
@@ -256,6 +259,8 @@ class PpiController extends Controller
                 }
 
                 if (null != $this->brevetaward) {
+                    $data = ArrayHelper::map($model->getTaxonomiesByBrevet()->all(), 'id', 'id');
+                    $model->deleteAllTaxRelationByMemberId($data, $model->id);
                     $model->saveTaxRelation($this->brevetaward, $model->id);
                 } else {
                     $data = ArrayHelper::map($model->getTaxonomiesByBrevet()->all(), 'id', 'id');
@@ -265,7 +270,7 @@ class PpiController extends Controller
                 return $this->redirect(['view', 'action' => 'member-ppi-view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
-                    'model' => $model
+                            'model' => $model
                 ]);
             }
         } else {
@@ -295,6 +300,11 @@ class PpiController extends Controller
     {
         if (Yii::$app->user->can('ppidelete')) {
             $model = $this->findModel($id);
+            $this->photo->deleteProntPhoto($model->front_photo);
+            $this->photo->deleteProntPhotoThumb($model->front_photo);
+            $this->photo->deleteSidePhoto($model->side_photo);
+            $this->photo->deleteIdentityCardPhoto($model->identity_card);
+            $this->photo->deleteCertificatePhoto($model->certificate_of_organization);
             $model->delete();
             return $this->redirect(['index', 'action' => 'member-ppi-list']);
         } else {
@@ -326,6 +336,11 @@ class PpiController extends Controller
 
             foreach ($data as $id) {
                 $model = $this->findModel($id);
+                $this->photo->deleteProntPhoto($model->front_photo);
+                $this->photo->deleteProntPhotoThumb($model->front_photo);
+                $this->photo->deleteSidePhoto($model->side_photo);
+                $this->photo->deleteIdentityCardPhoto($model->identity_card);
+                $this->photo->deleteCertificatePhoto($model->certificate_of_organization);
                 $model->delete();
             }
             return $this->redirect(['index', 'action' => 'member-ppi-list']);

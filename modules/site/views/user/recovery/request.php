@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Dektrium project.
  *
@@ -17,27 +16,32 @@ use yii\widgets\ActiveForm;
  * @var yii\widgets\ActiveForm $form
  * @var dektrium\user\forms\PasswordRecoveryRequest $model
  */
-
-$this->title = Yii::t('user', 'Recover your password');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('user', 'Memulihkan kata sandi');
 ?>
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
-                <?php $form = ActiveForm::begin([
-                    'id' => 'password-recovery-form',
-                ]); ?>
+<div class="breadcrumbs">
+    <div class="container">      
+        <ul class="pull-right breadcrumb">
+            <li><?= Html::a('Beranda', ['/site/site/index']) ?></li>
+            <li class="active">Memulihkan kata sandi</li>
+        </ul>
+    </div>   
+</div>
+<div class="container content">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
 
-                <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+            <?php
+            $form = ActiveForm::begin([
+                        'id' => 'password-recovery-form',
+            ]);
+            ?>
 
-                <?= Html::submitButton(Yii::t('user', 'Continue'), ['class' => 'btn btn-primary btn-block']) ?><br>
+            <?= $form->field($model, 'email')->textInput(['autofocus' => true])->label('Email Anda') ?>
 
-                <?php ActiveForm::end(); ?>
-            </div>
+            <?= Html::submitButton(Yii::t('user', 'Kirim Pemulihan'), ['class' => 'btn btn-u btn-block']) ?><br>
+
+            <?php ActiveForm::end(); ?>
+
         </div>
     </div>
 </div>

@@ -42,8 +42,6 @@ use dektrium\user\models\User as BaseUser;
 class User extends BaseUser
 {
 
-    public $captcha;
-
     /**
      * @inheritdoc
      */
@@ -52,13 +50,7 @@ class User extends BaseUser
         return 'user';
     }
 
-    public function scenarios()
-    {
-        $scenarios = parent::scenarios();
-        $scenarios['register'][] = 'captcha';
-        return $scenarios;
-    }
-
+   
     /**
      * @inheritdoc
      */

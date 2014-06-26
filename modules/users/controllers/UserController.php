@@ -75,11 +75,15 @@ class UserController extends BaseAdminController
     public function actionCreate()
     {
         $model = $this->module->manager->createUser(['scenario' => 'create']);
-
-        if ($model->load(Yii::$app->request->post()) && $model->create()) {
-            Yii::$app->getSession()->setFlash('admin_user', Yii::t('user', 'User has been created'));
-            return $this->redirect(['index']);
+        if (Yii::$app->request->post('UserModel')){
+            $param = (object) Yii::$app->getRequest()->post('UserModel');
+            $model->setRole($param->role);
+            if ($model->load(Yii::$app->request->post()) && $model->create()) {
+                Yii::$app->getSession()->setFlash('admin_user', Yii::t('user', 'User has been created'));
+                return $this->redirect(['update', 'action' => 'user-update', 'id' => $model->id]);
+            }
         }
+
 
         return $this->render('@app/modules/users/views/user/create', [
                     'model' => $model

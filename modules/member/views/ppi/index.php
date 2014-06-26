@@ -162,9 +162,13 @@ GridView::widget([
             'attribute' => 'front_photo',
             'label' => '',
             'format' => 'raw',
-            'value' => function ($data) {
-                    return Html::tag('div', Html::img(Yii::getAlias('@web') . "/resources/images/member/frontphoto/42x42/" . $data->front_photo, ['class' => 'member-avatar']), ['class' => 'member', 'style' => "margin-top: -10px"]);
+           'value' => function ($data) {
+                if ($data->front_photo == null) {
+                    return Html::tag('div', Html::img(Yii::getAlias('@web') . "/resources/images/default/user50x50.png", ['class' => 'img-circle']), ['class' => 'member', 'style' => "margin-top: -10px"]);
+                } else {
+                    return Html::tag('div', Html::img(Yii::getAlias('@web') . "/resources/images/member/frontphoto/42x42/" . $data->front_photo, ['style'=>'width:42px','class' => 'img-circle']), ['class' => 'member', 'style' => "margin-top: -10px"]);
                 }
+            }
         ],
         'name',
         'nickname',

@@ -7,7 +7,6 @@ use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\base\Module;
 
-
 /**
  * @property Application $app
  */
@@ -25,12 +24,12 @@ class Site extends Module implements BootstrapInterface
 
     public $controllerNamespace = 'app\modules\site\controllers';
     public $_action;
+    
 
     public function init()
     {
         $this->getLayoutPath();
-        $this->getLayout();
-
+        $this->getLayout();       
         parent::init();
 
         // custom initialization code goes here
@@ -50,16 +49,18 @@ class Site extends Module implements BootstrapInterface
             'tax/<tax:.*?>' => '/site/site/tax',
             'view/<tax:.*?>/<slug:.*?>' => '/site/site/view',
             'guestbook' => '/site/guestbook/index',
+            'guestbook/reply' => '/site/guestbook/reply',
             'contact' => '/site/contact/index',
+            'user/settings/<role:.*>/<slug:.*>' => '/site/member/index',           
             'paskibra' => '/site/member/paskibra',
             'ppi' => '/site/member/ppi',
             'capas' => '/site/member/capas',
-        ], false);
-        if (Yii::$app->user->isGuest) {
-            $app->getErrorHandler()->errorAction = '/site/site/error';
-        } else {
-            $app->getErrorHandler()->errorAction = '/dashboard/error/error';
-        }
+            'login' => '/user/security/login',
+            'forget' => '/user/recovery/request',
+            'resend' => '/user/registration/resend',
+            'register' => 'user/registration/register'
+                ], false);
+        
     }
 
 }

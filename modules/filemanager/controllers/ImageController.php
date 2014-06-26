@@ -2,7 +2,6 @@
 
 namespace app\modules\filemanager\controllers;
 
-define("DS", DIRECTORY_SEPARATOR);
 
 use Yii;
 use app\modules\dao\ar\File;
@@ -154,7 +153,7 @@ class ImageController extends Controller
                     $img->adaptiveResize($this->original . $unique_name, $this->thumb_145x145 . $unique_name, 145, 145);
                     $img->adaptiveResize($this->original . $unique_name, $this->thumb_191x128 . $unique_name, 191, 128);
                     $img->resize($this->original . $unique_name, $this->thumb_original . $unique_name, 256);
-                    $img->resize($this->original . $unique_name, $this->original . $unique_name, 1024);
+                    $img->resize($this->original . $unique_name, $this->original . $unique_name, 1080);
 
                     /**
                      * Save Image name and order attr to database
@@ -214,9 +213,9 @@ class ImageController extends Controller
                 $data = [];
 
 
-                if (isset($param["FormSearch"]['album_id']) && (0 != $param["FormSearch"]['album_id'])) {
+                if (isset($param["FormSearch"]['albumid']) && (0 != $param["FormSearch"]['albumid'])) {
 
-                    $query = $album->getImageByAlbumId($param["FormSearch"]['album_id'], $per_page, $position, $key);
+                    $query = $album->getImageByAlbumId($param["FormSearch"]['albumid'], $per_page, $position, $key);
                     foreach ($query as $v) {
                         $data[] = [
                             'filelink' => Yii::getAlias('@web') . "/resources/images/original/" . $v->unique_name,
@@ -228,7 +227,7 @@ class ImageController extends Controller
                             'key' => $key,
                             'des' => $v->description,
                             'uniquename' => $v->unique_name,
-                            'album_id' => $param["FormSearch"]['album_id'],
+                            'albumid' => $param["FormSearch"]['albumid'],
                             'album' => $album->getAlbums('Pilih album')
                         ];
                     }
@@ -289,7 +288,7 @@ class ImageController extends Controller
                 $img->adaptiveResize($this->original . $unique_name, $this->thumb_145x145 . $unique_name, 145, 145);
                 $img->adaptiveResize($this->original . $unique_name, $this->thumb_191x128 . $unique_name, 191, 128);
                 $img->resize($this->original . $unique_name, $this->thumb_original . $unique_name, 256);
-                $img->resize($this->original . $unique_name, $this->original . $unique_name, 1024);
+                $img->resize($this->original . $unique_name, $this->original . $unique_name, 1080);
 
                 /**
                  * Save Image name and order attr to database
@@ -311,9 +310,9 @@ class ImageController extends Controller
                  * Ssave image cate album
                  */
                 $param = Yii::$app->request->post();
-                if ($param['album_id'] != 0) {
+                if ($param['albumid'] != 0) {
                     $tax = new TaxImageRelationModel;
-                    $tax->tax_id = $param['album_id'];
+                    $tax->tax_id = $param['albumid'];
                     $tax->file_id = $model->id;
                     $tax->save();
                 }
@@ -355,8 +354,8 @@ class ImageController extends Controller
                 $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : null;
                 $page = $param['page'];
                 $position = ($page * $per_page);
-                if ((isset($param['album_id']) && $param['album_id'] != 0) && $key == null) {
-                    $data = $model->getImageByAlbumId($param['album_id'], $per_page, $position);
+                if ((isset($param['albumid']) && $param['albumid'] != 0) && $key == null) {
+                    $data = $model->getImageByAlbumId($param['albumid'], $per_page, $position);
                     echo Json::encode([
                         'data' => $data,
                         'page' => ($page + 1)
@@ -375,14 +374,14 @@ class ImageController extends Controller
                 $param = Yii::$app->request->getQueryParams();
                 $key = isset($param["FormSearch"]['keyword']) ? $param["FormSearch"]['keyword'] : null;
 
-                if ((isset($param['album_id']) && $param['album_id'] != 0) && $key == null) {
-                    $data = $model->getImageByAlbumId($param['album_id'], $per_page, 0);
+                if ((isset($param['albumid']) && $param['albumid'] != 0) && $key == null) {
+                    $data = $model->getImageByAlbumId($param['albumid'], $per_page, 0);
                     $image = new ImageModel;
                     return $this->render('index', [
                         'model' => $data,
-                        'album_id' => $param['album_id'],
+                        'albumid' => $param['albumid'],
                         'album' => $model->getAllAlbums(),
-                        'album_name' => $model->getAlbumNameById($param['album_id']),
+                        'album_name' => $model->getAlbumNameById($param['albumid']),
                         'searchModel' => $searchModel,
                         'keyword' => $key,
                          'image' => $image
@@ -392,7 +391,7 @@ class ImageController extends Controller
                     $data = $model->getAllImages($per_page, 0, $key);
                     return $this->render('index', [
                         'model' => $data,
-                        'album_id' => 0,
+                        'albumid' => 0,
                         'album' => $model->getAllAlbums(),
                         'searchModel' => $searchModel,
                         'keyword' => $key,

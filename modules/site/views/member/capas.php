@@ -11,8 +11,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => 'ppi, paskibra, capas
 
 <!--=== Breadcrumbs ===-->
 <div class="breadcrumbs">
-    <div class="container">
-        <h1 class="pull-left">Anggota Capas</h1>
+    <div class="container"> 
         <ul class="pull-right breadcrumb">
             <li><a href="<?= Url::toRoute(['/site/site/index']) ?>">Beranda</a></li>              
             <li class="active">Anggota Capas</li>
@@ -34,6 +33,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => 'ppi, paskibra, capas
         <?php endif; ?>
         <!-- Bordered Funny Boxes -->
         <div class="<?= $model->layout === 'full' ? 'col-sm-12': 'col-sm-8' ?>">
+             <div class="headline" style="margin-top: -7.5px"><h2>Calon Anggota Paskibra</h2></div>
             <?php
             echo ListView::widget([
 

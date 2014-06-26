@@ -43,7 +43,7 @@ class Message extends Widget
         echo Html::beginTag('div', ['class' => 'dropdown-menu widget-messages-alt no-padding', 'style' => 'width: 300px']);
         echo Html::beginTag('div', ['page-data' => 1, 'class' => 'messages-list', 'id' => 'main-navbar-messages']);
         foreach ($this->getMessage() as $v) {
-            echo $this->htmlTagBuilder($v->email, Url::toRoute(['/guestbook/guestbook/replay', 'action' => 'guestbook-replay', 'id' => $v->id]), $v->create_et, $v->name, $v->subject, $v->status, $v->id);
+            echo $this->htmlTagBuilder($v->email, Url::toRoute(['/guestbook/guestbook/replay', 'action' => 'guestbook-replay', 'id' => $v->parent_id == null ? $v->id : $v->parent_id]), $v->create_et, $v->name, $v->subject, $v->status, $v->id);
         }
         echo Html::endTag('div');
         echo Html::beginTag('div', ['class' => 'text-center', 'id' => 'img-messages-loading', 'style' => 'display:none']);

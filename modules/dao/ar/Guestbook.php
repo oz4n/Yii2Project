@@ -40,10 +40,11 @@ class Guestbook extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'parent_id'], 'integer'],
-            [['name', 'email', 'subject', 'content', 'create_et', 'update_et'], 'required','message' => 'Tidak boleh kosong.'],
+            [['name', 'email', 'subject', 'content', 'create_et', 'update_et'], 'required', 'message' => 'Tidak boleh kosong.'],
+            [['content'], 'string'],
             [['create_et', 'update_et'], 'safe'],
-            [['name', 'email', 'web_site', 'subject', 'status'], 'string', 'max' => 45,'message' =>'Maksimum 45 huruf'],
-            [['content'], 'string', 'max' => 255,'message' =>'Maksimum 45 huruf']
+            [['name', 'email', 'web_site', 'status'], 'string', 'max' => 45],
+            [['subject'], 'string', 'max' => 128]
         ];
     }
 

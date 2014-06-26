@@ -19,6 +19,10 @@ class PageModel extends Post
 {
     public $imgsliderstatus;
     public $imgslider;
+    public $quotes_today;
+    public $slider_title1;
+    public $slider_title2;
+    public $slider_title3;
 
     public function behaviors()
     {

@@ -1,11 +1,13 @@
 <div class="row about-me margin-bottom-20">
     <div class="col-md-3 shadow-wrapper md-margin-bottom-20">
         <div class="thumbnail thumbnails thumbnail-style thumbnail-kenburn">
-            <div class="thumbnail-img">
-                <div class="overflow-hidden">
-                    <img style="width: 1024px" class="img-responsive" src="<?php echo Yii::getAlias('@web').'/resources/images/member/frontphoto/'.$model->front_photo; ?>" alt="">  
-                </div>
-            </div>  
+            <?php
+            if ($model->front_photo != null) {
+                echo \yii\helpers\Html::img(Yii::getAlias('@web') . '/resources/images/member/frontphoto/' . $model->front_photo, ['id' => 'avatar', 'class' => 'editable img-responsive', 'style' => 'width:1024px', 'alt' => $model->name]);
+            } else {
+                echo \yii\helpers\Html::img(Yii::getAlias('@web') . '/resources/images/default/user200x200.png' . $model->front_photo, ['id' => 'avatar', 'class' => 'editable img-responsive', 'style' => 'width:1024px', 'alt' => $model->name]);
+            }
+            ?>
         </div>
     </div>
     <div class="col-md-9">
@@ -25,7 +27,7 @@
                     <tr>
                         <th>Satuan</th>
                         <td>:</td>
-                         <td><?= $model->educational_status ?></td>
+                        <td><?= $model->educational_status ?></td>
                     </tr>
                     <tr>
                         <th>Alamat</th>

@@ -1,22 +1,17 @@
+<?php
+$title1 = explode('%', $slider_title1);
+$title2 = explode('%', $slider_title2);
+$title3 = explode('%', $slider_title3);
+?>
 <!--=== Slider ===-->
 <div class="fullwidthbanner-container">
     <div class="fullwidthbanner">
         <ul>
             <!-- THE FIRST SLIDE -->
-            <li data-transition="3dcurtain-vertical" data-slotamount="10" data-masterspeed="300" data-thumb="<?php echo Yii::getAlias('@web'); ?>/unify-v1.4/img/sliders/revolution/thumbs/thumb1.jpg">
+            <li data-transition="3dcurtain-vertical" data-slotamount="10" data-masterspeed="300" >
 
                 <!-- THE MAIN IMAGE IN THE FIRST SLIDE -->
                 <img src="<?php echo Yii::getAlias('@web').'/resources/images/pageslider/helperpage/'.$image->imgslide1; ?>">
-
-                <!--                <div class="caption randomrotate box-shadow shadow-effect-2"
-                                     data-x="570"
-                                     data-y="50"
-                                     data-speed="300"
-                                     data-start="1700"
-                                     data-easing="easeOutExpo">
-                                    <img class="img-border" src="<?php //echo Yii::getAlias('@web');     ?>/unify-v1.4/img/sliders/revolution/golden.jpg" alt="Image 8">
-                                </div>-->
-
 
                 <div class="caption randomrotate"
                      data-x="662"
@@ -76,7 +71,7 @@
                      data-speed="300"
                      data-start="800"
                      data-easing="easeOutExpo" style="text-shadow: black 0.1em 0.1em 0.2em">
-                    PURNA PASKIBRAKA INDONESIA
+                    <?= isset($title1[0]) ? $title1[0] : "" ?>
                 </div>
                 <div class="caption large_text sfr"
                      data-x="300"
@@ -84,27 +79,8 @@
                      data-speed="300"
                      data-start="1100"
                      data-easing="easeOutExpo">
-                    <span style="color: #ffcc00;">LOMBOK TENGAH</span>
-                </div>
-                <!--
-                                <div class="caption large_text sft"
-                                     data-x="25"
-                                     data-y="265"
-                                     data-speed="300"
-                                     data-start="800"
-                                     data-easing="easeOutExpo" style="font-size: 30px">
-                                    PURNA PASKIBRAKA <span style="color:#ffcc00;">INDONESIA </span>LOMBOK TENGAH
-                                </div>-->
-                <!--                 <div class="caption large_text sfb bg-black-opacity"
-                                     data-x="25"
-                                     data-y="220"
-                                     data-speed="300"
-                                     data-start="800"
-                                     data-easing="easeOutExpo">
-                                     <span style="font-size: 20px">
-                                         PURNA PASKIBRAKA <span style="color:#ffcc00;">INDONESIA </span>LOMBOK TENGAH
-                                     </span>
-                                </div>-->
+                    <span style="color: #ffcc00;"><?= isset($title1[1]) ? $title1[1] : "" ?></span>
+                </div>              
             </li>
 
             <!-- THE SECOND SLIDE -->
@@ -119,7 +95,7 @@
                      data-start="800"
                      data-easing="easeOutExpo">
 
-                    <span style="color: red;">TERATAI</span> <span style="color: #ffcc00;">MUDA</span> LOMBOK TENGAH
+                    <span style="color: red;"><?= isset($title2[0]) ? $title2[0] : "" ?></span> <span style="color: #ffcc00;"><?= isset($title2[1]) ? $title2[1] : "" ?></span> <?= isset($title2[2]) ? $title2[2] : "" ?>
                 </div>
 
             </li>
@@ -136,17 +112,8 @@
                      data-speed="300"
                      data-start="800"
                      data-easing="easeOutExpo">
-                    PPI FASHION
+                     <?= isset($title3[0]) ? $title3[0] : "" ?>
                 </div>
-
-                <!--                <div class="caption medium_text sfl"
-                                     data-x="39"
-                                     data-y="82"
-                                     data-speed="300"
-                                     data-start="1100"
-                                     data-easing="easeOutExpo">
-                                    ANDANI
-                                </div>-->
 
                 <div class="caption large_text sfr"
                      data-x="88"
@@ -154,7 +121,7 @@
                      data-speed="300"
                      data-start="1100"
                      data-easing="easeOutExpo">
-                    <span style="color: #ffcc00;">ACTION</span>
+                    <span style="color: #ffcc00;"> <?= isset($title3[1]) ? $title3[1] : "" ?></span>
                 </div>
 
 

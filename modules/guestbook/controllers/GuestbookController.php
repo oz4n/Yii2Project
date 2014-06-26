@@ -80,8 +80,6 @@ class GuestbookController extends Controller
         $new->setAttribute("update_et", date("Y-m-d H:i:s"));
         $new->setAttribute("status", "Publish");
         if ($new->load(Yii::$app->request->post()) && $new->save()) {
-            $model->status = 'Publish';
-            $model->save();
             return $this->redirect(['replay', 'action' => 'guestbook-replay', 'id' => $id]);
         } else {
             return $this->render('replay', [
@@ -89,6 +87,17 @@ class GuestbookController extends Controller
                         'child' => $model->findAllByParentId($id)
             ]);
         }
+    }
+
+    public function actionConfirmed($id)
+    {
+        $model = $this->findModel($id);
+        $model->status = 'Publish';
+        $model->save();
+        return $this->redirect([
+                    'index',
+                    'action' => 'guestbook-list'
+        ]);
     }
 
     /**
@@ -108,7 +117,7 @@ class GuestbookController extends Controller
             throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
     }
-    
+
     /**
      * @param array $data
      * @return \yii\web\Response
@@ -118,7 +127,7 @@ class GuestbookController extends Controller
         if (null != $data) {
 
             foreach ($data as $id) {
-                $model = $this->findModel($id);  
+                $model = $this->findModel($id);
                 $model->deleteAll(['parent_id' => $id]);
                 $model->delete();
             }

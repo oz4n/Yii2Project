@@ -6,13 +6,11 @@ use yii\widgets\ListView;
 use app\modules\site\widgets\RenderWidget;
 $this->title =$tax;
 $this->registerMetaTag(['name' => 'keywords', 'content' => $tax]);
-$this->registerJsFile('unify-v1.4/plugins/jquery-1.10.2.min.js', [], ['position' => \yii\web\View::POS_HEAD]);
 ?>
 
 <!--=== Breadcrumbs ===-->
 <div class="breadcrumbs">
-    <div class="container">
-        <h1 class="pull-left"><?= ucwords($tax) ?></h1>
+    <div class="container">       
         <ul class="pull-right breadcrumb">
             <li><a href="<?= Url::toRoute(['/site/site/index']) ?>">Beranda</a></li>
             <li class="active"><?= ucwords($tax) ?></li>

@@ -2,8 +2,6 @@
 
 namespace app\modules\filemanager\controllers;
 
-define("DS", DIRECTORY_SEPARATOR);
-
 use Yii;
 use app\modules\dao\ar\File;
 use app\modules\filemanager\searchs\DocumentSearc;

@@ -11,7 +11,7 @@ use yii\web\View;
 ?>
 <div id="main-navbar" class="navbar navbar-inverse" role="navigation">
     <!-- Main menu toggle -->
-    <button type="button" id="main-menu-toggle"><i class="navbar-icon fa fa-bars icon"></i><span class="hide-menu-text">HIDE MENU</span></button>
+    <button type="button" id="main-menu-toggle"><i class="fa fa-bars icon"></i><span class="hide-menu-text">HIDE MENU</span></button>
 
     <div class="navbar-inner">
         <!-- Main navbar header -->

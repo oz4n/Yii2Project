@@ -38,42 +38,24 @@ class DashboardAsset extends AssetBundle
         'PixelAdmin/css/widgets.css',
         'redactor/redactor.css',
         'PixelAdmin/css/galery.css',
-//         'unify-v1.4/css/plugins.css',
-//        'unify-v1.4/plugins/owl-carousel/owl-carousel/owl.carousel.css',
        
     ];
+     public $depends = [
+         'yii\web\YiiAsset',
+     ];
     public $js = [
-        /**
-         * JS Global Compulsory
-         */
-//        'PixelAdmin/js/jquery.2.0.3.min.js',
         'PixelAdmin/js/bootstrap.min.js',
-        'PixelAdmin/js/pixel-admin.min.js',
-        'PixelAdmin/js/bootstrap-datepicker.js',
-        'PixelAdmin/js/bootstrap-datepicker.id.js',
+        'PixelAdmin/js/app.js',
+        
+        'PixelAdmin/js/bootstrap-datepicker.min.js',
+        'PixelAdmin/js/bootstrap-datepicker-lang.id.js',
+        
         'redactor/redactor.js',
         'redactor/plugins/fullscreen/fullscreen.js',
         'redactor/lang/id.js',
-       
         
-        //jQuery UI widget factory
-        'jfileupload/js/vendor/jquery.ui.widget.js', 
-        //JavaScript-Load-Image
-        'jloadimage/js/load-image.min.js',
-        'jcanvastoblob/canvas-to-blob.min.js',
-        //file upload
-        'jfileupload/js/jquery.iframe-transport.js',        
-        'jfileupload/js/jquery.fileupload.js',
-        'jfileupload/js/jquery.fileupload-process.js',
-        'jfileupload/js/jquery.fileupload-image.js',
-        'jfileupload/js/jquery.fileupload-audio.js',
-        'jfileupload/js/jquery.fileupload-video.js',
-        'jfileupload/js/jquery.fileupload-validate.js',
-        
-        'jnestable/jquery.nestable.js',
-        'jtabletojson/src/jquery.tabletojson.js',
-//        'unify-v1.4/plugins/owl-carousel/owl-carousel/owl.carousel.js',
-//        'unify-v1.4/js/plugins/owl-carousel.js',
+        'jnestable/jquery.nestable.min.js',
+        'jtabletojson/lib/jquery.tabletojson.min.js',
     ];
     
 

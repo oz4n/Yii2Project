@@ -186,7 +186,7 @@ $this->registerJs(
 ', View::POS_READY);
 //add image slider to input value
 $this->registerJs(
-        '$("#save-page").on("click",function(){'        
+        '$("#save-page").on("click",function(){'
         . 'var dataimage = new Object();'
         . 'var imgslide1 = $(".img-slide1").find("img");'
         . 'var imgslide2 = $(".img-slide2").find("img");'
@@ -197,70 +197,58 @@ $this->registerJs(
         . 'var imgslide7 = $(".img-slide7").find("img");'
         . 'var imgslide8 = $(".img-slide8").find("img");'
         . 'var imgslide9 = $(".img-slide9").find("img");'
-        
         . 'if(imgslide1.length !== 0){'
-            . 'dataimage["imgslide1"] = $(imgslide1).attr("data-unique");'
+        . 'dataimage["imgslide1"] = $(imgslide1).attr("data-unique");'
         . '}else{'
-            . 'dataimage["imgslide1"] = false;'         
+        . 'dataimage["imgslide1"] = false;'
         . '}'
-        
         . 'if(imgslide2.length !== 0){'
-            . 'dataimage["imgslide2"] = $(imgslide2).attr("data-unique");'
+        . 'dataimage["imgslide2"] = $(imgslide2).attr("data-unique");'
         . '}else{'
-            . 'dataimage["imgslide2"] = false;'         
+        . 'dataimage["imgslide2"] = false;'
         . '}'
-        
         . 'if(imgslide3.length !== 0){'
-            . 'dataimage["imgslide3"] = $(imgslide3).attr("data-unique");'
+        . 'dataimage["imgslide3"] = $(imgslide3).attr("data-unique");'
         . '}else{'
-            . 'dataimage["imgslide3"] = false;'         
+        . 'dataimage["imgslide3"] = false;'
         . '}'
-        
         . 'if(imgslide4.length !== 0){'
-            . 'dataimage["imgslide4"] = $(imgslide4).attr("data-unique");'
+        . 'dataimage["imgslide4"] = $(imgslide4).attr("data-unique");'
         . '}else{'
-            . 'dataimage["imgslide4"] = false;'         
+        . 'dataimage["imgslide4"] = false;'
         . '}'
-        
         . 'if(imgslide5.length !== 0){'
-            . 'dataimage["imgslide5"] = $(imgslide5).attr("data-unique");'
+        . 'dataimage["imgslide5"] = $(imgslide5).attr("data-unique");'
         . '}else{'
-            . 'dataimage["imgslide5"] = false;'         
+        . 'dataimage["imgslide5"] = false;'
         . '}'
-        
         . 'if(imgslide6.length !== 0){'
-            . 'dataimage["imgslide6"] = $(imgslide6).attr("data-unique");'
+        . 'dataimage["imgslide6"] = $(imgslide6).attr("data-unique");'
         . '}else{'
-            . 'dataimage["imgslide6"] = false;'         
+        . 'dataimage["imgslide6"] = false;'
         . '}'
-        
         . 'if(imgslide7.length !== 0){'
-            . 'dataimage["imgslide7"] = $(imgslide7).attr("data-unique");'
+        . 'dataimage["imgslide7"] = $(imgslide7).attr("data-unique");'
         . '}else{'
-            . 'dataimage["imgslide7"] = false;'         
+        . 'dataimage["imgslide7"] = false;'
         . '}'
-        
         . 'if(imgslide8.length !== 0){'
-            . 'dataimage["imgslide8"] = $(imgslide8).attr("data-unique");'
+        . 'dataimage["imgslide8"] = $(imgslide8).attr("data-unique");'
         . '}else{'
-            . 'dataimage["imgslide8"] = false;'         
+        . 'dataimage["imgslide8"] = false;'
         . '}'
-        
         . 'if(imgslide9.length !== 0){'
-            . 'dataimage["imgslide9"] = $(imgslide9).attr("data-unique");'
+        . 'dataimage["imgslide9"] = $(imgslide9).attr("data-unique");'
         . '}else{'
-            . 'dataimage["imgslide9"] = false;'         
+        . 'dataimage["imgslide9"] = false;'
         . '}'
-        
-       
-        
+
+
+
 //        . 'console.log(dataimage);'
- 
 //        . 'console.log(JSON.stringify(dataimage));'
-        
         . 'var inputimg = $("#img-slider-value");'
 //        . 'var data = [];'
-       
 //        . 'for(var i =0; i < img.length; i++){'
 //        . 'var strinput = $(img[i]).attr("src");'
 //        . 'data[i]=$(img[i]).attr("data-unique");'
@@ -460,7 +448,7 @@ $this->registerJs(
                 <?php
                 if (isset($other->imgslider)):
                     $image = $other->imgslider;
-                    
+
                     echo $image->imgslide7 != false ? Html::tag("div", Html::img(Yii::getAlias('@web') . '/resources/images/thumbnail/191x128/' . $image->imgslide7, [
                                         "class" => 'img-responsive'
                                         , 'data-unique' => $image->imgslide7,
@@ -556,7 +544,20 @@ $this->registerJs(
     <div class="form-group">
         <?= Html::activeHiddenInput($model, 'type') ?>
         <?= Html::activeHiddenInput($model, 'imgslider', ['id' => 'img-slider-value', 'value' => isset($other->imgslider) ? json_encode($other->imgslider) : ""]) ?>
-        <?= Html::activetextInput($model, 'title', ['class' => 'form-control', 'placeholder' => 'Judul . . .', 'maxlength' => 225]) ?>
+        <?= Html::activetextInput($model, 'title', ['class' => 'form-control', 'placeholder' => 'Judul . . .', 'maxlength' => 225]) ?>       
+    </div>
+    <div class="form-group">       
+        <?= Html::activetextInput($model, 'slider_title1', ['value' => isset($other->slider_title1) ? $other->slider_title1 : null, 'class' => 'form-control', 'placeholder' => 'Judul Gambar Slider 1', 'maxlength' => 225]) ?>        
+    </div>
+    <div class="form-group">
+        <?= Html::activetextInput($model, 'slider_title2', ['value' => isset($other->slider_title2) ? $other->slider_title2 : null, 'class' => 'form-control', 'placeholder' => 'Judul Gambar Slider 2', 'maxlength' => 225]) ?>
+    </div>
+    <div class="form-group">
+
+        <?= Html::activetextInput($model, 'slider_title3', ['value' => isset($other->slider_title3) ? $other->slider_title3 : null, 'class' => 'form-control', 'placeholder' => 'Judul Gambar Slider 3', 'maxlength' => 225]) ?>
+    </div>
+    <div class="form-group">        
+    <?= Html::textarea('PageModel[quotes_today]', isset($other->quotes_today) ? $other->quotes_today : null, ['content'=>'asdasd','style' => 'resize:none', 'rows' => 6, 'class' => 'form-control', 'placeholder' => 'Kata Mutiara Hari ini', 'maxlength' => 225]) ?>   
     </div>
     <div class="row">
         <div class="col-sm-12">
@@ -565,11 +566,11 @@ $this->registerJs(
                     <span class="panel-title">Widget yang tersedia</span>
                 </div>
                 <div class="panel-body">
-                    <?php foreach ($defaultwidget as $value): ?>
+<?php foreach ($defaultwidget as $value): ?>
                         <div class="follower">
                             <div class="body">
                                 <div class="follower-controls">
-                                    <?= Html::a('<i class="fa fa-plus"></i><span>&nbsp;&nbsp;Tambahkan</span>', ['/page/widget/create', 'action' => 'page-widget-crete', 'id' => $value->id, 'page' => $page, 'pagename' => $pagename,'pagetype'=>$pagetype], ['class' => 'btn btn-xs btn-primary']) ?>
+    <?= Html::a('<i class="fa fa-plus"></i><span>&nbsp;&nbsp;Tambahkan</span>', ['/page/widget/create', 'action' => 'page-widget-crete', 'id' => $value->id, 'page' => $page, 'pagename' => $pagename, 'pagetype' => $pagetype], ['class' => 'btn btn-xs btn-primary']) ?>
                                 </div>
                                 <p>
                                     <span class="follower-name"><?= $value->name ?></span><br>
@@ -577,7 +578,7 @@ $this->registerJs(
                                 </p>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+<?php endforeach; ?>
                 </div>
             </div>
         </div>
@@ -595,12 +596,12 @@ $this->registerJs(
         <div class="panel-body padding-sm" >
             <div class="dd" id="nestable-right">
                 <ol class="dd-list">
-                    <?php foreach ($widgetright as $right): ?>
+<?php foreach ($widgetright as $right): ?>
                         <li class="dd-item" data-id="<?= $right->id ?>" data-position="<?= $right->position ?>" data-layoute="<?= $right->layoute_position ?>">
                             <div class="dd-handle"><?= $right->name ?>
                                 <div class="pull-right action-buttons">
                                     <a class="select-tooltip" data-id="<?= $right->id ?>"
-                                       data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update', 'action' => 'page-widget-update', 'id' => $right->id, 'page' => $page, 'pagename' => $pagename,'pagetype'=>$pagetype]) ?>">
+                                       data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update', 'action' => 'page-widget-update', 'id' => $right->id, 'page' => $page, 'pagename' => $pagename, 'pagetype' => $pagetype]) ?>">
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     <a style="color: #a94442 " class="widget-delete select-tooltip" data-id="<?= $right->id ?>"
@@ -610,7 +611,7 @@ $this->registerJs(
                                 </div>
                             </div>
                         </li>
-                    <?php endforeach; ?>
+    <?php endforeach; ?>
                 </ol>
             </div>
         </div>
@@ -627,12 +628,12 @@ $this->registerJs(
         <div class="panel-body padding-sm" >
             <div class="dd" id="nestable-left">
                 <ol class="dd-list">
-                    <?php foreach ($widgetleft as $left): ?>
+<?php foreach ($widgetleft as $left): ?>
                         <li class="dd-item" data-id="<?= $left->id ?>" data-position="<?= $left->position ?>" data-layoute="<?= $left->layoute_position ?>">
                             <div class="dd-handle"><?= $left->name ?>
                                 <div class="pull-right action-buttons">
                                     <a class="select-tooltip" data-id="<?= $left->id ?>"
-                                       data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update', 'action' => 'page-widget-update', 'id' => $left->id, 'page' => $page, 'pagename' => $pagename,'pagetype'=>$pagetype]) ?>">
+                                       data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update', 'action' => 'page-widget-update', 'id' => $left->id, 'page' => $page, 'pagename' => $pagename, 'pagetype' => $pagetype]) ?>">
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     <a style="color: #a94442 " class="widget-delete select-tooltip" data-id="<?= $left->id ?>"
@@ -642,7 +643,7 @@ $this->registerJs(
                                 </div>
                             </div>
                         </li>
-                    <?php endforeach; ?>
+    <?php endforeach; ?>
                 </ol>
             </div>
         </div>
@@ -659,14 +660,14 @@ $this->registerJs(
         <div class="panel-body">
             <div class="dd" id="nestable-sidebar">
                 <ol class="dd-list">
-                    <?php
-                    foreach ($widgetsidebar as $sidebar):
-                        ?>
+<?php
+foreach ($widgetsidebar as $sidebar):
+    ?>
                         <li class="dd-item" data-id="<?= $sidebar->id ?>" data-position="<?= $sidebar->position ?>" data-layoute="<?= $sidebar->layoute_position ?>">
                             <div class="dd-handle"><?= $sidebar->name ?>
                                 <div class="pull-right action-buttons">
                                     <a class="select-tooltip" data-id="<?= $sidebar->id ?>"
-                                       data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update', 'action' => 'page-widget-update', 'id' => $sidebar->id, 'page' => $page, 'pagename' => $pagename,'pagetype'=>$pagetype]) ?>">
+                                       data-toggle="tooltip" data-original-title="Perbaharui" href="<?= Url::toRoute(['/page/widget/update', 'action' => 'page-widget-update', 'id' => $sidebar->id, 'page' => $page, 'pagename' => $pagename, 'pagetype' => $pagetype]) ?>">
                                         <i class="fa fa-pencil"></i>
                                     </a>
                                     <a style="color: #a94442 " class="widget-delete select-tooltip" data-id="<?= $sidebar->id ?>"
@@ -676,9 +677,9 @@ $this->registerJs(
                                 </div>
                             </div>
                         </li>
-                        <?php
-                    endforeach;
-                    ?>
+    <?php
+endforeach;
+?>
                 </ol>
             </div>
         </div>
@@ -691,23 +692,23 @@ $this->registerJs(
             <span class="panel-title">Aksi</span>
         </div>
         <div class="panel-body">
-            <?=
-            $form->field($model, 'status')->dropDownList([
-                '' => 'None',
-                'Publish' => 'Publish',
-                'Draft' => 'Draft',
-                'Trash' => 'Trash'
-                    ], ['id' => 'select-status', 'maxlength' => 15]);
-            ?>
+<?=
+$form->field($model, 'status')->dropDownList([
+    '' => 'None',
+    'Publish' => 'Publish',
+    'Draft' => 'Draft',
+    'Trash' => 'Trash'
+        ], ['id' => 'select-status', 'maxlength' => 15]);
+?>
         </div>
         <div class="panel-footer">
             <div class="form-group">
-                <?= Html::submitButton(Html::tag('i', '', ['class' => 'fa  fa-check']) . '&nbsp; ' . Yii::t('app', 'Simpan'), ['id' => 'save-page', 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= Html::submitButton(Html::tag('i', '', ['class' => 'fa  fa-check']) . '&nbsp; ' . Yii::t('app', 'Simpan'), ['id' => 'save-page', 'class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
             </div>
         </div>
     </div>
 </div>
-<?php ActiveForm::end(); ?>
+            <?php ActiveForm::end(); ?>
 
 <div class="row" style="display: none">
     <div class="col-sm-12">

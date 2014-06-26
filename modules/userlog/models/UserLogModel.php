@@ -22,7 +22,7 @@ class UserLogModel extends UserLog
     public function testSave($data)
     {
         $param = Json::decode($data);
-        
+
         $this->user_id = 3;
         $this->user_ip = $param['ipAddress'];
         $this->content = $param['regionName'];
@@ -46,20 +46,15 @@ class UserLogModel extends UserLog
         return $this->save();
     }
 
-    public function saveActionLog($getparam, $postparam, $user_id, $username, $ip_info , $useragent)
+    public function saveActionLog($getparam, $postparam, $user_id, $username, $ip_info, $useragent)
     {
         $user_agent = Json::decode($useragent);
         $get_param = Json::decode($getparam);
         $post_param = Json::decode($postparam);
         /** @var IpInfo $ipinfo */
         $ipinfo = Json::decode($ip_info);
-//        $this->user_id = Yii::$app->user->isGuest ? null : Yii::$app->user->identity->getId();
         $this->user_id = $user_id;
         $this->user_ip = $ipinfo['ipAddress'];
-
-//        $get_param = Yii::$app->request->getQueryParams();
-//        $post_param = Yii::$app->request->post();
-//        $username = Yii::$app->user->isGuest ? 'none' : Yii::$app->user->identity->username;
         $user_name = ['username' => $username];
 
         $this->absolute_url = $user_agent['getAbsoluteUrl'];
@@ -94,7 +89,7 @@ class UserLogModel extends UserLog
                         $this->title = 'Tambah data anggota PPI';
                     }
                     return $this->save();
-                   exit;
+                    exit;
                 case "member-ppi-update":
                     if ($user_agent['getMethod'] == "GET") {
                         $this->content = json_encode(array_merge($user_name, $get_param));
@@ -125,9 +120,15 @@ class UserLogModel extends UserLog
                     $this->title = 'Lihat data brevet anggota';
                     return $this->save();
                     exit;
-                case "member-brevet-view":
-                    $this->content = json_encode(array_merge($user_name, $get_param));
-                    $this->title = 'Lihat detail data brevet anggota';
+              
+                case "member-brevet-create":
+                    if ($user_agent['getMethod'] == "GET") {
+                        $this->content = json_encode(array_merge($user_name, $get_param));
+                        $this->title = 'Form penambahan data brevet penghargaan';
+                    } else {
+                        $this->content = json_encode(array_merge($user_name, $post_param));
+                        $this->title = 'Tambah data brevet penghargaan';
+                    }
                     return $this->save();
                     exit;
                 case null:
@@ -136,9 +137,8 @@ class UserLogModel extends UserLog
                     exit;
             }
         }
-        
     }
-    
+
     protected function ppilog($user_name, $get_param, $post_param)
     {
         if (isset($get_param['action'])) {

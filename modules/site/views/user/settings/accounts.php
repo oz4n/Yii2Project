@@ -20,6 +20,11 @@ use yii\helpers\Html;
 $this->title = Yii::t('user', 'Networks');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<br>
+<br>
+<br>
+<br>
+
 <div class="row">
     <?php if (Yii::$app->getSession()->hasFlash('account_connected')): ?>
         <div class="col-md-12">

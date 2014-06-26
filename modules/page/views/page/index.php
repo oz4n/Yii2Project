@@ -24,7 +24,6 @@ $this->registerJs(''
         . '$("select.action-bulk").select2({ allowClear: true, placeholder: "Tindakan Masal"});'
         . "init.push(function () { $('td#birth-input input').datepicker({language:'id',format: 'dd MM yyyy'});});"
         , View::POS_READY);
-
 ?>
 <ul class="breadcrumb breadcrumb-page">
     <div class="breadcrumb-label text-light-gray">
@@ -98,12 +97,6 @@ $this->registerJs(''
             . Html::beginTag('div', ['class' => 'form-inline'])
             . Html::dropDownList('bulk_action1', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
             . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PageSerch[year_filtr1]', '', PageSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-//        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PageSerch[year_opsi]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
-//        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PageSerch[year_filtr2]', '', PageSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-//        . '&nbsp;&nbsp;'
             . Html::dropDownList('PageSerch[status_filtr1]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash'], ['class' => 'form-control save-status'])
             . '&nbsp;&nbsp;'
             . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
@@ -130,12 +123,6 @@ $this->registerJs(''
             . Html::beginTag('div', ['class' => 'form-inline'])
             . Html::dropDownList('bulk_action2', '', ['' => 'Tindakan Massal', 'delete' => 'Hapus', 'trash' => 'Tongsampah'], ['class' => 'form-control action-bulk'])
             . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PageSerch[year_filtr3]', '', PageSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-//        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PageSerch[year_opsi1]', '', ['and' => 'dan', 's/d' => 's/d'], ['class' => 'form-control opsi'])
-//        . '&nbsp;&nbsp;'
-//        . Html::dropDownList('PageSerch[year_filtr4]', '', PageSerch::getYears('Tahun'), ['class' => 'form-control select-year'])
-//        . '&nbsp;&nbsp;'
             . Html::dropDownList('PageSerch[status_filtr2]', '', ['Status', 'Publish' => 'Publish', 'Draft' => 'Draft', 'Trash' => 'Trash'], ['class' => 'form-control save-status'])
             . '&nbsp;&nbsp;'
             . Html::submitButton('<i class="fa fa-check"></i> &nbsp;' . Yii::t('app', 'Appley'), ['class' => 'btn btn-primary btn-small'])
@@ -152,22 +139,29 @@ $this->registerJs(''
             . Html::endTag('div'),
             'columns' => [
                 [
-                    'class' => 'yii\grid\CheckboxColumn',               
+                    'class' => 'yii\grid\CheckboxColumn',
                 ],
-
                 [
                     'attribute' => 'title',
                     'label' => 'Judul'
                 ],
-//                [
-//                    'attribute' => 'content',
-//                    'label' => 'Isi',
-//                    'format' => 'raw',
-//                    'value' => function($data){
-//                        return TextHelper::word_limiter(strip_tags($data->content), 9);
-//                    }
-//                ],
-                'layout',
+                [
+                    'attribute' => 'layout',
+                    'label' => 'Posisi Layout',
+                    'value' => function($data) {
+                switch ($data->layout) {
+                    case "right";
+                        return "Kanan";
+                        break;
+                    case "left";
+                        return "Kiri";
+                        break;
+                    case "full";
+                        return "Layar Penuh";
+                        break;
+                }
+            }
+                ],
                 [
                     'attribute' => 'create_et',
                     'label' => 'Ditambahkan'
@@ -211,7 +205,7 @@ $this->registerJs(''
                                     'class' => 'select-tooltip btn btn-primary btn-xs',
                                     'data-toggle' => "tooltip",
                                     'data-original-title' => "Perbaharui",
-                                    'style'=>'width:81px',
+                                    'style' => 'width:81px',
                                     'title' => Yii::t('yii', 'Perbaharui'),
                         ]);
                     } else {

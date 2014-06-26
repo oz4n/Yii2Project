@@ -7,11 +7,13 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\site\Site;
 use app\modules\site\models\GuestbookModel;
+
 /**
  * GuestbookSerch represents the model behind the search form about `app\modules\dao\ar\Guestbook`.
  */
 class GuestbookSerch extends GuestbookModel
 {
+
     public function rules()
     {
         return [
@@ -30,8 +32,9 @@ class GuestbookSerch extends GuestbookModel
     {
         $query = GuestbookModel::find();
         $query->onCondition([
-            'status' => Site::GUESTBOOK_PUBLISH_STATUS
-        ])->orderBy(['create_et'=>SORT_DESC]);
+            'status' => Site::GUESTBOOK_PUBLISH_STATUS,
+            'parent_id' => null
+        ])->orderBy(['create_et' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -44,14 +47,15 @@ class GuestbookSerch extends GuestbookModel
             return $dataProvider;
         }
 
-       
+
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'web_site', $this->web_site])
-            ->andFilterWhere(['like', 'subject', $this->subject])
-            ->andFilterWhere(['like', 'content', $this->content]);
+                ->andFilterWhere(['like', 'email', $this->email])
+                ->andFilterWhere(['like', 'web_site', $this->web_site])
+                ->andFilterWhere(['like', 'subject', $this->subject])
+                ->andFilterWhere(['like', 'content', $this->content]);
 
         return $dataProvider;
     }
+
 }

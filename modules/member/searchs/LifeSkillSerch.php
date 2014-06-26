@@ -38,7 +38,7 @@ class LifeSkillSerch extends LifeSkillModel
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 5,
+                'pageSize' => 20,
             ]
         ]);
 //        $query->orderBy([

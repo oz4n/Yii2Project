@@ -2,8 +2,6 @@
 
 namespace app\modules\page\controllers;
 
-define("DS", DIRECTORY_SEPARATOR);
-
 use app\modules\page\models\WidgetModel;
 use Yii;
 use app\modules\page\models\PageModel;
@@ -150,7 +148,10 @@ class PageController extends Controller
                 if ($param["type"] == "pagehelper") {
                     $homeimage = json_decode($param['imgslider']);
                     $data['imgslider'] = $homeimage;
-
+                    $data['slider_title1'] = isset($param['slider_title1']) ? $param['slider_title1'] : null;
+                    $data['slider_title2'] = isset($param['slider_title2']) ? $param['slider_title2'] : null;
+                    $data['slider_title3'] = isset($param['slider_title3']) ? $param['slider_title3'] : null;
+                    $data['quotes_today'] = isset($param['quotes_today']) ? $param['quotes_today'] : null;
                     //remove image slider
                     $other = json_decode($model->other_content);
                     if (isset($other->imgslider)) {
@@ -249,15 +250,19 @@ class PageController extends Controller
     {
         if (Yii::$app->user->can('pagedelete')) {
             $model = $this->findModel($id);
-            $other = Json::decode($model->other_content);
-            if (isset($other['imgslider']) && null != $other['imgslider']) {
-                foreach ($other['imgslider'] as $value) {
-                    $file = new Filesystem();
-                    $file->remove($this->path . 'pageslider' . DS . 'page' . DS . $value);
+            if ($model->type == "pagehelper") {
+                return $this->redirect(['index', 'action' => 'page-list']);
+            } else {
+                $other = Json::decode($model->other_content);
+                if (isset($other['imgslider']) && null != $other['imgslider']) {
+                    foreach ($other['imgslider'] as $value) {
+                        $file = new Filesystem();
+                        $file->remove($this->path . 'pageslider' . DS . 'page' . DS . $value);
+                    }
                 }
+                $model->delete();
+                return $this->redirect(['index', 'action' => 'page-list']);
             }
-            $model->delete();
-            return $this->redirect(['index', 'action' => 'page-list']);
         } else {
             throw new HttpException(403, 'You are not allowed to access this page', 0);
         }
@@ -299,14 +304,16 @@ class PageController extends Controller
 
             foreach ($data as $id) {
                 $model = $this->findModel($id);
-                $other = Json::decode($model->other_content);
-                if (isset($other['imgslider']) && null != $other['imgslider']) {
-                    foreach ($other['imgslider'] as $value) {
-                        $file = new Filesystem();
-                        $file->remove($this->path . 'pageslider' . DS . 'page' . DS . $value);
+                if ($model->type !== "pagehelper") {
+                    $other = Json::decode($model->other_content);
+                    if (isset($other['imgslider']) && null != $other['imgslider']) {
+                        foreach ($other['imgslider'] as $value) {
+                            $file = new Filesystem();
+                            $file->remove($this->path . 'pageslider' . DS . 'page' . DS . $value);
+                        }
                     }
+                    $model->delete();
                 }
-                $model->delete();
             }
             return $this->redirect(['index', 'action' => 'page-list']);
         } else {
@@ -366,13 +373,13 @@ class PageController extends Controller
     protected function resizeImageSLider($image)
     {
         if (isset($image->imgslide1) && $image->imgslide1 != false) {
-            Image::thumbnail($this->path . 'original' . DS . $image->imgslide1, 1024, 300)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide1, ['quality' => 80]);
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide1, 1080, 300)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide1, ['quality' => 80]);
         }
         if (isset($image->imgslide2) && $image->imgslide2 != false) {
-            Image::thumbnail($this->path . 'original' . DS . $image->imgslide2, 1024, 300)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide2, ['quality' => 80]);
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide2, 1080, 300)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide2, ['quality' => 80]);
         }
         if (isset($image->imgslide3) && $image->imgslide3 != false) {
-            Image::thumbnail($this->path . 'original' . DS . $image->imgslide3, 1024, 300)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide3, ['quality' => 80]);
+            Image::thumbnail($this->path . 'original' . DS . $image->imgslide3, 1080, 300)->save($this->path . 'pageslider' . DS . 'helperpage' . DS . $image->imgslide3, ['quality' => 80]);
         }
 
         if (isset($image->imgslide4) && $image->imgslide4 != false) {

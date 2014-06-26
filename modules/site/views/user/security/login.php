@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of the Dektrium project.
  *
@@ -18,14 +17,12 @@ use dektrium\user\widgets\Connect;
  * @var yii\widgets\ActiveForm $form
  * @var dektrium\user\models\LoginForm $model
  */
-
-$this->title = Yii::t('user', 'Sign in');
+$this->title = Yii::t('user', 'Login');
 ?>
 <div class="breadcrumbs">
-    <div class="container">
-        <h1 class="pull-left">Login</h1>
+    <div class="container">      
         <ul class="pull-right breadcrumb">
-            <li><a href="index.html">Home</a></li>
+            <li><?= Html::a('Beranda', ['/site/site/index']) ?></li>
             <li class="active">Login</li>
         </ul>
     </div>
@@ -40,35 +37,45 @@ $this->title = Yii::t('user', 'Sign in');
             <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
                 <?php
                 $form = \yii\bootstrap\ActiveForm::begin([
-                    'id' => 'login-form',
-                    'options' => ['class' => 'reg-page']
-                ])
+                            'id' => 'login-form'
+                        ])
+                        
                 ?>
                 <div class="reg-header">
-                    <h2>Login to your account</h2>
+                    <h2>Login ke akun anda</h2>
                 </div>
-                <?= $form->field($model, 'login') ?>
+                <?=
+                $form->field($model, 'login')->label('Akun anda')
+                ?>
 
-                <?= $form->field($model, 'password')->passwordInput()->label(Yii::t('user', 'Password')) ?>
+                <?=
+                $form->field($model, 'password')->passwordInput()->label(Yii::t('user', 'Password'))->label('Kata sandi')
+                ?>
 
 
 
                 <div class="row">
                     <div class="col-md-6">
                         <label class="checkbox">
-                            <?= Html::activeCheckbox($model, 'rememberMe') ?>
-                            Stay signed in
+                            <?=
+                            Html::activeCheckbox($model, 'rememberMe')
+                            ?>
+                            Tetap masuk
                         </label>
                     </div>
                     <div class="col-md-6">
-                        <?= Html::submitButton(Yii::t('user', 'Sign in'), ['class' => 'btn-u pull-right']) ?>
+                        <?=
+                        Html::submitButton(Yii::t('user', 'Login'), ['class' => 'btn-u pull-right'])
+                        ?>
                     </div>
                 </div>
                 <hr>
-                <h4><?= Html::a(Yii::t('user', 'Forgot your password?'), ['/user/recovery/request']) ?></h4>
+                <h4><?= Html::a(Yii::t('user', 'Lupa kata sandi anda?'), ['/user/recovery/request']) ?></h4>
 
-                <p><?= Html::a(Yii::t('user', 'Didn\'t receive confirmation message?'), ['/user/registration/resend']) ?></p>
-                <?php \yii\bootstrap\ActiveForm::end(); ?>
+                <p><?= Html::a(Yii::t('user', 'Tidak menerima pesan konfirmasi?'), ['/user/registration/resend']) ?></p>
+                <?php
+                \yii\bootstrap\ActiveForm::end();
+                ?>
 
                 <?=
                 Connect::widget([
